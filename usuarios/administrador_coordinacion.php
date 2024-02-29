@@ -1,100 +1,50 @@
 <?php
-// Iniciar la sesión para manejar variables de sesión
 session_start();
 
-// Verificar si el usuario está autenticado; de lo contrario, redirigir a la página de inicio
 if (!isset($_SESSION['tipo_usuario'])) {
     header('Location: index.php');
     exit();
 }
 
-// Obtener el tipo de usuario de la sesión
-$tipo_usuario = $_SESSION['tipo_usuario'];
-
-// Incluir el archivo de conexión a la base de datos
 include('../includes/conexion.php');
 
-// Configuración de la conexión a la base de datos
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "sistemas";
 
-// Crear una nueva conexión a la base de datos
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Verificar si la conexión es exitosa
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-// Inicializar la cadena de opciones para el menú desplegable de direcciones
 $options = "";
-// Almacena las coordinaciones asociadas a cada dirección
 $coordinacionesPorDireccion = array();
 
-// Consultar las direcciones disponibles
 $sql = "SELECT identificador, Fullname FROM direccion";
 $result = $conn->query($sql);
 
-// Verificar si hay direcciones disponibles
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        // Obtener datos de la dirección actual
         $direccionId = $row["identificador"];
         $direccion = $row["Fullname"];
-
-        // Construir la cadena de opciones para el menú desplegable
         $options .= "<option value='$direccionId'>$direccion</option>";
 
-        // Obtener las coordinaciones asociadas a la dirección actual
         $sql_coordinaciones_por_direccion = "SELECT identificador_coordinacion, Fullname_coordinacion FROM coordinacion WHERE identificador_direccion = '$direccionId'";
         $result_coordinaciones_por_direccion = $conn->query($sql_coordinaciones_por_direccion);
 
-        // Verificar si hay coordinaciones asociadas
         if ($result_coordinaciones_por_direccion->num_rows > 0) {
             $coordinaciones = array();
             while ($row_coordinacion = $result_coordinaciones_por_direccion->fetch_assoc()) {
-                $coordinaciones[] = $row_coordinacion["Fullname_coordinacion"];
+                $coordinacionId = $row_coordinacion["identificador_coordinacion"];
+                $coordinacionNombre = $row_coordinacion["Fullname_coordinacion"];
+                $coordinaciones[] = array("id" => $coordinacionId, "nombre" => $coordinacionNombre);
             }
-            // Almacenar las coordinaciones asociadas a la dirección en el array
             $coordinacionesPorDireccion[$direccionId] = $coordinaciones;
         }
     }
 }
-
-// Procesar el formulario cuando se envía
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtener los datos del formulario
-    $nombre = $_POST["nombre"];
-    $email = $_POST["email"];
-    $password = $_POST["password"];
-    $direccionId = $_POST["fullname_direccion"];
-    $coordinacion = $_POST["coordinacion_existente"];
-
-    // Resto del código para guardar el usuario, utilizando los datos obtenidos
-    // ...
-
-    // Ejemplo: Guardar el usuario en la tabla de usuarios
-    $sql_guardar_usuario = "INSERT INTO usuarios (nombre, email, password, direccion_id, coordinacion) VALUES ('$nombre', '$email', '$password', '$direccionId', '$coordinacion')";
-    $result_guardar_usuario = $conn->query($sql_guardar_usuario);
-
-    // Verificar el resultado de la inserción
-    if ($result_guardar_usuario) {
-        // Mensaje de notificación y redirección a la página de servicios
-        $notification_message = "Usuario registrado correctamente.";
-        echo "<script>
-            alert('$notification_message');
-            window.location.href = 'dashboard.php';
-        </script>";
-    } else {
-        // Mostrar un mensaje de error si hay un problema con la inserción
-        echo "Error al registrar el usuario: " . $conn->error;
-    }
-}
-
-// Cerrar la conexión a la base de datos
-$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -108,7 +58,6 @@ $conn->close();
 </head>
 
 <body>
-
 
     <!-- Formulario para registrar un nuevo usuario -->
     <form method="post" action="../config/guardar_administrador_coordinacion.php" class="tarjeta contenido" onsubmit="return validarFormulario()">
@@ -131,7 +80,6 @@ $conn->close();
             <?php echo $options; ?>
         </select>
 
-
         <!-- Agregar un menú desplegable para las coordinaciones existentes -->
         <label for="coordinacion_existente">Seleccione una coordinación existente:</label>
         <select name="coordinacion_existente" id="coordinacion_existente">
@@ -139,51 +87,69 @@ $conn->close();
             <!-- Las opciones se llenarán dinámicamente mediante JavaScript -->
         </select>
 
-        <!-- <label for="es_administrador"></label>
-        <select name="es_administrador" id="es_administrador">
-            <option value="" disabled selected>¿Eres un administrador?</option>
+        <label for="servicios">Seleccione un servicio:</label>
+        <select name="servicios" id="servicios">
+            <option value="" disabled selected>Selecciona un Servicio</option>
+        </select>
 
-            <option value="1">Sí</option>
-            <option value="0">No</option>
-        </select> -->
+        <br>
 
-
-        <br><br>
-
-        <!-- Botón para enviar el formulario -->
         <button type="submit">Registrar Usuario</button>
     </form>
 
     <br>
 
+    <script src="assets/js/validacion_resguardos_coordinacion.js"></script>
 
-    <!-- Incluir el script de validación -->
-    <script src="assets/js/validacion.js"></script>
-
-    <!-- Script JavaScript para actualizar dinámicamente las opciones del menú desplegable de coordinaciones -->
     <script>
         var selectDireccion = document.getElementById('fullname_direccion');
         var selectCoordinacion = document.getElementById('coordinacion_existente');
+        var selectServicios = document.getElementById('servicios');
 
-        // Coordinaciones asociadas a cada dirección
         var coordinacionesPorDireccion = <?php echo json_encode($coordinacionesPorDireccion); ?>;
 
-        // Función para actualizar las opciones de coordinación al cambiar la dirección
         selectDireccion.addEventListener('change', function() {
             var selectedDireccionId = this.value;
-
-            // Limpiar las opciones actuales
             selectCoordinacion.innerHTML = '<option value="" disabled selected>Selecciona una Coordinación</option>';
+            selectServicios.innerHTML = '<option value="" disabled selected>Selecciona un Servicio</option>';
 
-            // Agregar las nuevas opciones basadas en la dirección seleccionada
-            coordinacionesPorDireccion[selectedDireccionId].forEach(function(coordinacion) {
-                var option = document.createElement('option');
-                option.value = coordinacion;
-                option.text = coordinacion;
-                selectCoordinacion.add(option);
-            });
+            if (coordinacionesPorDireccion[selectedDireccionId]) {
+                coordinacionesPorDireccion[selectedDireccionId].forEach(function(coordinacion) {
+                    var option = document.createElement('option');
+                    option.value = coordinacion.id;
+                    option.text = coordinacion.nombre;
+                    selectCoordinacion.add(option);
+                });
+            }
         });
+
+        selectCoordinacion.addEventListener('change', function() {
+            var selectedDireccionId = selectDireccion.value;
+            var selectedCoordinacionId = this.value;
+            selectServicios.innerHTML = '<option value="" disabled selected>Selecciona un Servicio</option>';
+            obtenerServicios(selectedDireccionId, selectedCoordinacionId);
+        });
+
+        function obtenerServicios(direccionId, coordinacionId) {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var servicios = JSON.parse(xhr.responseText);
+                    selectServicios.innerHTML = '<option value="" disabled selected>Selecciona un Servicio</option>';
+
+                    servicios.forEach(function(servicio) {
+                        var option = document.createElement('option');
+                        option.value = servicio.identificador_servicio;
+                        option.text = servicio.Fullname_servicio;
+                        selectServicios.add(option);
+                    });
+                }
+            };
+            xhr.open("GET", "../obtener/obtener_servicios.php?direccionId=" + direccionId + "&coordinacionId=" + coordinacionId, true);
+            xhr.send();
+        }
     </script>
+
 </body>
 
 </html>

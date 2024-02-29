@@ -8,72 +8,68 @@ if (!isset($_SESSION['tipo_usuario'])) {
 
 include('../includes/conexion.php');
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "sistemas";
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Retrieve data from the form
+    $nombre = $_POST['nombre'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    
+    // Obtener valores de la tabla direccion
+    $query_direccion = "SELECT Fullname, identificador FROM direccion WHERE identificador";
+    $result_direccion = $conexion->query($query_direccion);
 
-$conexion = new mysqli($servername, $username, $password, $dbname);
+    // Obtener valores de la tabla coordinacion
+    $query_coordinacion = "SELECT Fullname_coordinacion, identificador_coordinacion FROM coordinacion WHERE identificador_coordinacion";
+    $result_coordinacion = $conexion->query($query_coordinacion);
 
-if ($conexion->connect_error) {
-    die("Conexión fallida: " . $conexion->connect_error);
-}
+    // Obtener valores de la tabla servicios
+    $query_servicios = "SELECT Fullname_servicio, identificador_servicio FROM servicios WHERE identificador_servicio";
+    $result_servicios = $conexion->query($query_servicios);
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nombre = isset($_POST["nombre"]) ? $_POST["nombre"] : "";
-    $email = isset($_POST["email"]) ? $_POST["email"] : "";
-    $password = password_hash(isset($_POST['password']) ? $_POST['password'] : "", PASSWORD_BCRYPT);
-
-    $direccionId = isset($_POST["fullname_direccion"]) ? $_POST["fullname_direccion"] : "";
-    $coordinacion = isset($_POST["coordinacion_existente"]) ? $_POST["coordinacion_existente"] : "";
-
-    $sql_direccion = "SELECT Fullname, identificador FROM direccion WHERE identificador = '$direccionId'";
-    $result_direccion = $conexion->query($sql_direccion);
-
-    if ($result_direccion->num_rows > 0) {
+    if ($result_direccion && $result_coordinacion && $result_servicios) {
         $row_direccion = $result_direccion->fetch_assoc();
-        $fullname_direccion = $row_direccion["Fullname"];
-        $identificador_direccion = $row_direccion["identificador"];
-    } else {
-        echo "Error al obtener la información de la dirección.";
-        exit();
-    }
+        $fullname_direccion = $row_direccion['Fullname'];
+        $identificador_direccion = $row_direccion['identificador'];
 
-    $sql_coordinacion = "SELECT identificador_coordinacion FROM coordinacion WHERE Fullname_coordinacion = '$coordinacion' AND identificador_direccion = '$direccionId'";
-    $result_coordinacion = $conexion->query($sql_coordinacion);
-
-    if ($result_coordinacion->num_rows > 0) {
         $row_coordinacion = $result_coordinacion->fetch_assoc();
-        $identificador_coordinacion = $row_coordinacion["identificador_coordinacion"];
+        $fullname_coordinacion = $row_coordinacion['Fullname_coordinacion'];
+        $identificador_coordinacion = $row_coordinacion['identificador_coordinacion'];
+
+        $row_servicios = $result_servicios->fetch_assoc();
+        $fullname_servicio = $row_servicios['Fullname_servicio'];
+        $identificador_servicio = $row_servicios['identificador_servicio'];
+
+        $sql_max_user_id = "SELECT MAX(identificador_administrador_coordinacion) AS max_id FROM administrador";
+        $result_max_user_id = $conexion->query($sql_max_user_id);
+    
+        if ($result_max_user_id->num_rows > 0) {
+            $row_max_user_id = $result_max_user_id->fetch_assoc();
+            $next_user_id = $row_max_user_id["max_id"] + 1;
+        } else {
+            $next_user_id = 1;
+        }
+    
+        // Insertar en la tabla administrador
+        $sql = "INSERT INTO administrador (identificador_administrador_coordinacion, Fullname, EmailId, password, Fullname_direccion, identificador_direccion, Fullname_coordinacion, identificador_coordinacion, Fullname_servicio, identificador_servicio, Puesto) 
+                VALUES ('$next_user_id', '$nombre', '$email', '$password', '$fullname_direccion', '$identificador_direccion', '$fullname_coordinacion', '$identificador_coordinacion', '$fullname_servicio', '$identificador_servicio', 1)";
+
+        if ($conexion->query($sql) === TRUE) {
+            $notification_message = "Usuario registrado correctamente.";
+            echo "<script>
+                alert('$notification_message');
+                window.location.href = '../dashboard/dashboard.php';
+            </script>";
+            } else {
+            echo "Error al registrar usuario: " . $conexion->error;
+        }
     } else {
-        echo "Error al obtener el identificador de la coordinación.";
-        exit();
+        echo "Error al obtener datos necesarios: " . $conexion->error;
     }
 
-    $sql_max_user_id = "SELECT MAX(identificador_administrador_coordinacion) AS max_id FROM administrador";
-    $result_max_user_id = $conexion->query($sql_max_user_id);
-
-    if ($result_max_user_id->num_rows > 0) {
-        $row_max_user_id = $result_max_user_id->fetch_assoc();
-        $next_user_id = $row_max_user_id["max_id"] + 1;
-    } else {
-        $next_user_id = 1;
-    }
-
-    $sql_guardar_usuario_servicio = "INSERT INTO administrador (identificador_administrador_coordinacion, Fullname, EmailId, Password, Fullname_direccion, identificador_direccion, Fullname_coordinacion, identificador_coordinacion, Puesto) VALUES ('$next_user_id', '$nombre', '$email', '$password', '$fullname_direccion', '$identificador_direccion', '$coordinacion', '$identificador_coordinacion', 1)";
-
-    $result_guardar_usuario_servicio = $conexion->query($sql_guardar_usuario_servicio);
-
-    if ($result_guardar_usuario_servicio) {
-        $notification_message = "Usuario registrado correctamente.";
-        echo "<script>
-            alert('$notification_message');
-            window.location.href = '../dashboard/dashboard.php';
-        </script>";
-    } else {
-        echo "Error al registrar el usuario: " . $conexion->error;
-    }
+    $conexion->close();
+} else {
+    // If someone tries to access this script directly without sending data by POST, redirect to the form.
+    header('Location: tu_formulario.php');
+    exit();
 }
-
-$conexion->close();
 ?>

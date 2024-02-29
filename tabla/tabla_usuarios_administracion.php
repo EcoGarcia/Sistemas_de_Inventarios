@@ -72,7 +72,8 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                         echo "<td>" . $row['EmailId'] . "</td>";
                         echo "<td>" . $row['Fullname_direccion'] . "</td>";
                         echo "<td>" . $row['Fullname_coordinacion'] . "</td>";
-                        echo "<td>" . ($row['Puesto'] == 0 ? "Usuario" : "Administrador") . "</td>";
+                        echo "<td>" . $row['Fullname_servicio'] . "</td>";
+                        // echo "<td>" . ($row['Puesto'] == 0 ? "Usuario" : "Administrador") . "</td>";
                         echo "<td><button class='btn btn-primary btn-edit' data-toggle='modal' data-target='#editModal' data-userid='" . $row['id'] . "' data-username='" . $row['Fullname'] . "'>Editar</button></td>";
 
                         echo "</div>";
