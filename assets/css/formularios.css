@@ -1,0 +1,24 @@
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    height: 650px;
+}
+
+h2 {
+    text-align: center;
+}
+
+form {
+    background-color: #7F8C8D;
+    padding: 20px; /* Ajusté el padding para un aspecto más equilibrado */
+    box-shadow: 0 0 6px 0 rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    height: 400px; /* Ajusta la altura según tus necesidades */
+    overflow-y: auto; /* Agrega una barra de desplazamiento vertical si el contenido excede la altura */
+}
+
+.form {
+    width: 100%;
+    margin: auto;
+}

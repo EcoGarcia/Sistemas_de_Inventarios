@@ -1,0 +1,22 @@
+/* *para mostrar mensajes */
+
+.mensaje_llenar{
+        background-color: #a7810b;
+        border: 1px solid #a7810b;
+        color: #333; /* Texto más oscuro */
+        font-weight: bold; /* Texto en negrita */
+        padding: 15px;
+        margin-top: 20px;
+    
+
+}
+.mensaje_exitoso {
+    background-color: #239B56;
+    border: 1px solid #239B56;
+    color: #333; /* Texto más oscuro */
+    font-weight: bold; /* Texto en negrita */
+    padding: 15px;
+    margin-top: 20px;
+}
+
+

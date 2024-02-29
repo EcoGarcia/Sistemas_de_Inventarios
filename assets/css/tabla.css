@@ -1,0 +1,13 @@
+.book-image {
+    width: 130px;
+    height: 120px;
+    object-fit: contain;
+    position: sticky;
+    top: 0;
+}
+ 
+td {
+    text-align: center;
+    width: 100%;
+}
+

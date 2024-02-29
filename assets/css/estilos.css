@@ -1,0 +1,86 @@
+.category-card {
+  position: relative;
+}
+
+.btn-container {
+  position: absolute;
+  bottom: 10px;
+  /* Ajusta la posición vertical según tus necesidades */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.btn-container a {
+  display: inline-block;
+  margin-right: 10px;
+  /* Ajusta el espacio entre los botones según tus necesidades */
+}
+
+.btn-container-servicio {
+  position: absolute;
+  bottom: 10px;
+  /* Ajusta la posición vertical según tus necesidades */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.btn-container-servicio a {
+  display: inline-block;
+  margin-right: 10px;
+  /* Ajusta el espacio entre los botones según tus necesidades */
+}
+.container {
+  text-align: center;
+}
+
+h2 {
+  margin-top: 20px; /* Ajusta el margen superior según tus necesidades */
+}
+.category-card {
+  width: 70%;
+  max-width: 250px;
+  height: 290px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  text-align: center;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.3s ease;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+  border-radius: 5px;
+}
+
+.category-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.category-card h4 {
+  
+  font-size: 28px;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+.category-card h3 {
+  
+  font-size: 28px;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.category-card p {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.category-card .btn {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.category-card img {
+  display: none;
+}
