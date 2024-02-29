@@ -25,7 +25,9 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 </head>
 
 <body>
-
+<div class="form-group">
+    <input type="text" class="form-control" id="searchInput" placeholder="Search">
+  </div>
     <div class="panel-body">
         <div class="panel-body">
             <div class="col-md-12">
@@ -55,6 +57,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     echo "<tr>";
                     echo "<th>Nombre del usuario</th>";
                     echo "<th>Email</th>";
+                    echo "<th>Coordinación</th>";
                     echo "<th>Puesto</th>";
                     echo "<th>Editar</th>";
                     echo "</tr>";
@@ -66,6 +69,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                         echo "<tr class='book-row'>";
                         echo "<td>" . $row['Fullname'] . "</td>";
                         echo "<td>" . $row['EmailId'] . "</td>";
+                        echo "<td>" . $row['Fullname_coordinacion'] . "</td>";
                         echo "<td>" . ($row['Puesto'] == 0 ? "Usuario" : "Administrador") . "</td>";
                         echo "<td><button class='btn btn-primary btn-edit' data-toggle='modal' data-target='#editModal' data-userid='" . $row['id'] . "' data-username='" . $row['Fullname'] . "'>Editar</button></td>";
 
@@ -88,7 +92,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                 mysqli_close($conn);
                 
                 ?>
-                                    <a href="total.php">Volver a la tabla de usuarios</a>
+                                    <a href="../tabla/total_usuarios.php">Volver a la tabla de usuarios</a>
 
             </div>
         </div>
@@ -113,6 +117,16 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
             
             // Abrir el modal de edición
             $('#editModal').modal('show');
+        });
+
+        // Captura el evento de cambio en el campo de búsqueda
+        $('#searchInput').on('input', function() {
+            var searchTerm = $(this).val().toLowerCase(); // Obtiene el valor del campo de búsqueda en minúsculas
+            $('.book-row').each(function() {
+                var textToSearch = $(this).text().toLowerCase(); // Obtiene el contenido de la fila en minúsculas
+                // Muestra u oculta la fila según si coincide con el término de búsqueda
+                $(this).toggle(textToSearch.indexOf(searchTerm) > -1);
+            });
         });
     });
 </script>
