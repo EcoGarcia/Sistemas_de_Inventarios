@@ -37,20 +37,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $row_check = $result_check->fetch_assoc();
             $total_coordinaciones = $row_check["total"];
 
-            // Obtener el último identificador de coordinación
-            $sql_max = "SELECT MAX(identificador_coordinacion) AS max_id FROM coordinacion WHERE identificador_direccion = '$identificador_direccion'";
-            $result_max = $conexion->query($sql_max);
 
-            if ($result_max->num_rows > 0) {
-                $row_max = $result_max->fetch_assoc();
-                $last_id = $row_max["max_id"];
+    // Obtener el último identificador de coordinación en general
+    $sql_max = "SELECT MAX(identificador_coordinacion) AS max_id FROM coordinacion";
+    $result_max = $conexion->query($sql_max);
 
-                // Asegurarse de que el identificador sea al menos 1
-                $identificador_coordinacion = max(1, $last_id + 1);
-            } else {
-                // Si no hay identificadores anteriores, asignar identificador 1
-                $identificador_coordinacion = 1;
-            }
+    if ($result_max->num_rows > 0) {
+        $row_max = $result_max->fetch_assoc();
+        $last_id = $row_max["max_id"];
+
+        // Asegurarse de que el identificador sea al menos 1
+        $identificador_coordinacion = $last_id + 1;
+    } else {
+        // Si no hay identificadores anteriores, asignar identificador 1
+        $identificador_coordinacion = 1;
+    }
 
             // Procesar la imagen
             $image_name = $_FILES['image']['name'];
