@@ -91,6 +91,17 @@ if ($identificador_usuario_coordinacion_session !== null) {
                 if (!$conn) {
                     die("Conexión fallida: " . mysqli_connect_error());
                 }
+                // Obtener el nombre de la coordinación
+                $query_coordinacion = "SELECT Fullname_coordinacion FROM coordinacion WHERE identificador_coordinacion = $identificador_usuario_coordinacion";
+                $result_coordinacion = mysqli_query($conn, $query_coordinacion);
+
+                if (!$result_coordinacion) {
+                    die("Error in query: " . mysqli_error($conn));
+                }
+
+                $row_coordinacion = mysqli_fetch_assoc($result_coordinacion);
+                $nombre_coordinacion = $row_coordinacion['Fullname_coordinacion'];
+
 
                 $identificador_usuario_coordinacion = $_SESSION['identificador_usuario_coordinacion'];
 
@@ -160,7 +171,7 @@ if ($identificador_usuario_coordinacion_session !== null) {
                     echo "</table>";
                     echo "</div>";
                 } else {
-                    echo "<p>No se encontraron resguardos para la dirección seleccionada.</p>";
+                    echo "<p>No se encontraron resguardos para la $nombre_coordinacion</p>";
                 }
 
                 mysqli_close($conn);
