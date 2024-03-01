@@ -102,6 +102,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
           echo "<th class='responsive-hide'>Imagen</th>";
           echo "<th class='responsive-show'>Marca</th>";
           echo "<th class='responsive-show'>Modelo</th>";
+          echo "<th class='responsive-hide'>Categoria</th>";
           echo "<th class='responsive-hide'>Caracteristicas Generales</th>";
 
           echo "<th class='responsive-hide'>Marca</th>";
@@ -124,12 +125,12 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
             echo "<tr class='book-row'>";
             echo "<td class='responsive-hide'>" . $row['Consecutivo_No'] . "</td>";
             echo "<td class='responsive-show'>" . $row['Fullname_direccion'] . "</td>";
-            echo "<td class='responsive-show'>" . $row['Descripcion'] . "</td>";
             echo "<td class='responsive-hide'>" . $row['Fullname_direccion'] . "</td>";
+            echo "<td class='responsive-show'>" . $row['Descripcion'] . "</td>";
             echo "<td class='responsive-hide'>" . $row['Descripcion'] . "</td>";
             echo "<td class='responsive-hide'><img src='" . $row['Image'] . "' alt='Imagen' class='book-image' id='imagenModal'></td>";
             echo "<td class='responsive-show'><button class='btn btn-primary show-image-btn' data-image='" . $row['Image'] . "'>Ver Imagen</button></td>";
-
+            echo "<td class='responsive-hide'>" . $row['Fullname_categoria'] . "</td>";
             echo "<td class='responsive-hide'>" . $row['Caracteristicas_Generales'] . "</td>";
 
             echo "<td class='responsive-show'>" . $row['Marca'] . "</td>";

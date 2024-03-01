@@ -26,66 +26,87 @@ if ($resultDireccion->num_rows > 0) {
     }
 }
 
+// Obtener las opciones para el segundo menú desplegable (select)
+$optionsCategoria = "";
+$sqlCategoria = "SELECT Identificador_categoria, Fullname_categoria FROM categorias";
+$resultCategoria = $conn->query($sqlCategoria);
+
+if ($resultCategoria) {
+    if ($resultCategoria->num_rows > 0) {
+        while ($rowCategoria = $resultCategoria->fetch_assoc()) {
+            $optionsCategoria .= "<option value='" . $rowCategoria["Identificador_categoria"] . "'>" . $rowCategoria["Fullname_categoria"] . "</option>";
+        }
+    }
+} else {
+    echo "Error executing query: " . $conn->error;
+}
+
 // Cerrar la conexión
 $conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DIF | Registro un nuevo usuario de dirección</title>
     <link rel="stylesheet" href="assets/css/tarjeta.css">
 </head>
+
 <body>
 
-<form method="post" action="../guardar/guardar_direccion.php" class="tarjeta contenido" onsubmit="return validarFormulario()" enctype="multipart/form-data">
+    <form method="post" action="../guardar/guardar_respaldo_direccion.php" class="tarjeta contenido" onsubmit="return validarFormulario()" enctype="multipart/form-data">
 
         <label for="consecutivo">Consecutivo No:</label>
         <input type="text" name="consecutivo" id="consecutivo" required>
 
-            <!-- Campos del formulario -->
-            <label for="fullname_direccion">Seleccione una dirección:</label>
-            <select name="id_direccion" required>
-                <option value="" disabled selected>Selecciona una dirección</option>
-                <?php echo $optionsDireccion; ?>
-            </select>
+        <!-- Campos del formulario -->
+        <label for="fullname_direccion">Seleccione una dirección:</label>
+        <select name="id_direccion" required>
+            <option value="" disabled selected>Selecciona una dirección</option>
+            <?php echo $optionsDireccion; ?>
+        </select>
         <br>
-
+        <!-- Campos del formulario -->
+        <label for="fullname_categoria">Seleccione una categoria:</label>
+        <select name="id_categoria" required>
+            <option value="" disabled selected>Selecciona una categoria</option>
+            <?php echo $optionsCategoria; ?>
+        </select>
 
         <br>
-
 
         <label for="">Descripción:</label>
-            <input type="text" name="descripcion" id=""required>
+        <input type="text" name="descripcion" id="" required>
 
-            <label for="">Características Generales:</label>
-            <input type="text" name="caracteristicas" id=""required>
+        <label for="">Características Generales:</label>
+        <input type="text" name="caracteristicas" id="" required>
 
-            <label for="">Marca:</label>
-            <input type="text" name="marca" id=""required>
+        <label for="">Marca:</label>
+        <input type="text" name="marca" id="" required>
 
-            <label for="">Modelo:</label>
-            <input type="text" name="modelo" id=""required>
+        <label for="">Modelo:</label>
+        <input type="text" name="modelo" id="" required>
 
-            <label for="">NO. De Serie:</label>
-            <input type="text" name="serie" id=""required>
+        <label for="">NO. De Serie:</label>
+        <input type="text" name="serie" id="" required>
 
-            <label for="">Color:</label>
-            <input type="text" name="color" id=""required>
+        <label for="">Color:</label>
+        <input type="text" name="color" id="" required>
 
-
-            <label for="id_usuario">Seleccione un usuario de la dirección:</label>
-            <select name="id_usuario" required>
-                <option value="" disabled selected>Selecciona un usuario</option>
-            </select>
+        <label for="id_usuario">Seleccione un usuario de la dirección:</label>
+        <select name="id_usuario" required>
+            <option value="" disabled selected>Selecciona un usuario</option>
+        </select>
 
         <br>
-            <label for="">Observaciones:</label>
-            <input type="text" name="observaciones" id=""required>
+        <label for="">Observaciones:</label>
+        <input type="text" name="observaciones" id="" required>
 
-            <label for="">Selecciona una imagen:</label>
-            <input type="file" name="imagen" id="" accept=".jpg, .jpeg, .png"  required/>
+        <label for="">Selecciona una imagen:</label>
+        <input type="file" name="imagen" id="" accept=".jpg, .jpeg, .png" required />
 
         <button type="submit">Registrar Usuario</button>
     </form>
@@ -123,4 +144,5 @@ $conn->close();
         });
     </script>
 </body>
+
 </html>
