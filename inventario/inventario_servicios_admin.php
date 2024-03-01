@@ -85,6 +85,21 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     echo "Identificador de servicio no proporcionado.";
                     exit();
                 }
+                // Obtener el nombre de la coordinación
+                $identificador_servicios = $_GET['identificador_servicios'];
+                $query_servicio = "SELECT Fullname_servicio FROM servicios WHERE identificador_servicio = $identificador_servicios";
+                $result_servicio = mysqli_query($conn, $query_servicio);
+
+                if (!$result_servicio) {
+                    die("Query failed: " . mysqli_error($conn));
+                }
+
+                $row_servicio = mysqli_fetch_assoc($result_servicio);
+                $nombre_servicio = $row_servicio['Fullname_servicio'];
+
+                $query = "SELECT * FROM respaldos_servicios WHERE identificador_servicio = $identificador_servicios";
+                $result = mysqli_query($conn, $query);
+
 
                 $identificador_servicios = $_GET['identificador_servicios'];
 
@@ -156,8 +171,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     echo "</table>";
                     echo "</div>";
                 } else {
-                    echo "<p>No se encontraro
-                    n resguardos para el servicio seleccionada.</p>";
+                    echo "<p>No se encontraron resguardos para el puesto de  $nombre_servicio</p>";
                 }
 
                 mysqli_close($conn);

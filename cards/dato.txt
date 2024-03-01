@@ -1,3 +1,0 @@
-Si tengo dos códigos, uno llamado tarjeta y otro inventario, sin modificar nada del pho, solo el inventario, como le hago si quiero que aparezcan las coordinaciones en base a esto:
-En la tabla coordinacion columna identificador_coordinacion esta el identificador de la coordinacion y en esa misma tabla tengo la columna identificador_direccion que es el identificador de la direccion, pero esa columna esta relacionada con mi columna identificador_coordinacion en la tabla usuarios_coordinacion y la columna del identificador de la direccion esta relacionada con mi columna identificador_direccion de la tabla usuarios_coordinacion 
-Como hago que en tarjeta al pulsar en ver inventario, aparezcan las coordinaciones que están ligadas a esa misma direccio

@@ -1,17 +1,22 @@
 <?php
+// Incluye el encabezado
 include('../includes/header.php');
 
+// Verifica si el tipo de usuario está establecido en la sesión
 if (!isset($_SESSION['tipo_usuario'])) {
     exit();
 }
 
+// Muestra un mensaje de notificación si está presente
 if (isset($_GET['notification_message'])) {
     $notification_message = htmlspecialchars($_GET['notification_message']);
     echo "<script>alert('$notification_message');</script>";
 }
 
+// Obtiene el tipo de usuario de la sesión
 $tipo_usuario = $_SESSION['tipo_usuario'];
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -58,19 +63,22 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 
 <body>
     <div class="form-group">
-        <input type="text" class="form-control" id="searchInput" placeholder="Search">
+        <input type="text" class="form-control" id="searchInput" placeholder="Buscar">
     </div>
     <div class="panel-body">
         <div class="panel-body">
             <div class="col-md-12">
                 <?php
+                // Incluye el archivo de conexión
                 include("../includes/conexion.php");
 
+                // Datos de conexión a la base de datos
                 $servername = "localhost";
                 $username = "root";
                 $password = "";
                 $dbname = "sistemas";
 
+                // Conexión a la base de datos
                 $conn = mysqli_connect($servername, $username, $password, $dbname);
                 if (!$conn) {
                     die("Conexión fallida: " . mysqli_connect_error());
@@ -83,14 +91,23 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     exit();
                 }
 
+                // Obtener el identificador de coordinación de la URL
                 $identificador_coordinacion = $_GET['identificador_coordinacion'];
 
+                // Obtener el nombre de la coordinación
+                $query_coordinacion = "SELECT Fullname_coordinacion FROM coordinacion WHERE identificador_coordinacion = $identificador_coordinacion";
+                $result_coordinacion = mysqli_query($conn, $query_coordinacion);
+                $row_coordinacion = mysqli_fetch_assoc($result_coordinacion);
+                $nombre_coordinacion = $row_coordinacion['Fullname_coordinacion'];
+
+                // Consulta SQL para obtener los resguardos de coordinación
                 $query = "SELECT rc.*, ra.* FROM respaldos_coordinacion rc 
                           LEFT JOIN resguardos_admin ra 
                           ON rc.identificador_coordinacion = ra.identificador_coordinacion 
                           WHERE rc.identificador_coordinacion = $identificador_coordinacion";
                 $result = mysqli_query($conn, $query);
 
+                // Verificar si hay resultados
                 if ($result && mysqli_num_rows($result) > 0) {
                     echo "<div class='table-responsive'>";
                     echo "<table class='table table-bordered'>";
@@ -103,7 +120,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     echo "<th class='responsive-hide'>Descripción</th>";
                     echo "<th class='responsive-show'>Ver Imagen</th>";
                     echo "<th class='responsive-hide'>Imagen</th>";
-                    echo "<th class='responsive-hide'>Caracteristicas Generales</th>";
+                    echo "<th class='responsive-hide'>Características Generales</th>";
 
                     echo "<th class='responsive-show'>Usuario Responsable</th>";
                     echo "<th class='responsive-hide'>Usuario Responsable</th>";
@@ -121,7 +138,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     echo "</thead>";
                     echo "<tbody>";
 
-                    $counter = 1;
+                    // Iterar sobre los resultados
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr class='book-row'>";
                         echo "<td class='responsive-hide'>" . $row['consecutivo'] . "</td>";
@@ -170,7 +187,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     echo "</table>";
                     echo "</div>";
                 } else {
-                    echo "<p>No se encontraron resguardos para la coordinación seleccionada.</p>";
+                    echo "<p>No se encontraron resguardos para la $nombre_coordinacion</p>";
                 }
 
                 mysqli_close($conn);
