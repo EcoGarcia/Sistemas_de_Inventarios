@@ -94,10 +94,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    
+    // Obtener el Fullname de la categoría seleccionada
+    $id_categoria = $_POST["id_categoria"];
+    $sqlCategoria = "SELECT Fullname_categoria FROM categorias WHERE Identificador_categoria = '$id_categoria'";
+    $resultCategoria = $conn->query($sqlCategoria);
+
+    if ($resultCategoria === false) {
+        // Handle the query error
+        echo "Error: " . $conn->error;
+        exit();
+    }
+
+    if ($resultCategoria->num_rows > 0) {
+        $rowCategoria = $resultCategoria->fetch_assoc();
+        $fullnameCategoria = $rowCategoria['Fullname_categoria'];
+    } else {
+        // Manejar el caso donde no se encuentra la categoría
+        echo "Error: Categoría no encontrada";
+        exit();
+    }
+
     // Verificar si el consecutivo ya existe
-    $sqlVerificarConsecutivo = "SELECT consecutivo, usuario_responsable FROM respaldos_coordinacion
-    WHERE consecutivo = '$consecutivo'";
+    $sqlVerificarConsecutivo = "SELECT consecutivo, usuario_responsable FROM respaldos_coordinacion WHERE consecutivo = '$consecutivo'";
     $resultVerificarConsecutivo = $conn->query($sqlVerificarConsecutivo);
 
     if ($resultVerificarConsecutivo->num_rows > 0) {
@@ -111,7 +129,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </script>";
         exit();
     }
-
 
     // Manejar la carga de la imagen
     $imagenNombre = isset($_FILES["imagen"]["name"]) ? $_FILES["imagen"]["name"] : '';
@@ -132,13 +149,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         identificador_coordinacion, fullname_coordinacion, 
         identificador_usuario_coordinacion, usuario_responsable, descripcion, 
         caracteristicas, marca, modelo, serie, color, 
-        observaciones, fecha_creacion, Image
+        observaciones, fecha_creacion, Image, identificador_categoria, fullname_categoria
     ) VALUES (
         '$consecutivo', '$direccionId', '$fullnameDireccion', 
         '$coordinacionId', '$fullnameCoordinacion', 
         '$usuarioCoordinacionId', '$fullnameUsuarioCoordinacion', '$descripcion', 
         '$caracteristicas', '$marca', '$modelo', '$serie', '$color', 
-        '$observaciones', '$fechaCreacion', '$imagenRuta'
+        '$observaciones', '$fechaCreacion', '$imagenRuta', '$id_categoria', '$fullnameCategoria'
     )";
 
     if ($conn->query($sqlInsert) === TRUE) {
@@ -155,3 +172,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // Cerrar la conexión a la base de datos
 $conn->close();
+?>

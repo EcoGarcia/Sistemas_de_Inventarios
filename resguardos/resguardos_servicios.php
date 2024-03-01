@@ -19,70 +19,94 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-$options = "";
+// Obtener opciones de direcciones
+$optionsDireccion = "";
 $coordinacionesPorDireccion = array();
 
-$sql = "SELECT identificador, Fullname FROM direccion";
-$result = $conn->query($sql);
+$sqlDireccion = "SELECT identificador, Fullname FROM direccion";
+$resultDireccion = $conn->query($sqlDireccion);
 
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $direccionId = $row["identificador"];
-        $direccion = $row["Fullname"];
-        $options .= "<option value='$direccionId'>$direccion</option>";
+if ($resultDireccion->num_rows > 0) {
+    while ($rowDireccion = $resultDireccion->fetch_assoc()) {
+        $direccionId = $rowDireccion["identificador"];
+        $direccion = $rowDireccion["Fullname"];
+        $optionsDireccion .= "<option value='$direccionId'>$direccion</option>";
 
-        $sql_coordinaciones_por_direccion = "SELECT identificador_coordinacion, Fullname_coordinacion FROM coordinacion WHERE identificador_direccion = '$direccionId'";
-        $result_coordinaciones_por_direccion = $conn->query($sql_coordinaciones_por_direccion);
+        // Obtener coordinaciones por dirección
+        $sqlCoordinacion = "SELECT identificador_coordinacion, Fullname_coordinacion FROM coordinacion WHERE identificador_direccion = '$direccionId'";
+        $resultCoordinacion = $conn->query($sqlCoordinacion);
 
-        if ($result_coordinaciones_por_direccion->num_rows > 0) {
+        if ($resultCoordinacion->num_rows > 0) {
             $coordinaciones = array();
-            while ($row_coordinacion = $result_coordinaciones_por_direccion->fetch_assoc()) {
-                $coordinacionId = $row_coordinacion["identificador_coordinacion"];
-                $coordinacionNombre = $row_coordinacion["Fullname_coordinacion"];
+            while ($rowCoordinacion = $resultCoordinacion->fetch_assoc()) {
+                $coordinacionId = $rowCoordinacion["identificador_coordinacion"];
+                $coordinacionNombre = $rowCoordinacion["Fullname_coordinacion"];
                 $coordinaciones[] = array("id" => $coordinacionId, "nombre" => $coordinacionNombre);
             }
             $coordinacionesPorDireccion[$direccionId] = $coordinaciones;
         }
     }
 }
-?>
 
+// Obtener opciones de categorías
+$optionsCategoria = "";
+$sqlCategoria = "SELECT Identificador_categoria, Fullname_categoria FROM categorias";
+$resultCategoria = $conn->query($sqlCategoria);
+
+if ($resultCategoria->num_rows > 0) {
+    while ($rowCategoria = $resultCategoria->fetch_assoc()) {
+        $optionsCategoria .= "<option value='" . $rowCategoria["Identificador_categoria"] . "'>" . $rowCategoria["Fullname_categoria"] . "</option>";
+    }
+}
+?>
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DIF | Registro un nuevo usuario de dirección</title>
     <link rel="stylesheet" href="../assets/css/tarjeta.css">
 </head>
+
 <body>
 
     <form method="post" action="../guardar/guardar_respaldo_servicios.php" class="tarjeta contenido" onsubmit="return validarFormulario()" enctype="multipart/form-data">
 
+        <label for="consecutivo">Consecutivo No:</label>
+        <input type="text" name="consecutivo" id="consecutivo" required>
 
-    <label for="consecutivo">Consecutivo No:</label>
-<input type="text" name="consecutivo" id="consecutivo" required>
+        <label for="fullname_direccion">Seleccione una dirección:</label>
+        <select name="fullname_direccion" id="fullname_direccion" required>
+            <option value="" disabled selected>Selecciona una dirección</option>
+            <?php echo $optionsDireccion; ?>
+        </select>
 
-<label for="fullname_direccion">Seleccione una dirección:</label>
-<select name="fullname_direccion" id="fullname_direccion" required>
-    <option value="" disabled selected>Selecciona una dirección</option>
-    <?php echo $options; ?>
-</select>
+        <br>
 
-<br>
+        <label for="coordinacion_existente">Seleccione una coordinación existente:</label>
+        <select name="coordinacion_existente" id="coordinacion_existente" required>
+            <option value="" disabled selected>Selecciona una Coordinación</option>
+        </select>
 
-<label for="coordinacion_existente">Seleccione una coordinación existente:</label>
-<select name="coordinacion_existente" id="coordinacion_existente" required>
-    <option value="" disabled selected>Selecciona una Coordinación</option>
-</select>
+        <br>
 
-<br>
+        <!-- Campos del formulario -->
+        <label for="fullname_categoria">Seleccione una categoria:</label>
+        <select name="id_categoria" required>
+            <option value="" disabled selected>Selecciona una categoria</option>
+            <?php echo $optionsCategoria; ?>
+        </select>
 
-<label for="servicios">Seleccione un servicio:</label>
-<select name="servicios" id="servicios" required>
-    <option value="" disabled selected>Selecciona un Servicio</option>
-</select>
+        <br>
+
+        <label for="servicios">Seleccione un servicio:</label>
+        <select name="servicios" id="servicios" required>
+            <option value="" disabled selected>Selecciona un Servicio</option>
+        </select>
+
+        <br>
 
 <br>
 

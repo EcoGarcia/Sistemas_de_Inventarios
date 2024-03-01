@@ -19,6 +19,21 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
+// Obtener las opciones para el segundo menú desplegable (select)
+$optionsCategoria = "";
+$sqlCategoria = "SELECT Identificador_categoria, Fullname_categoria FROM categorias";
+$resultCategoria = $conn->query($sqlCategoria);
+
+if ($resultCategoria) {
+    if ($resultCategoria->num_rows > 0) {
+        while ($rowCategoria = $resultCategoria->fetch_assoc()) {
+            $optionsCategoria .= "<option value='" . $rowCategoria["Identificador_categoria"] . "'>" . $rowCategoria["Fullname_categoria"] . "</option>";
+        }
+    }
+} else {
+    echo "Error executing query: " . $conn->error;
+}
+
 $options = "";
 $coordinacionesPorDireccion = array();
 
@@ -76,6 +91,13 @@ if ($result->num_rows > 0) {
         </select>
 
         <br>
+
+                <!-- Campos del formulario -->
+                <label for="fullname_categoria">Seleccione una categoria:</label>
+        <select name="id_categoria" required>
+            <option value="" disabled selected>Selecciona una categoria</option>
+            <?php echo $optionsCategoria; ?>
+        </select>
 
 
         <label for="">Descripción:</label>

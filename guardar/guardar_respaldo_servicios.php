@@ -32,10 +32,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $modelo = $_POST["modelo"];
     $serie = $_POST["serie"];
     $color = $_POST["color"];
+    $id_categoria = $_POST["id_categoria"]; // Agregado para obtener la categoría
+
     $observaciones = $_POST["observaciones"];
 
     // Obtener el nombre de la dirección seleccionada
-    $queryDireccion = "SELECT Fullname FROM direccion WHERE id = '$direccionId'";
+    $queryDireccion = "SELECT Fullname FROM direccion WHERE identificador = '$direccionId'";
     $resultDireccion = $conn->query($queryDireccion);
 
     if ($resultDireccion->num_rows > 0) {
@@ -46,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Obtener el nombre de la coordinación seleccionada
-    $queryCoordinacion = "SELECT Fullname_coordinacion FROM coordinacion WHERE id = '$coordinacionId'";
+    $queryCoordinacion = "SELECT Fullname_coordinacion FROM coordinacion WHERE identificador_coordinacion = '$coordinacionId'";
     $resultCoordinacion = $conn->query($queryCoordinacion);
 
     if ($resultCoordinacion->num_rows > 0) {
@@ -68,25 +70,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Obtener el nombre del usuario
-// Obtener el nombre del usuario
-$queryUsuario = "SELECT Fullname FROM usuarios_servicios WHERE id = '$usuarioServicioId'";
-$resultUsuario = $conn->query($queryUsuario);
+    $queryUsuario = "SELECT Fullname FROM usuarios_servicios WHERE identificador_usuario_servicios = '$usuarioServicioId'";
+    $resultUsuario = $conn->query($queryUsuario);
 
-if ($resultUsuario) {
-    // Verificar si se encontró el usuario
-    if ($resultUsuario->num_rows > 0) {
-        $rowUsuario = $resultUsuario->fetch_assoc();
-        $fullnameUsuario = $rowUsuario["Fullname"];
+    if ($resultUsuario) {
+        // Verificar si se encontró el usuario
+        if ($resultUsuario->num_rows > 0) {
+            $rowUsuario = $resultUsuario->fetch_assoc();
+            $fullnameUsuario = $rowUsuario["Fullname"];
+        } else {
+            // Puedes manejar el caso en que el usuario no existe (por ejemplo, mostrar un mensaje de error)
+            echo "Error: El usuario no existe. ID: $usuarioServicioId";
+            exit();
+        }
     } else {
-        // Puedes manejar el caso en que el usuario no existe (por ejemplo, mostrar un mensaje de error)
-        echo "Error: El usuario no existe.";
+        // Manejar el caso en que hay un error en la consulta
+        echo "Error al obtener el usuario: " . $conn->error;
         exit();
     }
-} else {
-    // Manejar el caso en que hay un error en la consulta
-    echo "Error al obtener el usuario: " . $conn->error;
-    exit();
-}
 
     // Verificar si el consecutivo ya existe
     $sqlVerificarConsecutivo = "SELECT consecutivo, usuario_responsable FROM respaldos_servicios WHERE consecutivo = '$consecutivo'";
@@ -96,7 +97,7 @@ if ($resultUsuario) {
         // El consecutivo ya existe, obtener la información y mostrar una alerta
         $rowConsecutivo = $resultVerificarConsecutivo->fetch_assoc();
         $usuarioAsignado = $rowConsecutivo['usuario_responsable'];
-        
+
         echo "<script>
             alert('Este resguardo con el numero consecutivo $consecutivo ya fue asignado a $usuarioAsignado');
             window.location.href = '../dashboard/dashboard.php';
@@ -104,6 +105,24 @@ if ($resultUsuario) {
         exit();
     }
 
+        // Obtener el Fullname de la categoría seleccionada
+        $sqlCategoria = "SELECT Fullname_categoria FROM categorias WHERE Identificador_categoria = '$id_categoria'";
+        $resultCategoria = $conn->query($sqlCategoria);
+    
+        if ($resultCategoria === false) {
+            // Handle the query error
+            echo "Error: " . $conn->error;
+            exit();
+        }
+    
+        if ($resultCategoria->num_rows > 0) {
+            $rowCategoria = $resultCategoria->fetch_assoc();
+            $fullname_categoria = $rowCategoria['Fullname_categoria'];
+        } else {
+            // Manejar el caso donde no se encuentra la categoría
+            echo "Error: Categoría no encontrada";
+            exit();
+        }
     // Manejar la carga de la imagen
     $imagenNombre = isset($_FILES["imagen"]["name"]) ? $_FILES["imagen"]["name"] : '';
     $imagenTemp = isset($_FILES["imagen"]["tmp_name"]) ? $_FILES["imagen"]["tmp_name"] : '';
@@ -115,8 +134,7 @@ if ($resultUsuario) {
     }
 
     // Puedes continuar con la lógica para procesar y guardar los datos en la base de datos
-    // Ejemplo de inserción en la tabla respaldos_servicios
-    $sqlInsert = "INSERT INTO respaldos_servicios (consecutivo, identificador_direccion, fullname_direccion, identificador_coordinacion, fullname_coordinacion, identificador_usuario_servicios, identificador_servicio, fullname_servicio, descripcion, caracteristicas, marca, modelo, serie, color, observaciones, imagen, usuario_responsable) VALUES ('$consecutivo', '$direccionId', '$fullnameDireccion', '$coordinacionId', '$fullnameCoordinacion', '$usuarioServicioId', '$servicioId', '$fullnameServicio', '$descripcion', '$caracteristicas', '$marca', '$modelo', '$serie', '$color', '$observaciones', '$imagenRuta', '$fullnameUsuario')";
+    $sqlInsert = "INSERT INTO respaldos_servicios (consecutivo, identificador_direccion, fullname_direccion, identificador_coordinacion, fullname_coordinacion, identificador_usuario_servicios, identificador_servicio, fullname_servicio, descripcion, caracteristicas, marca, modelo, serie, color, observaciones, imagen, usuario_responsable, identificador_categoria, Fullname_categoria) VALUES ('$consecutivo', '$direccionId', '$fullnameDireccion', '$coordinacionId', '$fullnameCoordinacion', '$usuarioServicioId', '$servicioId', '$fullnameServicio', '$descripcion', '$caracteristicas', '$marca', '$modelo', '$serie', '$color', '$observaciones', '$imagenRuta', '$fullnameUsuario', '$id_categoria', '$fullname_categoria')";
 
     if ($conn->query($sqlInsert) === TRUE) {
         // Notifica al usuario sobre el registro exitoso y redirige a la página correspondiente
