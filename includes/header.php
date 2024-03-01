@@ -62,6 +62,10 @@
                 echo '<a class="dropdown-item" href="#" id="abrirModalResServicio">Nuevo resguardo de servicio</a>';
                 echo '</div>';
                 echo '</li>';
+                
+                echo '    <li class="nav-item">
+                <a class="nav-link" href="#" id="abrirModalCategoria">Nueva categoria</a>            </li>';
+
                 echo '    <li class="nav-item">
                     <a class="nav-link" href="#" id="logoutLink">Cerrar sesión</a>
                 </li>
@@ -296,6 +300,26 @@
         </div>
     </div>
 
+      <!-- Modal para el formulario de registro de usuario de dirección -->
+      <div class="modal fade" id="categoriasModal" tabindex="-1" aria-labelledby="categoriasModalModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="categoriasModalModalLabel">Registrar una nueva categoria</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Contenedor para cargar el contenido de resguardos_direccion.php -->
+                    <div id="modalContenido9"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <!-- Puedes agregar más botones según tus necesidades -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal de Confirmación de Logout -->
     <div class="modal fade" id="confirmarLogoutModal" tabindex="-1" aria-labelledby="confirmarLogoutModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -400,6 +424,13 @@
                 e.preventDefault();
                 $("#modalContenido8").load("../resguardos/resguardos_servicios.php", function() {
                     $("#resServiciosModal").modal("show");
+                });
+            });
+
+            $("#abrirModalCategoria").on("click", function(e) {
+                e.preventDefault();
+                $("#modalContenido9").load("../categoria/añadir.php", function() {
+                    $("#categoriasModal").modal("show");
                 });
             });
 
