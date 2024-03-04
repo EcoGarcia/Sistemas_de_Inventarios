@@ -56,14 +56,14 @@ table {
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: #e9e4e4;
     margin: 0;
 }
 
 .tarjeta.contenido {
     max-width: 800px;
     margin: 20px auto;
-    background-color: #fff;
+    background-color: #ffffff;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -197,6 +197,7 @@ body {
     font-size: 24px;
     margin-bottom: 10px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    background-color: #000000;
 }
 
 .coordinacion-card p {
@@ -434,6 +435,7 @@ th, td {
     font-size: 24px;
     margin-bottom: 10px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    background-color: black;
 }
 
 .coordinacion-card p {
@@ -479,7 +481,7 @@ th, td {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
 }
 .servicio-card h3 {
-    
+    background-color: #000000;
     font-size: 28px;
     margin-bottom: 10px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
@@ -575,3 +577,9 @@ td {
     width: 100%;
 }
 
+.category-card h3 {
+    
+    font-size: 25px;
+    margin-bottom: -100px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}

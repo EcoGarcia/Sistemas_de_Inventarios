@@ -93,21 +93,19 @@ $admin = mysqli_fetch_assoc($resultAdmin);
         $fecha_actual = date('d/m/Y');
 
         // Sección 0
-        $html0 = '<div style="text-align: center;">RESGUARDO INTERNO</div>';
+        $html0 = '<div style="width: 40%; margin: 0 auto; text-align: left;">
+        <img src="../assets/img/DIF2.jpg" alt="Logo" style="width: 80px; margin-right: 123px;">
+    </div>';
 
         // Sección 1
-        $html1 = '<div style="width: 50%; margin: 0 auto; text-align: right;">' . date('Y-m-d') . '   </div>';
+        $html1 = '<div style="width: 50%; margin: 0 auto; text-align: right;">' . date('d-m-y') . '   </div>';
 
         // Sección 2
-        $html2 = '<div style="width: 40%; margin: 0 auto; text-align: left;">
-                        <img src="../assets/img/DIF2.jpg" alt="Logo" style="width: 100px; margin-right: 100px;">
-                    </div>';
+        $html2 = '<div style="text-align: center;" >RESGUARDO INTERNO</div>';
 
-        // Separación
-        $htmlSeparator = '<br>'; // Puedes cambiar a otros elementos o estilos según tus necesidades.
 
         // Sección 3
-        $html3 = '<div border="1" style="text-align: center; ">CONSECUTIVO No: ' . $row['Consecutivo_No'] . '</div>';
+        $html3 = '<div border="1" style="text-align: center;padding: 10px ">CONSECUTIVO No: ' . $row['Consecutivo_No'] . '</div>';
 
         // Sección 4
         $html4 = '<table border="1">
@@ -122,60 +120,75 @@ $admin = mysqli_fetch_assoc($resultAdmin);
         
         // Sección 6
         $html6 = '<div style="width: 50%; margin: 0 auto; text-align: center;">
-                        <img src="' . $row['Image'] . '" alt="Imagen" class="book-image" style="width: 145px; height: auto;">
+                        <img src="' . $row['Image'] . '" alt="Imagen" class="book-image" style="width: 130px; height: 180px;">
                     </div>';
 
-        // Sección 7
-        $html7 = '<table border="1">
-                        <tr>
-                            <th style="width: 180px; background-color: #ccc;">Descripción</th>
-                            <td style="width: 360px;">' . $row['Descripcion'] . '</td>
-                        </tr>
-                        <tr>
-                            <th style= "background-color: #ccc;">Caracteristicas Generales</th>
-                            <td>' . $row['Caracteristicas_Generales'] . '</td>
-                        </tr>
-                        <tr>
-                            <th style= "background-color: #ccc;">Categoria</th>
-                            <td>' . $row['Fullname_categoria'] . '</td>
-                        </tr>
-                        <tr>
-                            <th style= "background-color: #ccc;">Marca</th>
-                            <td>' . $row['Marca'] . '</td>
-                        </tr>
-                        <tr>
-                        <th style= "background-color: #ccc;">Modelo</th>
-                        <td>' . $row['Modelo'] . '</td>
+// Sección 7
+$html7 = '<table border="1" style="margin-top: 15px;">
+                    <tr>
+                    <th style="width: 180px; height: 20px; background-color: #ccc; margin-left: 60px; padding: 30px;">Descripción</th>
+                        <td style="width: 360px; height: 20px margin-left: 45px; padding: 30px;">' . $row['Descripcion'] . '</td>
+                    
                     </tr>
                     <tr>
-                        <th style= "background-color: #ccc;">No. de Serie</th>
-                        <td>' . $row['No_Serie'] . '</td>
+                        <th style= "background-color: #ccc; padding: 30px; height: auto; margin-left: 60px;">Caracteristicas Generales</th>
+                        <td style="padding: 30px; height: auto;">' . $row['Caracteristicas_Generales'] . '</td>
                     </tr>
                     <tr>
-                        <th style= "background-color: #ccc;">Color</th>
-                        <td>' . $row['Color'] . '</td>
+                        <th style= "background-color: #ccc; padding: 30px; height: 20px;">Categoria</th>
+                        <td style="padding: 30px; height: 20px;">' . $row['Fullname_categoria'] . '</td>
                     </tr>
                     <tr>
-                      <th style= "background-color: #ccc;">Usuario Responsable</th>
-                        <td>' . $row['usuario_responsable'] . '</td>
+                        <th style= "background-color: #ccc; padding: 30px; height: 20px;">Marca</th>
+                        <td style="padding: 30px; height: 20px;">' . $row['Marca'] . '</td>
                     </tr>
-                <tr>
-                    <th style= "background-color: #ccc;">Observaciones</th>
-                    <td>' . $row['Observaciones'] . '</td>
+                    <tr>
+                    <th style= "background-color: #ccc; padding: 30px; height: 20px;">Modelo</th>
+                    <td style="padding: 30px; height: 20px;">' . $row['Modelo'] . '</td>
                 </tr>
-    
-                </table>';
+                <tr>
+                    <th style= "background-color: #ccc; padding: 30px; height: 20px;">No. de Serie</th>
+                    <td style="padding: 30px; height: 20px;">' . $row['No_Serie'] . '</td>
+                </tr>
+                <tr>
+                    <th style= "background-color: #ccc; padding: 30px; height: 20px;">Color</th>
+                    <td style="padding: 30px; height: 20px;">' . $row['Color'] . '</td>
+                </tr>
+                <tr>
+                  <th style= "background-color: #ccc; padding: 30px; height: 20px;">Usuario Responsable</th>
+                    <td style="padding: 30px; height: 20px;">' . $row['usuario_responsable'] . '</td>
+                </tr>
+            <tr>
+                <th style= "background-color: #ccc; padding: 30px; height: 20px;">Observaciones</th>
+                <td style="padding: 30px; height: 20px;">' . $row['Observaciones'] . '</td>
+            </tr>
 
+            </table>';
         // Espacio adicional
         $space = '<div style="margin-bottom: 100px;"></div>';
 
         // Sección 8
         $html8 = '<table border="1">
                         <tr>
-                        <th style="height: 115px; text-align: bottom;">' . $Usuario['Fullname'] . '</th>
-                        <th style="height: 115px; text-align: center; vertical-align: bottom;">' . $usuario['Fullname'] . '</th>
-                        <th style="height: 115px; text-align: center; vertical-align: bottom;">' . $admin['Fullname'] . '</th>
-                                                </tr>
+                        <th align="center" style="height: 0px;">
+                        <div style="vertical-align: text-top;">
+                        <p style="margin-bottom: 1px;">' . $Usuario['Fullname'] . '</p>
+                        </div>
+                        </th>
+
+                        <th align="center" style="height: 0px;">
+                        <div style="vertical-align: text-top;">
+                        <p style="margin-bottom: 1px;">' . $usuario['Fullname'] . '</p>
+                        </div>
+                        </th>
+                    
+                        <th align="center" style="height: 0px;">
+                        <div style="vertical-align: text-top;">
+                        <p style="margin-bottom: 1px;">' . $admin['Fullname'] . '</p>
+                        </div>
+                        </th>
+
+                    </tr>
                     <tr>
                             <td style= "text-align: center";>NOMBRE Y FIRMA DIRECTOR ÁREA SOLICITANTE</td>
                             <td style= "text-align: center";>NOMBRE Y FIRMA USUARIO RESPONSABLE</td>
