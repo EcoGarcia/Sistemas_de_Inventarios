@@ -110,12 +110,6 @@ body {
     margin-bottom: 10px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
 }
-.category-card h3 {
-    
-    font-size: 20px;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
-}
 
 .category-card p {
     font-size: 14px;
@@ -552,9 +546,9 @@ th, td {
 .coordinacion-card .btn,
 .servicio-card .btn {
     position: absolute;
-    bottom: 0;
+    bottom: 10px;
     display: block;
-    width: 100%;
+    width: 91%;
     background-color: #3498db; /* Cambia este color al que desees */
     color: #fff; /* Cambia este color al que desees para el texto */
     padding: 10px 20px;

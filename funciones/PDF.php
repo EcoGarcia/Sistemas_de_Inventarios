@@ -172,7 +172,7 @@ $admin = mysqli_fetch_assoc($resultAdmin);
         // Sección 8
         $html8 = '<table border="1">
                         <tr>
-                        <th style="height: 115px; text-align: center; vertical-align: bottom;">' . $Usuario['Fullname'] . '</th>
+                        <th style="height: 115px; text-align: bottom;">' . $Usuario['Fullname'] . '</th>
                         <th style="height: 115px; text-align: center; vertical-align: bottom;">' . $usuario['Fullname'] . '</th>
                         <th style="height: 115px; text-align: center; vertical-align: bottom;">' . $admin['Fullname'] . '</th>
                                                 </tr>
