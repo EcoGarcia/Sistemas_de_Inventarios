@@ -23,6 +23,9 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 <body>
 
 <body>
+
+<h2>Lista de usuarios</h2>
+
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -30,26 +33,38 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 
                  <!-- Tarjeta para Usuarios de administracion -->
                  <div class='category-card'>
-                        <h3>Usuarios Administrativos</h3>
-                        <a href='../tabla/tabla_usuarios_administracion.php' class='btn btn-second'>Ver los administradores</a>
+                        <h3>Administradores</h3>
+                        <a href='../tabla/tabla_usuarios_administracion.php' class='btn btn-second'>Ver los usuarios</a>
+                    </div>
+
+                 <!-- Tarjeta para Usuarios de administracion -->
+                 <div class='category-card'>
+                        <h3>Director del área</h3>
+                        <a href='../tabla/Tabla_director.php' class='btn btn-second'>Ver los usuarios</a>
+                    </div>
+                    
+                 <!-- Tarjeta para Usuarios de administracion -->
+                 <div class='category-card'>
+                        <h3>Coordinación de recursos materiales</h3>
+                        <a href='../tabla/tabla_coordinacion.php' class='btn btn-second'>Ver los usuarios</a>
                     </div>
 
                     <!-- Tarjeta para Usuarios de Dirección -->
                     <div class='category-card'>
                         <h3>Usuarios de Dirección</h3>
-                        <a href='../tabla/tabla_usuarios_direccion.php' class='btn btn-second'>Ver la dirección</a>
+                        <a href='../tabla/tabla_usuarios_direccion.php' class='btn btn-second'>Ver los usuarios</a>
                     </div>
 
                     <!-- Tarjeta para Usuarios de Coordinación -->
                     <div class='category-card'>
                         <h3>Usuarios de Coordinación</h3>
-                        <a href='../tabla/tabla_usuarios_coordinacion.php' class='btn btn-second'>Ver la coordinación</a>
+                        <a href='../tabla/tabla_usuarios_coordinacion.php' class='btn btn-second'>Ver los usuarios</a>
                     </div>
 
                     <!-- Tarjeta para Usuarios de Servicios -->
                     <div class='category-card'>
                         <h3>Usuarios de Servicios</h3>
-                        <a href='../tabla/tabla_usuarios_servicios.php' class='btn btn-second'>Ver los servicios</a>
+                        <a href='../tabla/tabla_usuarios_servicios.php' class='btn btn-second'>Ver los usuarios</a>
                     </div>
 
 

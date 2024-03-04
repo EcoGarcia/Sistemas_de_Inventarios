@@ -1,11 +1,8 @@
-/* Tu código CSS completo aquí */
 body {
     margin: 0;
     font-family: 'Montserrat Alternates', sans-serif;
     background-color: #CCD1D1;
 }
-
-/* ... (tu código CSS existente) ... */
 
 /* Agregado espacio entre las tarjetas */
 .servicio-container {
@@ -53,9 +50,6 @@ table {
     width: 25%;
 }
 
-/* ... (resto de tu código CSS) ... */
-
-/* ... (tu código CSS existente) ... */
 .h2{
     text-align: center;
 }
@@ -87,44 +81,6 @@ body {
     box-sizing: border-box;
 }
 
-.tarjeta.contenido .btn-regresar {
-    margin-top: 20px;
-}
-
-/* Estilos adicionales para mejorar la apariencia del formulario */
-.tarjeta.contenido select {
-    cursor: pointer;
-}
-
-.tarjeta.contenido input[type="submit"] {
-    background-color: #4caf50;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.tarjeta.contenido input[type="submit"]:hover {
-    background-color: #45a049;
-}
-
-/* Añadir estilos para el encabezado si es necesario */
-/* .header {
-background-color: #333;
-color: #fff;
-padding: 10px;
-text-align: center;
-} */
-
-.contenedor {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 70vh;
-    margin-top: 20px; /* Agregado espacio entre las tarjetas */
-}
 
 
 .category-card {
@@ -191,13 +147,6 @@ text-align: center;
     position: relative;
 }
 
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-}
-
 .tarjeta.contenido {
     max-width: 800px;
     margin: 20px auto;
@@ -206,18 +155,6 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.tarjeta.contenido label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.tarjeta.contenido input,
-.tarjeta.contenido select {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    box-sizing: border-box;
-}
 
 .tarjeta.contenido .btn-regresar {
     margin-top: 20px;
@@ -240,14 +177,6 @@ body {
 .tarjeta.contenido input[type="submit"]:hover {
     background-color: #45a049;
 }
-
-/* Añadir estilos para el encabezado si es necesario */
-/* .header {
-background-color: #333;
-color: #fff;
-padding: 10px;
-text-align: center;
-} */
 .coordinacion-card {
     width: 70%;
     max-width: 250px;
@@ -278,9 +207,8 @@ text-align: center;
 
 .coordinacion-card p {
     font-size: 14px;
-    margin_bottom: 20px;
+    margin-bottom: 20px;
 }
-
 .coordinacion-card .btn {
     display: block;
     width: 89%;
@@ -375,17 +303,6 @@ th, td {
 .label {
     text-align: center;
 }
-#header {
-    text-align: left;
-    position: fixed;
-    height: 100%;
-    width: 220px; /* Ajusta el ancho del menú lateral para dar espacio al logo */
-    left: 0;
-    top: 0;
-    overflow-x: hidden;
-    transition: 0.5s;
-}
-
 #logo {
     max-width: 100%;
     height: auto;
@@ -406,13 +323,6 @@ th, td {
     margin-left: 220px; /* Ajusta el margen izquierdo para dar espacio al menú lateral */
 }
 
-.contenedor {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 70vh;
-}
 
 .tarjeta {
     width: 70%;
@@ -595,7 +505,6 @@ th, td {
 .servicio-card img {
     display: none;
 }
-/* ... (tu CSS existente) ... */
 
 .category-card .btn-second {
     display: block;
@@ -631,3 +540,44 @@ th, td {
         font-size: 14px; /* Ajusta el tamaño del contenido del modal */
     }
 }
+
+/* Estilos para los botones en la parte inferior de las tarjetas */
+.category-card,
+.coordinacion-card,
+.servicio-card {
+    position: relative;
+}
+
+.category-card .btn-second,
+.coordinacion-card .btn,
+.servicio-card .btn {
+    position: absolute;
+    bottom: 0;
+    display: block;
+    width: 100%;
+    background-color: #3498db; /* Cambia este color al que desees */
+    color: #fff; /* Cambia este color al que desees para el texto */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.category-card .btn-second:hover,
+.coordinacion-card .btn:hover,
+.servicio-card .btn:hover {
+    background-color: #66a3cc; /* Cambia este color al que desees para el estado de hover */
+}
+.book-image {
+    width: 130px;
+    height: 120px;
+    object-fit: contain;
+    position: sticky;
+    top: 0;
+}
+ 
+td {
+    text-align: center;
+    width: 100%;
+}
+
