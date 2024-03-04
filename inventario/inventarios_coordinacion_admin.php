@@ -134,9 +134,11 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     echo "<th class='responsive-hide'>Imagen</th>";
                     echo "<th class='responsive-hide'>Comentarios</th>";
                     echo "<th class='responsive-show'>Acciones</th>";
+                    echo "<th class='responsive-hide'>Acciones</th>";
                     echo "</tr>";
                     echo "</thead>";
                     echo "<tbody>";
+                    $counter = 1;
 
                     // Iterar sobre los resultados
                     while ($row = mysqli_fetch_assoc($result)) {

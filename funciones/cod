@@ -1,0 +1,87 @@
+
+// Sección 2
+        $html2 = '<div border="1" style="text-align: center; ">CONSECUTIVO No: ' . $row['Consecutivo_No'] . '</div>';
+
+        
+        // Sección 2
+        $html2 = '<div border="1" style="text-align: center; ">CONSECUTIVO No: ' . $row['Consecutivo_No'] . '</div>';
+
+        // Sección 3
+        $html3 = '<table border="1">
+            <tr>
+                <th style="text-align: center; width: 180px;">ÁREA RESGUARDANTE:</th>
+                <td style="text-align: center; width: 360px;">' . $row['Descripcion'] . '</td>
+            </tr>
+        </table>';
+
+        // Sección 4
+        $html4 = '<div style="text-align: center;" class="mb-5">DATOS DEL BIEN</div>';
+        $space = '<div style="margin-bottom: 20px;"></div>';
+
+        // Sección 5
+        $html5 = '<div style="width: 50%; margin: 0 auto; text-align: center;">
+            <img src="' . $row['Image'] . '" alt="Imagen" class="book-image" style="width: 160px; height: auto;">
+        </div>';
+
+        // Sección 6
+        $html6 = '<table border="1">
+            <tr>
+                <th style = "width: 180px;">Descripción</th>
+                <td style = "width: 360px;">' . $row['Descripcion'] . '</td>
+            </tr>
+            <tr>
+                <th>Caracteristicas Generales</th>
+                <td>' . $row['Caracteristicas_Generales'] . '</td>
+            </tr>
+            <tr>
+            <th>Descripción</th>
+            <td>' . $row['Fullname_categoria'] . '</td>
+        </tr>
+            <tr>
+                <th>Marca</th>
+                <td>' . $row['Marca'] . '</td>
+            </tr>
+            <tr>
+                <th>Modelo</th>
+                <td>' . $row['Modelo'] . '</td>
+            </tr>
+            <tr>
+                <th>No. de Serie</th>
+                <td>' . $row['No_Serie'] . '</td>
+            </tr>
+            <tr>
+                <th>Color</th>
+                <td>' . $row['Color'] . '</td>
+            </tr>
+            <tr>
+                <th>Usuario Responsable</th>
+                <td>' . $row['usuario_responsable'] . '</td>
+            </tr>
+            <tr>
+                <th>Observaciones</th>
+                <td>' . $row['Observaciones'] . '</td>
+            </tr>
+        </table>';
+
+        // Espacio adicional
+        $space = '<div style="margin-bottom: 100px;"></div>';
+
+        // Sección 7
+        $html7 = '<table border="1">
+        <tr>
+        <th style="height: 120px;"></th>
+        <th style="height: 120px;"></th>
+        <th style="height: 120px;"></th>
+        </tr>
+        <tr>
+            <td>NOMBRE Y FIRMA DIRECTOR ÁREA SOLICITANTE</td>
+            <td>' . $row['Descripcion'] . '</td>
+            <td>' . $row['Descripcion'] . '</td>
+        </tr>
+    </table>';
+
+    $pdf->writeHTML($html3, true, false, true, false, '');
+        $pdf->writeHTML($html4, true, false, true, false, '');
+        $pdf->writeHTML($html5, true, false, true, false, '');
+        $pdf->writeHTML($html6, true, false, true, false, '');
+        $pdf->writeHTML($html7, true, false, true, false, '');

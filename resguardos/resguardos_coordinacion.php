@@ -118,8 +118,8 @@ if ($result->num_rows > 0) {
             <label for="">Color:</label>
             <input type="text" name="color" id="" required>
 
-            <label for="usuario_servicio">Seleccione un usuario de servicio:</label>
-        <select name="usuario_servicio" id="usuario_servicio" required>
+            <label for="usuario_coordinacion">Seleccione un usuario de servicio:</label>
+        <select name="usuario_coordinacion" id="usuario_coordinacion" required>
             <option value="" disabled selected>Selecciona un Usuario</option>
         </select>
 
@@ -140,17 +140,17 @@ if ($result->num_rows > 0) {
     <script>
     var selectDireccion = document.getElementById('fullname_direccion');
     var selectCoordinacion = document.getElementById('coordinacion_existente');
-    var usuarioSelect = document.getElementById('usuario_servicio');
+    var usuarioSelect = document.getElementById('usuario_coordinacion');
 
     var coordinacionesPorDireccion = <?php echo json_encode($coordinacionesPorDireccion); ?>;
 
-    selectDireccion.addEventListener('change', function() {
+    selectDireccion.addEventListener('change', function () {
         var selectedDireccionId = this.value;
         selectCoordinacion.innerHTML = '<option value="" disabled selected>Selecciona una Coordinación</option>';
         usuarioSelect.innerHTML = '<option value="" disabled selected>Selecciona un Usuario</option>';
 
         if (coordinacionesPorDireccion[selectedDireccionId]) {
-            coordinacionesPorDireccion[selectedDireccionId].forEach(function(coordinacion) {
+            coordinacionesPorDireccion[selectedDireccionId].forEach(function (coordinacion) {
                 var option = document.createElement('option');
                 option.value = coordinacion.id;
                 option.text = coordinacion.nombre;
@@ -159,7 +159,7 @@ if ($result->num_rows > 0) {
         }
     });
 
-    selectCoordinacion.addEventListener('change', function() {
+    selectCoordinacion.addEventListener('change', function () {
         var selectedDireccionId = selectDireccion.value;
         var selectedCoordinacionId = this.value;
         usuarioSelect.innerHTML = '<option value="" disabled selected>Selecciona un Usuario</option>';
@@ -168,23 +168,31 @@ if ($result->num_rows > 0) {
 
     function obtenerUsuarios(direccionId, coordinacionId) {
         var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                var usuarios = JSON.parse(xhr.responseText);
-                usuarioSelect.innerHTML = '<option value="" disabled selected>Selecciona un Usuario</option>';
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    console.log("Respuesta de get_usuarios_por_coordinacion.php:", xhr.responseText);
 
-                usuarios.forEach(function(usuario) {
-                    var option = document.createElement('option');
-                    option.value = usuario.identificador_usuario_coordinacion;
-                    option.text = usuario.Fullname; // Corregir aquí para obtener el nombre del usuario
-                    usuarioSelect.add(option);
-                });
+                    var usuarios = JSON.parse(xhr.responseText);
+                    usuarioSelect.innerHTML = '<option value="" disabled selected>Selecciona un Usuario</option>';
+
+                    usuarios.forEach(function (usuario) {
+                        var option = document.createElement('option');
+                        option.value = usuario.identificador_usuario_coordinacion;
+                        option.text = usuario.Fullname; // Corregir aquí para obtener el nombre del usuario
+                        usuarioSelect.add(option);
+                    });
+                } else {
+                    console.error("Error en la solicitud AJAX:", xhr.status, xhr.statusText);
+                }
             }
         };
+
         xhr.open("GET", "../total/get_usuarios_por_coordinacion.php?direccionId=" + direccionId + "&coordinacionId=" + coordinacionId, true);
         xhr.send();
     }
 </script>
+
 
 </body>
 </html>

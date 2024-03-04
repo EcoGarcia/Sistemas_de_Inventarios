@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $consecutivo = $_POST["consecutivo"];
     $direccionId = $_POST["fullname_direccion"];
     $coordinacionId = $_POST["coordinacion_existente"];
-    $usuarioCoordinacionId = $_POST["usuario_servicio"];
+    $usuarioCoordinacionId = $_POST["usuario_coordinacion"];
     $descripcion = $_POST["descripcion"];
     $caracteristicas = $_POST["caracteristicas"];
     $marca = $_POST["marca"];
@@ -67,17 +67,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fullnameDireccion = '';  // Puedes manejar un valor predeterminado o mostrar un error
     }
 
-    // Obtener el nombre de la coordinación seleccionada
-    $queryCoordinacion = "SELECT Fullname_coordinacion FROM coordinacion WHERE id = '$coordinacionId'";
-    $resultCoordinacion = $conn->query($queryCoordinacion);
 
-    if ($resultCoordinacion->num_rows > 0) {
-        $rowCoordinacion = $resultCoordinacion->fetch_assoc();
-        $fullnameCoordinacion = $rowCoordinacion["Fullname_coordinacion"];
+    // Obtener el nombre de la coordinación seleccionada
+    $queryCoordinacion = "SELECT Fullname_coordinacion FROM coordinacion WHERE identificador_coordinacion = ?";
+    $stmtCoordinacion = $conn->prepare($queryCoordinacion);
+    $stmtCoordinacion->bind_param("s", $coordinacionId);
+    $stmtCoordinacion->execute();
+    $stmtCoordinacion->store_result();
+
+    if ($stmtCoordinacion->num_rows > 0) {
+        $stmtCoordinacion->bind_result($fullnameCoordinacion);
+        $stmtCoordinacion->fetch();
     } else {
         $fullnameCoordinacion = '';  // Puedes manejar un valor predeterminado o mostrar un error
     }
 
+    $stmtCoordinacion->close();
     // Obtener el nombre del usuario de coordinación seleccionado
     $queryUsuarioCoordinacion = "SELECT Fullname FROM usuarios_coordinacion WHERE identificador_usuario_coordinacion = '$usuarioCoordinacionId'";
     $resultUsuarioCoordinacion = $conn->query($queryUsuarioCoordinacion);
