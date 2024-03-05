@@ -67,7 +67,8 @@ $nombre_direccion = $row_direccion['Fullname'];
                         echo "<div class='btn-container'>";
                         // Puedes mostrar más detalles de la coordinación si es necesario
                         echo "<a href='ver_servicio.php?identificador_direccion=" . $identificador_direccion . "&identificador_coordinacion=" . $row['identificador_coordinacion'] . "' class='btn btn-primary'>Ver los servicios</a>";
-                        echo "<a href='../inventario/inventarios_coordinacion_admin.php?identificador_direccion=" . $identificador_direccion . "&identificador_coordinacion=" . $row['identificador_coordinacion'] . "' class='btn btn-secondary'>Ver el inventario</a>";
+                        echo "<a href='../inventario/inventarios_admin.php?identificador_direccion=" . $identificador_direccion . "&identificador_coordinacion=" . $row['identificador_coordinacion'] . "' class='btn btn-secondary'>Revisar inventario admin</a>";
+                        echo "<a href='../inventario/inventarios_coordinacion_admin.php?identificador_direccion=" . $identificador_direccion . "&identificador_coordinacion=" . $row['identificador_coordinacion'] . "' class='btn btn-secondary'>Revisar inventario total</a>";
 
                         
                         echo "<input type='hidden' name='categoria_id' value='" . $identificador_direccion . "' />";

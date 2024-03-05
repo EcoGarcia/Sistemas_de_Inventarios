@@ -33,37 +33,37 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 
                  <!-- Tarjeta para Usuarios de administracion -->
                  <div class='category-card'>
-                        <h3>Administradores</h3>
+                        <h5>Administradores</h5>
                         <a href='../tabla/tabla_usuarios_administracion.php' class='btn btn-second'>Ver los usuarios</a>
                     </div>
 
                  <!-- Tarjeta para Usuarios de administracion -->
                  <div class='category-card'>
-                        <h3>Director del área</h3>
+                        <h5>Director del área</h5>
                         <a href='../tabla/Tabla_director.php' class='btn btn-second'>Ver los usuarios</a>
                     </div>
                     
                  <!-- Tarjeta para Usuarios de administracion -->
                  <div class='category-card'>
-                        <h3>Coordinación de recursos materiales</h3>
+                        <h5>Coordinación de recursos materiales</h5>
                         <a href='../tabla/tabla_coordinacion.php' class='btn btn-second'>Ver los usuarios</a>
                     </div>
 
                     <!-- Tarjeta para Usuarios de Dirección -->
                     <div class='category-card'>
-                        <h3>Usuarios de Dirección</h3>
+                        <h5>Usuarios de Dirección</h5>
                         <a href='../tabla/tabla_usuarios_direccion.php' class='btn btn-second'>Ver los usuarios</a>
                     </div>
 
                     <!-- Tarjeta para Usuarios de Coordinación -->
                     <div class='category-card'>
-                        <h3>Usuarios de Coordinación</h3>
+                        <h5>Usuarios de Coordinación</h5>
                         <a href='../tabla/tabla_usuarios_coordinacion.php' class='btn btn-second'>Ver los usuarios</a>
                     </div>
 
                     <!-- Tarjeta para Usuarios de Servicios -->
                     <div class='category-card'>
-                        <h3>Usuarios de Servicios</h3>
+                        <h5>Usuarios de Servicios</h5>
                         <a href='../tabla/tabla_usuarios_servicios.php' class='btn btn-second'>Ver los usuarios</a>
                     </div>
 

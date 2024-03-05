@@ -32,6 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $modelo = $_POST["modelo"];
     $serie = $_POST["serie"];
     $color = $_POST["color"];
+    $select_condiciones = $_POST["select_condiciones"]; // Nuevo campo de condiciones
+    $factura = $_POST["factura"]; // Nuevo campo de número de factura
     $observaciones = $_POST["observaciones"];
     $imagenRuta = ''; // La ruta de la imagen se establecerá después de procesar la carga de la imagen
 
@@ -154,14 +156,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         identificador_coordinacion, fullname_coordinacion, 
         identificador_usuario_coordinacion, usuario_responsable, descripcion, 
         caracteristicas, marca, modelo, serie, color, 
-        observaciones, fecha_creacion, Image, identificador_categoria, fullname_categoria
+        observaciones, fecha_creacion, Image, identificador_categoria, fullname_categoria, Condiciones, Factura
     ) VALUES (
         '$consecutivo', '$direccionId', '$fullnameDireccion', 
         '$coordinacionId', '$fullnameCoordinacion', 
         '$usuarioCoordinacionId', '$fullnameUsuarioCoordinacion', '$descripcion', 
         '$caracteristicas', '$marca', '$modelo', '$serie', '$color', 
-        '$observaciones', '$fechaCreacion', '$imagenRuta', '$id_categoria', '$fullnameCategoria'
-    )";
+        '$observaciones', '$fechaCreacion', '$imagenRuta', '$id_categoria', '$fullnameCategoria', '$select_condiciones', '$factura')";
 
     if ($conn->query($sqlInsert) === TRUE) {
         // Notifica al usuario sobre el registro exitoso y redirige a la página correspondiente

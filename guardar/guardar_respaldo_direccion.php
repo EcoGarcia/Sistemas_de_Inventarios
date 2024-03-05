@@ -29,6 +29,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $color = $_POST["color"];
     $id_usuario = $_POST["id_usuario"];
     $observaciones = $_POST["observaciones"];
+    $select_condiciones = $_POST["select_condiciones"]; // Nuevo campo de condiciones
+    $factura = $_POST["factura"]; // Nuevo campo de número de factura
     $id_categoria = $_POST["id_categoria"]; // Agregado para obtener la categoría
 
     // Obtener el Fullname de la dirección seleccionada
@@ -103,8 +105,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
     // Insertar datos en la tabla resguardos_direccion
-    $sql = "INSERT INTO resguardos_direccion (Consecutivo_No, identificador_direccion, Fullname_direccion, Descripcion, Caracteristicas_Generales, Marca, Modelo, No_Serie, Color, Image, usuario_responsable, Identificador_usuario_direccion, Observaciones, identificador_categoria, Fullname_categoria)
-            VALUES ('$consecutivo', '$id_direccion', '$fullname_direccion', '$descripcion', '$caracteristicas', '$marca', '$modelo', '$serie', '$color', '$imagenRuta', '$usuario_responsable', '$id_usuario', '$observaciones', '$id_categoria', '$fullname_categoria')";
+    $sql = "INSERT INTO resguardos_direccion (Consecutivo_No, identificador_direccion, Fullname_direccion, Descripcion, Caracteristicas_Generales, Marca, Modelo, No_Serie, Color, Image, usuario_responsable, Identificador_usuario_direccion, Observaciones, identificador_categoria, Fullname_categoria, Condiciones, Factura)
+    VALUES ('$consecutivo', '$id_direccion', '$fullname_direccion', '$descripcion', '$caracteristicas', '$marca', '$modelo', '$serie', '$color', '$imagenRuta', '$usuario_responsable', '$id_usuario', '$observaciones', '$id_categoria', '$fullname_categoria', '$select_condiciones', '$factura')";
 
     if ($conn->query($sql) === TRUE) {
         // Notifica al usuario sobre el registro exitoso y redirige a la página correspondiente

@@ -68,132 +68,96 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
     <div class="panel-body">
         <div class="panel-body">
             <div class="col-md-12">
-                <?php
-                // Incluye el archivo de conexión
-                include("../includes/conexion.php");
+            <?php
+    include("../includes/conexion.php");
 
-                // Datos de conexión a la base de datos
-                $servername = "localhost";
-                $username = "root";
-                $password = "";
-                $dbname = "sistemas";
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "sistemas";
 
-                // Conexión a la base de datos
-                $conn = mysqli_connect($servername, $username, $password, $dbname);
-                if (!$conn) {
-                    die("Conexión fallida: " . mysqli_connect_error());
-                }
+    $conn = mysqli_connect($servername, $username, $password, $dbname);
+    if (!$conn) {
+        die("Conexión fallida: " . mysqli_connect_error());
+    }
 
-                // Verificar si el parámetro identificador_coordinacion está presente en la URL
-                if (!isset($_GET['identificador_coordinacion'])) {
-                    // Manejar el caso en el que el parámetro no está presente
-                    echo "Identificador de coordinación no proporcionado.";
-                    exit();
-                }
+    if (!isset($_GET['identificador_coordinacion'])) {
+        echo "Identificador de coordinación no proporcionado.";
+        exit();
+    }
 
-                // Obtener el identificador de coordinación de la URL
-                $identificador_coordinacion = $_GET['identificador_coordinacion'];
+    $identificador_coordinacion = $_GET['identificador_coordinacion'];
 
-                // Obtener el nombre de la coordinación
-                $query_coordinacion = "SELECT Fullname_coordinacion FROM coordinacion WHERE identificador_coordinacion = $identificador_coordinacion";
-                $result_coordinacion = mysqli_query($conn, $query_coordinacion);
-                $row_coordinacion = mysqli_fetch_assoc($result_coordinacion);
-                $nombre_coordinacion = $row_coordinacion['Fullname_coordinacion'];
+    $query_coordinacion = "SELECT Fullname_coordinacion FROM coordinacion WHERE identificador_coordinacion = $identificador_coordinacion";
+    $result_coordinacion = mysqli_query($conn, $query_coordinacion);
+    $row_coordinacion = mysqli_fetch_assoc($result_coordinacion);
+    $nombre_coordinacion = $row_coordinacion['Fullname_coordinacion'];
 
-                // Consulta SQL para obtener los resguardos de coordinación
-                $query = "SELECT rc.*, ra.* FROM respaldos_coordinacion rc 
-                          LEFT JOIN resguardos_admin ra 
-                          ON rc.identificador_coordinacion = ra.identificador_coordinacion 
-                          WHERE rc.identificador_coordinacion = $identificador_coordinacion";
-                $result = mysqli_query($conn, $query);
+    $query = "SELECT * FROM respaldos_coordinacion WHERE identificador_coordinacion = $identificador_coordinacion";
+    $result = mysqli_query($conn, $query);
 
-                // Verificar si hay resultados
-                if ($result && mysqli_num_rows($result) > 0) {
-                    echo "<div class='table-responsive'>";
-                    echo "<table class='table table-bordered'>";
-                    echo "<thead>";
-                    echo "<tr>";
-                    echo "<th class='responsive-hide'>Numero consecutivo</th>";
-                    echo "<th class='responsive-show'>Dirección</th>";
-                    echo "<th class='responsive-show'>Descripción</th>";
-                    echo "<th class='responsive-hide'>Dirección</th>";
-                    echo "<th class='responsive-hide'>Descripción</th>";
-                    echo "<th class='responsive-show'>Ver Imagen</th>";
-                    echo "<th class='responsive-hide'>Imagen</th>";
-                    echo "<th class='responsive-hide'>Características Generales</th>";
+    if ($result && mysqli_num_rows($result) > 0) {
+        echo "<div class='table-responsive'>";
+        echo "<table class='table table-bordered'>";
+        echo "<thead>";
+        echo "<tr>";
+        echo "<th class='responsive-hide'>Numero consecutivo</th>";
+        echo "<th class='responsive-show'>Dirección</th>";
+        echo "<th class='responsive-show'>Descripción</th>";
+        echo "<th class='responsive-hide'>Dirección</th>";
+        echo "<th class='responsive-hide'>Descripción</th>";
+        echo "<th class='responsive-show'>Ver Imagen</th>";
+        echo "<th class='responsive-hide'>Imagen</th>";
+        echo "<th class='responsive-hide'>Características Generales</th>";
+        echo "<th class='responsive-hide'>Marca</th>";
+        echo "<th class='responsive-hide'>Modelo</th>";
+        echo "<th class='responsive-hide'>No. de serie</th>";
+        echo "<th class='responsive-hide'>Color</th>";
+        echo "<th class='responsive-hide'>Usuario Responsable</th>";
+        echo "<th class='responsive-show'>Usuario Responsable</th>";
+        echo "<th class='responsive-hide'>Observaciones</th>";
+        echo "<th class='responsive-hide'>Comentarios</th>";
+        echo "<th class='responsive-show'>Acciones</th>";
+        echo "<th class='responsive-hide'>Acciones</th>";
+        echo "</tr>";
+        echo "</thead>";
+        echo "<tbody>";
+        $counter = 1;
 
-                    echo "<th class='responsive-show'>Usuario Responsable</th>";
-                    echo "<th class='responsive-hide'>Usuario Responsable</th>";
-                    echo "<th class='responsive-show'>Servicio</th>";
-                    echo "<th class='responsive-hide'>Marca</th>";
-                    echo "<th class='responsive-hide'>Modelo</th>";
-                    echo "<th class='responsive-hide'>No. de serie</th>";
-                    echo "<th class='responsive-hide'>Color</th>";
-                    echo "<th class='responsive-hide'>Observaciones</th>";
-                    echo "<th class='responsive-hide'>Fecha de creación</th>";
-                    echo "<th class='responsive-hide'>Imagen</th>";
-                    echo "<th class='responsive-hide'>Comentarios</th>";
-                    echo "<th class='responsive-show'>Acciones</th>";
-                    echo "<th class='responsive-hide'>Acciones</th>";
-                    echo "</tr>";
-                    echo "</thead>";
-                    echo "<tbody>";
-                    $counter = 1;
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo "<tr class='book-row'>";
+            echo "<td class='responsive-hide'>" . $row['consecutivo'] . "</td>";
+            echo "<td class='responsive-show'>" . $row['Fullname_direccion'] . "</td>";
+            echo "<td class='responsive-show'>" . $row['descripcion'] . "</td>";
+            echo "<td class='responsive-hide'>" . $row['Fullname_direccion'] . "</td>";
+            echo "<td class='responsive-hide'>" . $row['descripcion'] . "</td>";
+            echo "<td class='responsive-show'><button class='btn btn-primary show-image-btn' data-image='" . $row['Image'] . "'>Ver Imagen</button></td>";
+            echo "<td class='responsive-hide'><img src='" . $row['Image'] . "' alt='Imagen' class='book-image' id='imagenModal'></td>";
+            echo "<td class='responsive-hide'>" . $row['caracteristicas'] . "</td>";
 
-                    // Iterar sobre los resultados
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        echo "<tr class='book-row'>";
-                        echo "<td class='responsive-hide'>" . $row['consecutivo'] . "</td>";
-                        echo "<td class='responsive-show'>" . $row['Fullname_direccion'] . "</td>";
-                        echo "<td class='responsive-show'>" . $row['descripcion'] . "</td>";
-                        echo "<td class='responsive-hide'>" . $row['Fullname_direccion'] . "</td>";
-                        echo "<td class='responsive-hide'>" . $row['descripcion'] . "</td>";
-                        echo "<td class='responsive-show'><button class='btn btn-primary show-image-btn' data-image='" . $row['Image'] . "'>Ver Imagen</button></td>";
-                        echo "<td class='responsive-hide'><img src='" . $row['Image'] . "' alt='Imagen' class='book-image' id='imagenModal'></td>";
-                        echo "<td class='responsive-hide'>" . $row['caracteristicas'] . "</td>";
+            echo "<td class='responsive-hide'>" . $row['marca'] . "</td>";
+            echo "<td class='responsive-hide'>" . $row['modelo'] . "</td>";
+            echo "<td class='responsive-hide'>" . $row['serie'] . "</td>";
+            echo "<td class='responsive-hide'>" . $row['color'] . "</td>";
+            echo "<td class='responsive-hide'>" . $row['usuario_responsable'] . "</td>";
+            echo "<td class='responsive-show'>" . $row['usuario_responsable'] . "</td>";
+            echo "<td class='responsive-hide'>" . $row['observaciones'] . "</td>";
+            echo "<td class='responsive-hide'>" . $row['comentarios'] . "</td>";
+            echo "<td><button class='btn btn-primary btn-edit' data-toggle='modal' data-target='#editModal' data-userid='" . $row['id'] . "' data-username='" . $row['comentarios'] . "' data-identificador='" . $row['identificador_coordinacion'] . "'>Añadir comentarios</button></td>";
+            echo "</tr>";
+            $counter++;
+        }
 
-                        if (!empty($row['identificador_usuario_admin'])) {
-                            // Mostrar aquí las columnas específicas de resguardos_admin
-                            echo "<td class='responsive-show'>" . $row['usuario_responsable'] . "</td>";
-                            echo "<td class='responsive-hhide'>" . $row['usuario_responsable'] . "</td>";
-                            echo "<td class='responsive-show'>" . $row['Fullname_servicio'] . "</td>";
-                            echo "<td class='responsive-hide'>" . $row['marca'] . "</td>";
-                            echo "<td class='responsive-hide'>" . $row['modelo'] . "</td>";
-                            echo "<td class='responsive-hide'>" . $row['serie'] . "</td>";
-                            echo "<td class='responsive-hide'>" . $row['color'] . "</td>";
-                            echo "<td class='responsive-hide'>" . $row['observaciones'] . "</td>";
-                            echo "<td class='responsive-hide'>" . $row['fecha_creacion'] . "</td>";
-                            echo "<td class='responsive-hide'><img src='" . $row['imagen'] . "' alt='Imagen' class='book-image' id='imagenModal'></td>";
-                        } else {
-                            // Mostrar información específica de respaldos_coordinacion
-                            echo "<td class='responsive-hide'>" . $row['usuario_responsable'] . "</td>";
-                            echo "<td class='responsive-show'>" . $row['usuario_responsable'] . "</td>";
+        echo "</tbody>";
+        echo "</table>";
+        echo "</div>";
+    } else {
+        echo "<p>No se encontraron resguardos para la $nombre_coordinacion</p>";
+    }
 
-                            echo "<td class='responsive-hide'></td>";  // Puedes dejar esto en blanco si no aplica a respaldos_coordinacion
-                            echo "<td class='responsive-show'>" . $row['marca'] . "</td>";
-                            echo "<td class='responsive-show'>" . $row['modelo'] . "</td>";
-                            echo "<td class='responsive-hide'>" . $row['serie'] . "</td>";
-                            echo "<td class='responsive-hide'>" . $row['color'] . "</td>";
-                            echo "<td class='responsive-hide'>" . $row['observaciones'] . "</td>";
-                            echo "<td class='responsive-hide'>" . $row['fecha_creacion'] . "</td>";
-                            echo "<td class='responsive-hide'></td>";  // Puedes dejar esto en blanco si no aplica a respaldos_coordinacion
-                        }
+    mysqli_close($conn);
+?>
 
-                        echo "<td class='responsive-hide'>" . $row['comentarios'] . "</td>";
-                        echo "<td><button class='btn btn-primary btn-edit' data-toggle='modal' data-target='#editModal' data-userid='" . $row['id'] . "' data-username='" . $row['comentarios'] . "' data-identificador='" . $row['identificador_coordinacion'] . "'>Añadir comentarios</button></td>";
-                        echo "</tr>";
-                        $counter++;
-                    }
-
-                    echo "</tbody>";
-                    echo "</table>";
-                    echo "</div>";
-                } else {
-                    echo "<p>No se encontraron resguardos para la $nombre_coordinacion</p>";
-                }
-
-                mysqli_close($conn);
-                ?>
                 <a href="../dashboard/dashboard.php">Volver al inicio</a>
                 <!-- Modal para mostrar la imagen -->
                 <div class="modal fade" id="imagenModalModal" tabindex="-1" role="dialog" aria-labelledby="imagenModalModalLabel" aria-hidden="true">

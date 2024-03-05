@@ -574,7 +574,15 @@ td {
 }
 
 .category-card h3 {
-    
+    color: #ffffff;
+    font-size: 25px;
+    margin-bottom: -100px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+
+.category-card h5 {
+    color: #5d4040;
     font-size: 25px;
     margin-bottom: -100px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);

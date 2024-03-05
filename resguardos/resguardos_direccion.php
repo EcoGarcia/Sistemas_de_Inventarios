@@ -105,6 +105,17 @@ $conn->close();
         <label for="">Observaciones:</label>
         <input type="text" name="observaciones" id="" required>
 
+        <!-- Nuevo campo de selección para condiciones -->
+        <label for="select_condiciones">Condiciones:</label>
+        <select name="select_condiciones" required>
+            <option value="Buenas">Buenas Condiciones</option>
+            <option value="Regular">Condiciones Regulares</option>
+            <option value="Malas">Malas Condiciones</option>
+        </select>
+
+        <label for="">Numero de Factura:</label>
+        <input type="text" name="factura" id="" required>
+
         <label for="">Selecciona una imagen:</label>
         <input type="file" name="imagen" id="" accept=".jpg, .jpeg, .png" required />
 
