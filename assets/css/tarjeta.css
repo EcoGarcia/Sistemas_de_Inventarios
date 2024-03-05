@@ -1,8 +1,4 @@
-body {
-    margin: 0;
-    font-family: 'Montserrat Alternates', sans-serif;
-    background-color: #CCD1D1;
-}
+
 
 /* Agregado espacio entre las tarjetas */
 .servicio-container {
@@ -56,7 +52,7 @@ table {
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #e9e4e4;
+    background-color: #ffffff;
     margin: 0;
 }
 
