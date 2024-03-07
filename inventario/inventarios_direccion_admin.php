@@ -160,11 +160,12 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 
                 mysqli_close($conn);
                 ?>
+<div class="text-right mt-3">
+    <a href='../funciones/PDF_All_direccion.php?identificador_direccion=<?php echo $identificador_direccion; ?>' class='btn btn-primary btn-export-pdf btn-sm'>Exportar Todo en PDF</a>
 
-                <div class="text-right mt-3">
-                    <a href='../funciones/PDF_All_direccion.php?identificador_direccion=<?php echo $identificador_direccion; ?>' class='btn btn-primary btn-export-pdf btn-sm'>Exportar Todo en PDF</a>
-                </div>
-
+    <!-- Nuevo botón para exportar a Excel -->
+    <button id="btnExportExcel" class="btn btn-success btn-export-excel btn-sm">Exportar a Excel</button>
+</div>
                 <a href="../dashboard/dashboard.php">Volver al inicio</a>
 
                 <div class="modal fade" id="imagenModalModal" tabindex="-1" role="dialog" aria-labelledby="imagenModalModalLabel" aria-hidden="true">
@@ -244,6 +245,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
     });
   });
 </script>
+
 
 </body>
 
