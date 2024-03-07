@@ -32,8 +32,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $modelo = $_POST["modelo"];
     $serie = $_POST["serie"];
     $color = $_POST["color"];
+    $select_condiciones = $_POST["select_condiciones"]; // Nuevo campo de condiciones
+    $factura = $_POST["factura"]; // Nuevo campo de número de factura
     $id_categoria = $_POST["id_categoria"]; // Agregado para obtener la categoría
-
     $observaciones = $_POST["observaciones"];
 
     // Obtener el nombre de la dirección seleccionada
@@ -134,7 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Puedes continuar con la lógica para procesar y guardar los datos en la base de datos
-    $sqlInsert = "INSERT INTO respaldos_servicios (consecutivo, identificador_direccion, fullname_direccion, identificador_coordinacion, fullname_coordinacion, identificador_usuario_servicios, identificador_servicio, fullname_servicio, descripcion, caracteristicas, marca, modelo, serie, color, observaciones, imagen, usuario_responsable, identificador_categoria, Fullname_categoria) VALUES ('$consecutivo', '$direccionId', '$fullnameDireccion', '$coordinacionId', '$fullnameCoordinacion', '$usuarioServicioId', '$servicioId', '$fullnameServicio', '$descripcion', '$caracteristicas', '$marca', '$modelo', '$serie', '$color', '$observaciones', '$imagenRuta', '$fullnameUsuario', '$id_categoria', '$fullname_categoria')";
+    $sqlInsert = "INSERT INTO respaldos_servicios (consecutivo, identificador_direccion, fullname_direccion, identificador_coordinacion, fullname_coordinacion, identificador_usuario_servicios, identificador_servicio, fullname_servicio, descripcion, caracteristicas, marca, modelo, serie, color, observaciones, imagen, usuario_responsable, identificador_categoria, Fullname_categoria, Condiciones, Factura, Estado) VALUES ('$consecutivo', '$direccionId', '$fullnameDireccion', '$coordinacionId', '$fullnameCoordinacion', '$usuarioServicioId', '$servicioId', '$fullnameServicio', '$descripcion', '$caracteristicas', '$marca', '$modelo', '$serie', '$color', '$observaciones', '$imagenRuta', '$fullnameUsuario', '$id_categoria', '$fullname_categoria', '$select_condiciones', '$factura', 1)";
 
     if ($conn->query($sqlInsert) === TRUE) {
         // Notifica al usuario sobre el registro exitoso y redirige a la página correspondiente

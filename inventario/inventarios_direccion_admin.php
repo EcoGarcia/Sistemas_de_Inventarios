@@ -113,7 +113,9 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     echo "<th class='responsive-hide cell'>Marca</th>";
                     echo "<th class='responsive-hide cell'>Modelo</th>";
                     echo "<th class='responsive-hide cell'>Usuario Responsable</th>";
+                    echo "<th class='responsive-hide cell'>Comentarios</th>";
                     echo "<th class='responsive-hide cell'>Numero de Factura</th>";
+                    echo "<th class='responsive-hide cell'>Estado</th>";
                     echo "<th class='responsive-hide cell'>Acciones</th>";
 
 
@@ -124,21 +126,26 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     $counter = 1;
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr class='book-row'>";
-                        
+
                         echo "<td data-label='Numero consecutivo' class='cell'>" . $row['Consecutivo_No'] . "</td>";
                         echo "<td data-label='Descripción' class='cell'>" . $row['Descripcion'] . "</td>";
                         echo "<td data-label='Imagen' class='cell'><img src='" . $row['Image'] . "' alt='Imagen' class='book-image'></td>";
                         echo "<td data-label='Categoria' class='cell'>" . $row['Fullname_categoria'] . "</td>";
                         echo "<td data-label='Marca' class='cell'>" . $row['Marca'] . "</td>";
                         echo "<td data-label='Modelo' class='cell'>" . $row['Modelo'] . "</td>";
-                        echo "<td data-label='Usuario Responsable' class='cell'>" . $row['usuario_responsable'] . "</td>";
+                        echo "<td data-label='Usuario Responsable' class='cell'>" . ($row['Estado'] == 1 ? 'Activo' : 'Baja') . "</td>";
+                        echo "<td data-label='Comentarios' class='cell'>" . $row['comentarios'] . "</td>";                        
                         echo "<td data-label='Numero de Factura' class='cell'>" . $row['Factura'] . "</td>";
+                        echo "<td data-label='Estado' class='cell'>" . ($row['Estado'] == 1 ? 'Activo' : 'Baja') . "</td>";
                         echo "<td data-label='Acciones' class='cell'>
-                                <hr>
-                                <a href='../funciones/PDF_individual_direccion.php?id=" . $row['id'] . "' class='btn btn-primary btn-export-pdf btn-sm'>Exportar en PDF</a>
-                                <hr>
-                            </td>";
-                        echo "</tr>";
+                        <a href='../funciones/PDF_individual_direccion.php?id=" . $row['id'] . "' class='btn btn-primary btn-export-pdf btn-sm'>Exportar en PDF</a>
+                        <hr>
+                        <button class='btn btn-primary btn-edit btn-sm' data-toggle='modal' data-target='#editModal' data-userid='" . $row['id'] . "' data-username='" . $row['comentarios'] . "' data-identificador='" . $row['identificador_direccion'] . "'>Añadir comentarios</button>
+                        <hr>
+                        <button class='btn btn-warning btn-cambiar-estado btn-sm' data-id='" . $row['id'] . "' data-estado='" . $row['Estado'] . "'>Cambiar Estado</button>
+                      </td>";
+                      
+                                        echo "</tr>";
                         $counter++;
                                                                                 
                     }
@@ -214,6 +221,30 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
             });
         });
     </script>
+    <script>
+  $(document).ready(function() {
+    $('.btn-cambiar-estado').click(function() {
+      var id = $(this).data('id');
+      var estado = $(this).data('estado');
+      
+      // Realiza una solicitud AJAX para cambiar el estado en el servidor
+      $.ajax({
+        type: 'POST',
+        url: '../editar/cambiar_estado.php', // Ajusta la ruta al archivo que maneja la actualización del estado
+        data: { id: id, estado: estado },
+        success: function(response) {
+          // Maneja la respuesta del servidor (puede mostrar un mensaje de éxito o actualizar la interfaz de usuario)
+          alert(response);
+          location.reload(); // Recarga la página después de cambiar el estado (puedes implementar una actualización más sofisticada)
+        },
+        error: function(error) {
+          console.error('Error al cambiar el estado:', error);
+        }
+      });
+    });
+  });
+</script>
+
 </body>
 
 <div id="editModal" class="modal fade" role="dialog">

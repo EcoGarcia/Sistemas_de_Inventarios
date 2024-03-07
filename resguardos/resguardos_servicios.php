@@ -108,39 +108,51 @@ if ($resultCategoria->num_rows > 0) {
 
         <br>
 
-<br>
+        <br>
 
 
-<label for="descripcion">Descripción:</label>
-<input type="text" name="descripcion" id="descripcion" required>
+        <label for="descripcion">Descripción:</label>
+        <input type="text" name="descripcion" id="descripcion" required>
 
-<label for="caracteristicas">Características Generales:</label>
-<input type="text" name="caracteristicas" id="caracteristicas" required>
+        <label for="caracteristicas">Características Generales:</label>
+        <input type="text" name="caracteristicas" id="caracteristicas" required>
 
-<label for="marca">Marca:</label>
-<input type="text" name="marca" id="marca" required>
+        <label for="marca">Marca:</label>
+        <input type="text" name="marca" id="marca" required>
 
-<label for="modelo">Modelo:</label>
-<input type="text" name="modelo" id="modelo" required>
+        <label for="modelo">Modelo:</label>
+        <input type="text" name="modelo" id="modelo" required>
 
-<label for="serie">NO. De Serie:</label>
-<input type="text" name="serie" id="serie" required>
+        <label for="serie">NO. De Serie:</label>
+        <input type="text" name="serie" id="serie" required>
 
-<label for="color">Color:</label>
-<input type="text" name="color" id="color" required>
+        <label for="color">Color:</label>
+        <input type="text" name="color" id="color" required>
 
 
-<label for="usuario_servicio">Seleccione un usuario de servicio:</label>
-<select name="usuario_servicio" id="usuario_servicio" required>
-    <option value="" disabled selected>Selecciona un Usuario</option>
-</select>
+        <label for="usuario_servicio">Seleccione un usuario de servicio:</label>
+        <select name="usuario_servicio" id="usuario_servicio" required>
+            <option value="" disabled selected>Selecciona un Usuario</option>
+        </select>
 
-<br>
-<label for="observaciones">Observaciones:</label>
-<input type="text" name="observaciones" id="observaciones" required>
+        <br>
+        <label for="observaciones">Observaciones:</label>
+        <input type="text" name="observaciones" id="observaciones" required>
 
-<label for="imagen">Selecciona una imagen:</label>
-<input type="file" name="imagen" id="imagen" accept=".jpg, .jpeg, .png" required>
+        <!-- Nuevo campo de selección para condiciones -->
+        <label for="select_condiciones">Condiciones:</label>
+        <select name="select_condiciones" required>
+            <option value="Buenas">Buenas Condiciones</option>
+            <option value="Regular">Condiciones Regulares</option>
+            <option value="Malas">Malas Condiciones</option>
+        </select>
+
+        <label for="">Numero de Factura:</label>
+        <input type="text" name="factura" id="" required>
+
+
+        <label for="imagen">Selecciona una imagen:</label>
+        <input type="file" name="imagen" id="imagen" accept=".jpg, .jpeg, .png" required>
 
 
 
@@ -211,25 +223,25 @@ if ($resultCategoria->num_rows > 0) {
         }
 
         function obtenerServicios(direccionId, coordinacionId) {
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            var servicios = JSON.parse(xhr.responseText);
-            selectServicios.innerHTML = '<option value="" disabled selected>Selecciona un Servicio</option>';
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var servicios = JSON.parse(xhr.responseText);
+                    selectServicios.innerHTML = '<option value="" disabled selected>Selecciona un Servicio</option>';
 
-            servicios.forEach(function(servicio) {
-                var option = document.createElement('option');
-                option.value = servicio.identificador_servicio; // Utilizar identificador_servicio como valor
-                option.text = servicio.Fullname_servicio; // Utilizar Fullname_servicio como texto mostrado
-                selectServicios.add(option);
-            });
+                    servicios.forEach(function(servicio) {
+                        var option = document.createElement('option');
+                        option.value = servicio.identificador_servicio; // Utilizar identificador_servicio como valor
+                        option.text = servicio.Fullname_servicio; // Utilizar Fullname_servicio como texto mostrado
+                        selectServicios.add(option);
+                    });
+                }
+            };
+            xhr.open("GET", "../total/obtener_servicio.php?direccionId=" + direccionId + "&coordinacionId=" + coordinacionId, true);
+            xhr.send();
         }
-    };
-    xhr.open("GET", "../total/obtener_servicio.php?direccionId=" + direccionId + "&coordinacionId=" + coordinacionId, true);
-    xhr.send();
-}
-
     </script>
 
 </body>
+
 </html>

@@ -156,13 +156,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         identificador_coordinacion, fullname_coordinacion, 
         identificador_usuario_coordinacion, usuario_responsable, descripcion, 
         caracteristicas, marca, modelo, serie, color, 
-        observaciones, fecha_creacion, Image, identificador_categoria, fullname_categoria, Condiciones, Factura
+        observaciones, fecha_creacion, Image, identificador_categoria, fullname_categoria, Condiciones, Factura, Estado
     ) VALUES (
         '$consecutivo', '$direccionId', '$fullnameDireccion', 
         '$coordinacionId', '$fullnameCoordinacion', 
         '$usuarioCoordinacionId', '$fullnameUsuarioCoordinacion', '$descripcion', 
         '$caracteristicas', '$marca', '$modelo', '$serie', '$color', 
-        '$observaciones', '$fechaCreacion', '$imagenRuta', '$id_categoria', '$fullnameCategoria', '$select_condiciones', '$factura')";
+        '$observaciones', '$fechaCreacion', '$imagenRuta', '$id_categoria', '$fullnameCategoria', '$select_condiciones', '$factura', 1)";
 
     if ($conn->query($sqlInsert) === TRUE) {
         // Notifica al usuario sobre el registro exitoso y redirige a la página correspondiente

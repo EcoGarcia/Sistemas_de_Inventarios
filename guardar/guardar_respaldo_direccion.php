@@ -105,8 +105,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     
     // Insertar datos en la tabla resguardos_direccion
-    $sql = "INSERT INTO resguardos_direccion (Consecutivo_No, identificador_direccion, Fullname_direccion, Descripcion, Caracteristicas_Generales, Marca, Modelo, No_Serie, Color, Image, usuario_responsable, Identificador_usuario_direccion, Observaciones, identificador_categoria, Fullname_categoria, Condiciones, Factura)
-    VALUES ('$consecutivo', '$id_direccion', '$fullname_direccion', '$descripcion', '$caracteristicas', '$marca', '$modelo', '$serie', '$color', '$imagenRuta', '$usuario_responsable', '$id_usuario', '$observaciones', '$id_categoria', '$fullname_categoria', '$select_condiciones', '$factura')";
+    $sql = "INSERT INTO resguardos_direccion (Consecutivo_No, identificador_direccion, Fullname_direccion, Descripcion, Caracteristicas_Generales, Marca, Modelo, No_Serie, Color, Image, usuario_responsable, Identificador_usuario_direccion, Observaciones, identificador_categoria, Fullname_categoria, Condiciones, Factura, Estado)
+    VALUES ('$consecutivo', '$id_direccion', '$fullname_direccion', '$descripcion', '$caracteristicas', '$marca', '$modelo', '$serie', '$color', '$imagenRuta', '$usuario_responsable', '$id_usuario', '$observaciones', '$id_categoria', '$fullname_categoria', '$select_condiciones', '$factura', 1)";
 
     if ($conn->query($sql) === TRUE) {
         // Notifica al usuario sobre el registro exitoso y redirige a la página correspondiente
