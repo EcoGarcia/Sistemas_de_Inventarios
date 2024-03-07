@@ -587,3 +587,63 @@ td {
     margin-bottom: -100px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
 }
+
+  
+  .panel-body h7 {
+    font-size: 18px; /* Tamaño de fuente */
+    font-weight: bold; /* Negrita */
+    color: #333; /* Color del texto (puedes ajustarlo según tu preferencia) */
+    margin-bottom: 15px; /* Espacio inferior */
+  }
+  /* Estilos para reducir el tamaño de los botones */
+.btn-edit,
+.btn-export-pdf {
+  font-size: 14px; /* Ajusta el tamaño de la fuente según tus necesidades */
+  padding: 6px 12px; /* Ajusta el espaciado interno del botón */
+}
+/* Estilo para el botón */
+.show-image-btn {
+    font-size: 14px; /* Ajusta el tamaño de la fuente según tus necesidades */
+    padding: 6px 12px; /* Ajusta el espaciado interno del botón */
+  }
+
+.show-image-btn:hover {
+    background-color: #2980b9; /* Cambia el color de fondo al pasar sobre el botón */
+}
+
+/* Estilos para la línea de separación */
+hr {
+  margin: 10px 0; /* Ajusta el margen superior e inferior de la línea de separación */
+}
+.cell {
+    font-size: 12px; /* Tamaño de texto deseado para la descripción */
+}
+
+.ce{
+    font-size: 12px; /* Tamaño de texto deseado para la descripción */
+
+}
+
+/* Agrega este bloque de estilos al head de tu documento */
+@media screen and (max-width: 768px) {
+    .responsive-hide {
+        display: none;
+    }
+
+    .table th, .table td {
+        font-size: 14px;
+    }
+
+    .table td {
+        text-align: left;
+    }
+
+    .table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        text-transform: uppercase;
+        float: none;
+        display: block;
+        margin-bottom: 5px;
+    }
+}
