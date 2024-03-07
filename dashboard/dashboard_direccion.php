@@ -33,5 +33,6 @@ $cards = '../cards/cards_usuario_direccion.php';
 <body>
     <?php include($cards); ?>
 </body>
+<?php include('../includes/footer.php');?>
 
 </html>

@@ -1,22 +1,16 @@
 <?php
-// Incluye el encabezado
 include('../includes/header.php');
 
-// Verifica si el tipo de usuario está establecido en la sesión
 if (!isset($_SESSION['tipo_usuario'])) {
     exit();
 }
-
-// Muestra un mensaje de notificación si está presente
 if (isset($_GET['notification_message'])) {
     $notification_message = htmlspecialchars($_GET['notification_message']);
     echo "<script>alert('$notification_message');</script>";
 }
 
-// Obtiene el tipo de usuario de la sesión
 $tipo_usuario = $_SESSION['tipo_usuario'];
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 
@@ -25,50 +19,63 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DIF | Inventario</title>
     <link rel="stylesheet" href="../assets/css/tarjeta.css">
-    <link rel="stylesheet" href="../assets/css/tabla.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
     <script>
-        $(document).ready(function() {
-            // Captura el evento de cambio en el campo de búsqueda
-            $('#searchInput').on('input', function() {
-                var searchTerm = $(this).val().toLowerCase();
-                $('.book-row').each(function() {
-                    var textToSearch = $(this).text().toLowerCase();
-                    $(this).toggle(textToSearch.indexOf(searchTerm) > -1);
-                });
+    $(document).ready(function() {
+        $('#searchInput').on('input', function() {
+            var searchTerm = $(this).val().toLowerCase();
+            $('.book-row').each(function() {
+                var textToSearch = $(this).text().toLowerCase();
+                $(this).toggle(textToSearch.indexOf(searchTerm) > -1);
             });
-
-            // Verifica el ancho de la ventana y decide qué mostrar
-            function toggleResponsiveDisplay() {
-                var windowWidth = window.innerWidth;
-                var responsive = windowWidth < 768;
-
-                if (responsive) {
-                    $('.responsive-hide').hide();
-                    $('.responsive-show').show();
-                } else {
-                    $('.responsive-hide').show();
-                    $('.responsive-show').hide();
-                }
-            }
-
-            // Ejecuta la función al cargar la página y al cambiar el tamaño de la ventana
-            toggleResponsiveDisplay();
-            $(window).resize(toggleResponsiveDisplay);
         });
+
+        function toggleResponsiveDisplay() {
+            var windowWidth = window.innerWidth;
+            var responsive = windowWidth < 768;
+
+            if (responsive) {
+                $('.responsive-hide').hide();
+                $('.responsive-show').show();
+            } else {
+                $('.responsive-hide, .responsive-show').show();
+            }
+        }
+
+        toggleResponsiveDisplay();
+        $(window).resize(toggleResponsiveDisplay);
+
+        // Destruir DataTables antes de volver a inicializar
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').DataTable().destroy();
+        }
+
+        // Inicializar DataTables con configuración básica
+        $('#dataTable').DataTable({
+            paging: true,
+            ordering: false,
+            info: true,
+            searching: true,
+            "language": {
+              "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json" // Carga la configuración en español
+            }
+        });
+
+    });
+</script>
     </script>
 </head>
 
 <body>
-    <div class="form-group">
-        <input type="text" class="form-control" id="searchInput" placeholder="Buscar">
-    </div>
     <div class="panel-body">
         <div class="panel-body">
             <div class="col-md-12">
-            <?php
+                <?php
     include("../includes/conexion.php");
 
     $servername = "localhost";
@@ -98,53 +105,52 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 
     if ($result && mysqli_num_rows($result) > 0) {
         echo "<div class='table-responsive'>";
-        echo "<table class='table table-bordered'>";
+        echo "<div class='d-flex justify-content-end' style='margin-top: 10px;'>";
+        echo "</div>";
+
+        echo "<table id='dataTable' class='table table-bordered'>";
         echo "<thead>";
         echo "<tr>";
-        echo "<th class='responsive-hide'>Numero consecutivo</th>";
-        echo "<th class='responsive-show'>Dirección</th>";
-        echo "<th class='responsive-show'>Descripción</th>";
-        echo "<th class='responsive-hide'>Dirección</th>";
-        echo "<th class='responsive-hide'>Descripción</th>";
-        echo "<th class='responsive-show'>Ver Imagen</th>";
-        echo "<th class='responsive-hide'>Imagen</th>";
-        echo "<th class='responsive-hide'>Características Generales</th>";
-        echo "<th class='responsive-hide'>Marca</th>";
-        echo "<th class='responsive-hide'>Modelo</th>";
-        echo "<th class='responsive-hide'>No. de serie</th>";
-        echo "<th class='responsive-hide'>Color</th>";
-        echo "<th class='responsive-hide'>Usuario Responsable</th>";
-        echo "<th class='responsive-show'>Usuario Responsable</th>";
-        echo "<th class='responsive-hide'>Observaciones</th>";
-        echo "<th class='responsive-hide'>Comentarios</th>";
-        echo "<th class='responsive-show'>Acciones</th>";
-        echo "<th class='responsive-hide'>Acciones</th>";
+        echo "<th class='responsive-hide cell'>Numero consecutivo</th>";
+        echo "<th class='responsive-hide cell'>Descripción</th>";
+        echo "<th class='responsive-hide cell'>Imagen</th>";
+        echo "<th class='responsive-hide cell'>Categoria</th>";
+        echo "<th class='responsive-hide cell'>Marca</th>";
+        echo "<th class='responsive-hide cell'>Modelo</th>";
+        echo "<th class='responsive-hide cell'>Usuario Responsable</th>";
+        echo "<th class='responsive-hide cell'>Comentarios</th>";
+        echo "<th class='responsive-hide cell'>Numero de Factura</th>";
+        echo "<th class='responsive-hide cell'>Estado</th>";
+        echo "<th class='responsive-hide cell'>Acciones</th>";
+
+
         echo "</tr>";
+        
         echo "</thead>";
         echo "<tbody>";
         $counter = 1;
 
         while ($row = mysqli_fetch_assoc($result)) {
             echo "<tr class='book-row'>";
-            echo "<td class='responsive-hide'>" . $row['consecutivo'] . "</td>";
-            echo "<td class='responsive-show'>" . $row['Fullname_direccion'] . "</td>";
-            echo "<td class='responsive-show'>" . $row['descripcion'] . "</td>";
-            echo "<td class='responsive-hide'>" . $row['Fullname_direccion'] . "</td>";
-            echo "<td class='responsive-hide'>" . $row['descripcion'] . "</td>";
-            echo "<td class='responsive-show'><button class='btn btn-primary show-image-btn' data-image='" . $row['imagen'] . "'>Ver Imagen</button></td>";
-            echo "<td class='responsive-hide'><img src='" . $row['imagen'] . "' alt='Imagen' class='book-image' id='imagenModal'></td>";
-            echo "<td class='responsive-hide'>" . $row['caracteristicas'] . "</td>";
-
-            echo "<td class='responsive-hide'>" . $row['marca'] . "</td>";
-            echo "<td class='responsive-hide'>" . $row['modelo'] . "</td>";
-            echo "<td class='responsive-hide'>" . $row['serie'] . "</td>";
-            echo "<td class='responsive-hide'>" . $row['color'] . "</td>";
-            echo "<td class='responsive-hide'>" . $row['usuario_responsable'] . "</td>";
-            echo "<td class='responsive-show'>" . $row['usuario_responsable'] . "</td>";
-            echo "<td class='responsive-hide'>" . $row['observaciones'] . "</td>";
-            echo "<td class='responsive-hide'>" . $row['comentarios'] . "</td>";
-            echo "<td><button class='btn btn-primary btn-edit' data-toggle='modal' data-target='#editModal' data-userid='" . $row['id'] . "' data-username='" . $row['comentarios'] . "' data-identificador='" . $row['identificador_coordinacion'] . "'>Añadir comentarios</button></td>";
-            echo "</tr>";
+            
+            echo "<td data-label='Numero consecutivo' class='cell'>" . $row['consecutivo'] . "</td>";
+            echo "<td data-label='Descripción' class='cell'>" . $row['descripcion'] . "</td>";
+            echo "<td data-label='Imagen' class='cell'><img src='" . $row['Image'] . "' alt='Imagen' class='book-image'></td>";
+            echo "<td data-label='Categoria' class='cell'>" . $row['Fullname_categoria'] . "</td>";
+            echo "<td data-label='Marca' class='cell'>" . $row['marca'] . "</td>";
+            echo "<td data-label='Modelo' class='cell'>" . $row['modelo'] . "</td>";
+            echo "<td data-label='Modelo' class='cell'>" . $row['modelo'] . "</td>";
+            echo "<td data-label='Usuario Responsable' class='cell'>" . $row['usuario_responsable'] . "</td>";                        
+            echo "<td data-label='Numero de Factura' class='cell'>" . $row['Factura'] . "</td>";
+            echo "<td data-label='Estado' class='cell'>" . ($row['Estado'] == 1 ? 'Activo' : 'Baja') . "</td>";
+            echo "<td data-label='Acciones' class='cell'>
+            <a href='../funciones/PDF_individual_direccion.php?id=" . $row['id'] . "' class='btn btn-primary btn-export-pdf btn-sm'>Exportar en PDF</a>
+            <hr>
+            <button class='btn btn-primary btn-edit btn-sm' data-toggle='modal' data-target='#editModal' data-userid='" . $row['id'] . "' data-username='" . $row['comentarios'] . "' data-identificador='" . $row['identificador_coordinacion'] . "'>Añadir comentarios</button>                        <hr>
+            <button class='btn btn-warning btn-cambiar-estado btn-sm' data-id='" . $row['id'] . "' data-estado='" . $row['Estado'] . "'>Cambiar Estado</button>
+          </td>";
+          
+                            echo "</tr>";
             $counter++;
         }
 
@@ -216,6 +222,32 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
             });
         });
     </script>
+    
+    <script>
+  $(document).ready(function() {
+    $('.btn-cambiar-estado').click(function() {
+      var id = $(this).data('id');
+      var estado = $(this).data('estado');
+      
+      // Realiza una solicitud AJAX para cambiar el estado en el servidor
+      $.ajax({
+        type: 'POST',
+        url: '../editar/cambiar_estado_admin.php', // Ajusta la ruta al archivo que maneja la actualización del estado
+        data: { id: id, estado: estado },
+        success: function(response) {
+          // Maneja la respuesta del servidor (puede mostrar un mensaje de éxito o actualizar la interfaz de usuario)
+          alert(response);
+          location.reload(); // Recarga la página después de cambiar el estado (puedes implementar una actualización más sofisticada)
+        },
+        error: function(error) {
+          console.error('Error al cambiar el estado:', error);
+        }
+      });
+    });
+  });
+</script>
+
+
 
 </body>
 
@@ -227,7 +259,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
             </div>
             <div class="modal-body">
                 <p>Nombre actual: <span id="currentUsername"></span></p>
-                <form action="../editar/comentarios_coordinacion.php" method="post">
+                <form action="../editar/comentarios_admin.php" method="post">
                     <input type="hidden" id="editUserId" name="userId">
                     <input type="hidden" id="identificadorCoordinacion" name="identificadorCoordinacion">
                     <label for="newUsername">Tienes comentarios:</label>

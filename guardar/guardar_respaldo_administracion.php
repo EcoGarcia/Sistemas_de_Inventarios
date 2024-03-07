@@ -33,6 +33,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $serie = $_POST["serie"];
     $color = $_POST["color"];
     $observaciones = $_POST["observaciones"];
+    $select_condiciones = $_POST["select_condiciones"]; // Nuevo campo de condiciones
+    $factura = $_POST["factura"]; // Nuevo campo de número de factura
+    $id_categoria = $_POST["id_categoria"]; // Agregado para obtener la categoría
+
+
 
     // Obtener el nombre del administrador seleccionado
     $queryUsuario = "SELECT Fullname FROM administrador WHERE identificador_administrador_coordinacion = '$usuarioServicioId'";
@@ -78,6 +83,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fullnameServicio = '';  // Puedes manejar un valor predeterminado o mostrar un error
     }
 
+    // Obtener el Fullname de la categoría seleccionada
+    $sqlCategoria = "SELECT Fullname_categoria FROM categorias WHERE Identificador_categoria = '$id_categoria'";
+    $resultCategoria = $conn->query($sqlCategoria);
+
+    if ($resultCategoria === false) {
+        // Handle the query error
+        echo "Error: " . $conn->error;
+        exit();
+    }
+
+    if ($resultCategoria->num_rows > 0) {
+        $rowCategoria = $resultCategoria->fetch_assoc();
+        $fullname_categoria = $rowCategoria['Fullname_categoria'];
+    } else {
+        // Manejar el caso donde no se encuentra la categoría
+        echo "Error: Categoría no encontrada";
+        exit();
+    }
+
     // Manejar la carga de la imagen
     $imagenNombre = isset($_FILES["imagen"]["name"]) ? $_FILES["imagen"]["name"] : '';
     $imagenTemp = isset($_FILES["imagen"]["tmp_name"]) ? $_FILES["imagen"]["tmp_name"] : '';
@@ -90,7 +114,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Puedes continuar con la lógica para procesar y guardar los datos en la base de datos
     // Ejemplo de inserción en la tabla resguardos_admin
-    $sqlInsert = "INSERT INTO resguardos_admin (consecutivo, identificador_direccion, fullname_direccion, identificador_coordinacion, fullname_coordinacion, identificador_usuario_admin, identificador_servicio, fullname_servicio, descripcion, caracteristicas, marca, modelo, serie, color, observaciones, imagen, usuario_responsable, Estado) VALUES ('$consecutivo', '$direccionId', '$fullnameDireccion', '$coordinacionId', '$fullnameCoordinacion', '$usuarioServicioId', '$servicioId', '$fullnameServicio', '$descripcion', '$caracteristicas', '$marca', '$modelo', '$serie', '$color', '$observaciones', '$imagenRuta', '$fullnameUsuario', 1)";
+    $sqlInsert = "INSERT INTO resguardos_admin (consecutivo, identificador_direccion, fullname_direccion, identificador_coordinacion, fullname_coordinacion, identificador_usuario_admin, identificador_servicio, fullname_servicio, descripcion, caracteristicas, marca, modelo, serie, color, observaciones, Image, usuario_responsable,identificador_categoria, Fullname_categoria, Condiciones, Factura, Estado) VALUES ('$consecutivo', '$direccionId', '$fullnameDireccion', '$coordinacionId', '$fullnameCoordinacion', '$usuarioServicioId', '$servicioId', '$fullnameServicio', '$descripcion', '$caracteristicas', '$marca', '$modelo', '$serie', '$color', '$observaciones', '$imagenRuta', '$fullnameUsuario',  '$id_categoria', '$fullname_categoria', '$select_condiciones', '$factura', 1)";
+
 
     if ($conn->query($sqlInsert) === TRUE) {
         // Notifica al usuario sobre el registro exitoso y redirige a la página correspondiente
@@ -100,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             window.location.href = '../dashboard/dashboard.php';
         </script>";
     } else {
-        echo "Error al guardar el respaldo de servicios: " . $conn->error;
+        echo "Error al guardar el respaldo de administración: " . $conn->error;
     }
 }
 

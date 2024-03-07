@@ -36,6 +36,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
     // Incluir las tarjetas específicas para el Administrador
     include('../cards/cards.php');
     ?>
-
 </body>
+<?php include('../includes/footer.php');?>
+
 </html>

@@ -38,5 +38,6 @@ if ($tipo_usuario == 'UsuarioCoordinacion') {
 <body>
     <?php include($cards); ?>
 </body>
+<?php include('../includes/footer.php');?>
 
 </html>

@@ -138,7 +138,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
             echo "<td data-label='Categoria' class='cell'>" . $row['Fullname_categoria'] . "</td>";
             echo "<td data-label='Marca' class='cell'>" . $row['marca'] . "</td>";
             echo "<td data-label='Modelo' class='cell'>" . $row['modelo'] . "</td>";
-            echo "<td data-label='Usuario Responsable' class='cell'>" . ($row['Estado'] == 1 ? 'Activo' : 'Baja') . "</td>";
+            echo "<td data-label='Usuario Responsable' class='cell'>" . $row['usuario_responsable'] . "</td>";                        
             echo "<td data-label='Comentarios' class='cell'>" . $row['comentarios'] . "</td>";                        
             echo "<td data-label='Numero de Factura' class='cell'>" . $row['Factura'] . "</td>";
             echo "<td data-label='Estado' class='cell'>" . ($row['Estado'] == 1 ? 'Activo' : 'Baja') . "</td>";
@@ -159,7 +159,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 
         echo "</div>";
     } else {
-        echo "<p>No se encontraron resguardos para la dirección $nombre_direccion</p>";
+        echo "<p>No se encontraron resguardos para la dirección $nombre_coordinacion</p>";
     }
 
     mysqli_close($conn);
@@ -224,6 +224,30 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
             });
         });
     </script>
+    <script>
+  $(document).ready(function() {
+    $('.btn-cambiar-estado').click(function() {
+      var id = $(this).data('id');
+      var estado = $(this).data('estado');
+      
+      // Realiza una solicitud AJAX para cambiar el estado en el servidor
+      $.ajax({
+        type: 'POST',
+        url: '../editar/cambiar_estado_coordinacion.php', // Ajusta la ruta al archivo que maneja la actualización del estado
+        data: { id: id, estado: estado },
+        success: function(response) {
+          // Maneja la respuesta del servidor (puede mostrar un mensaje de éxito o actualizar la interfaz de usuario)
+          alert(response);
+          location.reload(); // Recarga la página después de cambiar el estado (puedes implementar una actualización más sofisticada)
+        },
+        error: function(error) {
+          console.error('Error al cambiar el estado:', error);
+        }
+      });
+    });
+  });
+</script>
+
 
 </body>
 

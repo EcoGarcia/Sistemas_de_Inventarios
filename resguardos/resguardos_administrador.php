@@ -18,6 +18,20 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
+$optionsCategoria = "";
+$sqlCategoria = "SELECT Identificador_categoria, Fullname_categoria FROM categorias";
+$resultCategoria = $conn->query($sqlCategoria);
+
+if ($resultCategoria) {
+    if ($resultCategoria->num_rows > 0) {
+        while ($rowCategoria = $resultCategoria->fetch_assoc()) {
+            $optionsCategoria .= "<option value='" . $rowCategoria["Identificador_categoria"] . "'>" . $rowCategoria["Fullname_categoria"] . "</option>";
+        }
+    }
+} else {
+    echo "Error executing query: " . $conn->error;
+}
+
 
 $options = "";
 $coordinacionesPorDireccion = array();
@@ -82,7 +96,12 @@ if ($result->num_rows > 0) {
 
 
         <br>
-
+        <!-- Campos del formulario -->
+        <label for="fullname_categoria">Seleccione una categoria:</label>
+        <select name="id_categoria" required>
+            <option value="" disabled selected>Selecciona una categoria</option>
+            <?php echo $optionsCategoria; ?>
+        </select>
 
         <label for="">Descripción:</label>
             <input type="text" name="descripcion" id="" required>
@@ -110,6 +129,17 @@ if ($result->num_rows > 0) {
         <br>
             <label for="">Observaciones:</label>
             <input type="text" name="observaciones" id=""required>
+
+                    <!-- Nuevo campo de selección para condiciones -->
+        <label for="select_condiciones">Condiciones:</label>
+        <select name="select_condiciones" required>
+            <option value="Buenas">Buenas Condiciones</option>
+            <option value="Regular">Condiciones Regulares</option>
+            <option value="Malas">Malas Condiciones</option>
+        </select>
+
+        <label for="">Numero de Factura:</label>
+        <input type="text" name="factura" id="" required>
 
             <label for="">Selecciona una imagen:</label>
             <input type="file" name="imagen" id="" accept=".jpg, .jpeg, .png"required />

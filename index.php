@@ -152,6 +152,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <!-- Incluir el archivo de script JavaScript para mostrar/ocultar la contraseña -->
     <script src="assets/js/contrasena.js"></script>
+    <?php include('includes/footer.php');?>
+
 </body>
 
 </html>
