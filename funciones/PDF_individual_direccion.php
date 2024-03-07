@@ -35,8 +35,8 @@ class PDF extends TCPDF
         $this->Rect($this->getPageWidth() - $leftRightMargin, $topBottomMargin, 0, $this->getPageHeight() - 2 * $topBottomMargin, 'D');
     }
 }    
-if (isset($_GET['consecutivo'])) {
-    $consecutivo = $_GET['consecutivo'];
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
 
  
 
@@ -51,9 +51,9 @@ if (isset($_GET['consecutivo'])) {
         die("Conexión fallida: " . mysqli_connect_error());
     }
 
-    $query = "SELECT * FROM resguardos_direccion WHERE Consecutivo_No = ?";
+    $query = "SELECT * FROM resguardos_direccion WHERE id = ?";
     $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, 'i', $consecutivo);
+    mysqli_stmt_bind_param($stmt, 'i', $id);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     if (!$result) {
@@ -221,7 +221,7 @@ if (isset($_GET['consecutivo'])) {
     }
 
     // Salida del PDF
-    $pdf->Output('resguardo_direccion_' . $consecutivo . '.pdf', 'I');
+    $pdf->Output('resguardo_direccion_' . $id . '.pdf', 'I');
     mysqli_close($conn);
 } else {
     echo "Faltan datos para procesar el informe.";

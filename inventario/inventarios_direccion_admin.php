@@ -106,7 +106,6 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     echo "<table id='dataTable' class='table table-bordered'>";
                     echo "<thead>";
                     echo "<tr>";
-                    echo "<th class='responsive-hide cell'>ID</th>";
                     echo "<th class='responsive-hide cell'>Numero consecutivo</th>";
                     echo "<th class='responsive-hide cell'>Descripción</th>";
                     echo "<th class='responsive-hide cell'>Imagen</th>";
@@ -125,7 +124,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     $counter = 1;
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr class='book-row'>";
-                        echo "<td data-label='ID' class='cell'>" . $counter . "</td>"; // Agregado data-label
+                        
                         echo "<td data-label='Numero consecutivo' class='cell'>" . $row['Consecutivo_No'] . "</td>";
                         echo "<td data-label='Descripción' class='cell'>" . $row['Descripcion'] . "</td>";
                         echo "<td data-label='Imagen' class='cell'><img src='" . $row['Image'] . "' alt='Imagen' class='book-image'></td>";
@@ -136,7 +135,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                         echo "<td data-label='Numero de Factura' class='cell'>" . $row['Factura'] . "</td>";
                         echo "<td data-label='Acciones' class='cell'>
                                 <hr>
-                                <a href='../funciones/PDF_individual_direccion.php?consecutivo=" . $row['Consecutivo_No'] . "' class='btn btn-primary btn-export-pdf btn-sm'>Exportar en PDF</a>
+                                <a href='../funciones/PDF_individual_direccion.php?id=" . $row['id'] . "' class='btn btn-primary btn-export-pdf btn-sm'>Exportar en PDF</a>
                                 <hr>
                             </td>";
                         echo "</tr>";
