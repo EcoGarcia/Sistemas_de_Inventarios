@@ -1,0 +1,655 @@
+
+
+/* Agregado espacio entre las tarjetas */
+.servicio-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.navbar {
+    background-color: #AAB7B8;
+    padding: 15px;
+}
+
+.container-fluid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 100px;
+}
+
+#logo {
+    width: 80px;
+    height: auto;
+    margin-right: 40px;
+    position: fixed;
+}
+
+.container-fluid a {
+    color: #000000;
+    text-decoration: none;
+    margin-right: 70px;
+}
+
+.container-fluid a:hover {
+    color: #23794d;
+}
+
+table {
+    width: 100%;
+    text-align: center;
+}
+
+.th, td {
+    width: 25%;
+}
+
+.h2{
+    text-align: center;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+    margin: 0;
+}
+
+.tarjeta.contenido {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.tarjeta.contenido label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.tarjeta.contenido input,
+.tarjeta.contenido select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+
+
+.category-card {
+    width: 70%;
+    max-width: 250px;
+    height: 240px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    border-radius: 5px;
+}
+
+.category-card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.category-card h4 {
+    
+    font-size: 28px;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.category-card p {
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.category-card .btn {
+    display: block;
+    width: 100%;
+    margin-top: -80px;
+}
+
+.category-card img {
+    display: none;
+}
+
+.content-wrapper {
+    flex: 1;
+}
+
+
+.footer {
+    text-align: center;
+}
+
+
+.category-card {
+    
+    position: relative;
+}
+
+.tarjeta.contenido {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.tarjeta.contenido .btn-regresar {
+    margin-top: 20px;
+}
+
+/* Estilos adicionales para mejorar la apariencia del formulario */
+.tarjeta.contenido select {
+    cursor: pointer;
+}
+
+.tarjeta.contenido input[type="submit"] {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.tarjeta.contenido input[type="submit"]:hover {
+    background-color: #45a049;
+}
+.coordinacion-card {
+    width: 70%;
+    max-width: 250px;
+    height: 300px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 10px 20px 10px; /* Modificado el margen para agregar espacio entre tarjetas */
+    text-align: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    border-radius: 5px;
+}
+
+
+.coordinacion-card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.coordinacion-card h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    background-color: #000000;
+}
+
+.coordinacion-card p {
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+.coordinacion-card .btn {
+    display: block;
+    width: 89%;
+    margin-top: 80px;
+}
+
+.coordinacion-card img {
+    display: none;
+}
+
+.container-fluid a {
+    color: #000000;
+    text-decoration: none;
+    margin-right: 70px;
+}
+
+.container-fluid a:hover {
+    color: #23794d;
+}
+
+table {
+    width: 100%;
+    text-align: center;
+}
+
+th, td {
+    width: 25%;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #42c1af;
+    border-color: #000000;
+}
+
+.btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.select {
+    position: relative;
+    left: -20px;
+}
+
+.label {
+    text-align: center;
+}
+#logo {
+    max-width: 100%;
+    height: auto;
+    max-height: 100px;
+    margin: 0 auto;
+    display: block;
+}#logo {
+    width: 80px;
+    height: auto;
+    margin-right: 40px;
+    position: fixed;
+    position: inherit;
+}
+
+
+.content-wrapper {
+    flex: 1;
+    margin-left: 220px; /* Ajusta el margen izquierdo para dar espacio al menú lateral */
+}
+
+
+.tarjeta {
+    width: 70%;
+    max-width: 300px;
+    background-color: #f0f0f0;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    margin-top: 15px;
+}
+
+.tarjeta img {
+    width: 100%;
+    height: auto;
+}
+
+.contenido {
+    padding: 6px;
+}
+
+.contenido form {
+    max-width: 200px;
+    margin: 0 auto;
+}
+
+.contenido label {
+    display: block;
+    margin-bottom: 2px;
+    color: #333;
+}
+
+.contenido input {
+    width: 100%;
+    padding: 4px;
+    margin-bottom: 4px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.contenido button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 6px;
+    background-color: #3498db;
+    color: white;
+    border: 1px solid #2980b9;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+  }
+  
+  .header h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .header a {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 10px;
+  }
+  
+  .header a:hover {
+    text-decoration: underline;
+  }
+
+
+
+/* Agregado espacio entre las tarjetas */
+.category-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.contenedor {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+    margin-top: 20px; /* Ajustado el espacio entre las tarjetas */
+}
+
+.coordinacion-card {
+    width: 70%;
+    max-width: 250px;
+    height: 300px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    border-radius: 5px;
+}
+
+.coordinacion-card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.coordinacion-card h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    background-color: black;
+}
+
+.coordinacion-card p {
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.coordinacion-card .btn {
+    display: block;
+    width: 89%;
+    margin-top: 80px;
+}
+
+.coordinacion-card img {
+    display: none;
+}
+
+.servicio-card {
+    width: 70%;
+    max-width: 250px;
+    height: 290px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    border-radius: 5px;
+}
+
+.servicio-card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.servicio-card h4 {
+    
+    font-size: 28px;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+.servicio-card h3 {
+    background-color: #000000;
+    font-size: 28px;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.servicio-card p {
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.servicio-card .btn {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.servicio-card img {
+    display: none;
+}
+
+.category-card .btn-second {
+    display: block;
+    width: 100%;
+    margin-top: 30px;
+    background-color: #3498db; /* Cambia este color al que desees */
+    color: #fff; /* Cambia este color al que desees para el texto */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.category-card .btn-second:hover {
+    background-color: #66a3cc; /* Cambia este color al que desees para el estado de hover */
+}
+
+/* Estilos para pantallas más pequeñas, como teléfonos móviles */
+@media (max-width: 767px) {
+    .navbar-nav {
+        margin-top: 10px; /* Ajusta el espacio entre elementos del menú */
+    }
+
+    .navbar-nav a {
+        font-size: 14px; /* Ajusta el tamaño de la fuente del menú */
+    }
+
+    .form-inline {
+        margin-top: 10px; /* Ajusta el tamaño del botón de búsqueda */
+    }
+
+    .modal-body {
+        font-size: 14px; /* Ajusta el tamaño del contenido del modal */
+    }
+}
+
+/* Estilos para los botones en la parte inferior de las tarjetas */
+.category-card,
+.coordinacion-card,
+.servicio-card {
+    position: relative;
+}
+
+.category-card .btn-second,
+.coordinacion-card .btn,
+.servicio-card .btn {
+    position: absolute;
+    bottom: 10px;
+    display: block;
+    width: 91%;
+    background-color: #3498db; /* Cambia este color al que desees */
+    color: #fff; /* Cambia este color al que desees para el texto */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.category-card .btn-second:hover,
+.coordinacion-card .btn:hover,
+.servicio-card .btn:hover {
+    background-color: #66a3cc; /* Cambia este color al que desees para el estado de hover */
+}
+.book-image {
+    width: 130px;
+    height: 120px;
+    object-fit: contain;
+    position: sticky;
+    top: 0;
+}
+ 
+td {
+    text-align: center;
+    width: 100%;
+}
+
+.category-card h3 {
+    color: #ffffff;
+    font-size: 25px;
+    margin-bottom: -100px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+
+.category-card h5 {
+    color: #5d4040;
+    font-size: 25px;
+    margin-bottom: -100px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+  
+  .panel-body h7 {
+    font-size: 18px; /* Tamaño de fuente */
+    font-weight: bold; /* Negrita */
+    color: #333; /* Color del texto (puedes ajustarlo según tu preferencia) */
+    margin-bottom: 15px; /* Espacio inferior */
+  }
+  /* Estilos para reducir el tamaño de los botones */
+.btn-edit,
+.btn-export-pdf {
+  font-size: 14px; /* Ajusta el tamaño de la fuente según tus necesidades */
+  padding: 6px 12px; /* Ajusta el espaciado interno del botón */
+}
+/* Estilo para el botón */
+.show-image-btn {
+    font-size: 14px; /* Ajusta el tamaño de la fuente según tus necesidades */
+    padding: 6px 12px; /* Ajusta el espaciado interno del botón */
+  }
+
+.show-image-btn:hover {
+    background-color: #2980b9; /* Cambia el color de fondo al pasar sobre el botón */
+}
+
+/* Estilos para la línea de separación */
+hr {
+  margin: 10px 0; /* Ajusta el margen superior e inferior de la línea de separación */
+}
+.cell {
+    font-size: 12px; /* Tamaño de texto deseado para la descripción */
+}
+
+.ce{
+    font-size: 12px; /* Tamaño de texto deseado para la descripción */
+
+}
+
+#dataTable {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    table-layout: fixed;
+}
+
+
+
+#dataTable th, #dataTable td {
+    font-size: 14px;
+    padding: 8px;
+    text-align: center;
+}
+
+#dataTable thead th {
+    text-transform: uppercase;
+}
+
+#dataTable tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+#dataTable tbody td:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+
+@media screen and (max-width: 600px) {
+    #dataTable {
+        border: 0px;
+    }
+    #dataTable caption {
+        font-size: 14px;
+    }
+    #dataTable thead {
+        display: none;
+    }
+    #dataTable tr {
+        margin-bottom: 8px;
+        display: block;
+    }
+    #dataTable th, #dataTable td {
+        font-size: 12px;
+    }
+    #dataTable td {
+        display: block;
+        text-align: right;
+    }
+    #dataTable  td:last-child {
+        border-bottom: 0px;
+    }
+    #dataTable td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        text-transform: uppercase;
+        float: left;
+    }
+}

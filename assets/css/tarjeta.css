@@ -218,10 +218,7 @@ body {
     gap: 20px;
 }
 
-.navbar {
-    background-color: #AAB7B8;
-    padding: 15px;
-}
+
 .navbar a {
     text-align: center;
 }
@@ -624,26 +621,34 @@ hr {
 
 }
 
-/* Agrega este bloque de estilos al head de tu documento */
-@media screen and (max-width: 768px) {
-    .responsive-hide {
+@media screen and (max-width: 600px) {
+    #dataTable {
+        border: 0px;
+    }
+    #dataTable caption {
+        font-size: 10px;
+    }
+    #dataTable thead {
         display: none;
     }
-
-    .table th, .table td {
-        font-size: 14px;
+    #dataTable tr {
+        margin-bottom: 8px;
+        display: block;
     }
-
-    .table td {
-        text-align: left;
+    #dataTable th, #dataTable td {
+        font-size: 12px;
     }
-
-    .table td::before {
+    #dataTable td {
+        display: block;
+        text-align: right;
+    }
+    #dataTable  td:last-child {
+        border-bottom: 0px;
+    }
+    #dataTable td::before {
         content: attr(data-label);
         font-weight: bold;
         text-transform: uppercase;
-        float: none;
-        display: block;
-        margin-bottom: 5px;
+        float: left;
     }
 }

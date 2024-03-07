@@ -19,7 +19,6 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DIF | Inventario</title>
     <link rel="stylesheet" href="../assets/css/tarjeta.css">
-    <link rel="stylesheet" href="../assets/css/tabla.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
@@ -117,30 +116,32 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     echo "<th class='responsive-hide cell'>Usuario Responsable</th>";
                     echo "<th class='responsive-hide cell'>Numero de Factura</th>";
                     echo "<th class='responsive-hide cell'>Acciones</th>";
+
+
                     echo "</tr>";
+                    
                     echo "</thead>";
                     echo "<tbody>";
-
                     $counter = 1;
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr class='book-row'>";
-                        echo "<td class='responsive-hide cell'>" . $counter . "</td>"; // Nueva columna 'Numero consecutivo'
-                        echo "<td class='responsive-hide cell'>" . $row['Consecutivo_No'] . "</td>";
-                        echo "<td class='responsive-hide cell'>" . $row['Descripcion'] . "</td>";
-                        echo "<td class='responsive-hide cell'><img src='" . $row['Image'] . "' alt='Imagen' class='book-image'></td>";
-                        echo "<td class='responsive-hide cell'>" . $row['Fullname_categoria'] . "</td>";
-                        echo "<td class='responsive-hide cell'>" . $row['Marca'] . "</td>";
-                        echo "<td class='responsive-hide cell'>" . $row['Modelo'] . "</td>";
-                        echo "<td class='responsive-hide cell'>" . $row['usuario_responsable'] . "</td>";
-                        echo "<td class='responsive-hide cell'>" . $row['Factura'] . "</td>";
-                        echo "<td class='responsive-hide cell'>
-                                <button class='btn btn-primary btn-edit btn-sm' data-toggle='modal' data-target='#editModal' data-userid='" . $row['id'] . "' data-username='" . $row['comentarios'] . "' data-identificador='" . $row['identificador_direccion'] . "'>Añadir comentarios</button>
+                        echo "<td data-label='ID' class='cell'>" . $counter . "</td>"; // Agregado data-label
+                        echo "<td data-label='Numero consecutivo' class='cell'>" . $row['Consecutivo_No'] . "</td>";
+                        echo "<td data-label='Descripción' class='cell'>" . $row['Descripcion'] . "</td>";
+                        echo "<td data-label='Imagen' class='cell'><img src='" . $row['Image'] . "' alt='Imagen' class='book-image'></td>";
+                        echo "<td data-label='Categoria' class='cell'>" . $row['Fullname_categoria'] . "</td>";
+                        echo "<td data-label='Marca' class='cell'>" . $row['Marca'] . "</td>";
+                        echo "<td data-label='Modelo' class='cell'>" . $row['Modelo'] . "</td>";
+                        echo "<td data-label='Usuario Responsable' class='cell'>" . $row['usuario_responsable'] . "</td>";
+                        echo "<td data-label='Numero de Factura' class='cell'>" . $row['Factura'] . "</td>";
+                        echo "<td data-label='Acciones' class='cell'>
                                 <hr>
                                 <a href='../funciones/PDF_individual_direccion.php?consecutivo=" . $row['Consecutivo_No'] . "' class='btn btn-primary btn-export-pdf btn-sm'>Exportar en PDF</a>
                                 <hr>
                             </td>";
                         echo "</tr>";
                         $counter++;
+                                                                                
                     }
 
                     echo "</tbody>";
@@ -183,7 +184,6 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
     </div>
     <br>
 
-    <script src="../assets/js/jquery-1.10.2.js"></script>
     <script src="../assets/js/bootstrap.js"></script>
     <script src="../assets/js/custom.js"></script>
     <script>
