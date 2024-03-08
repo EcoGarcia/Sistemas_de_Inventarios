@@ -162,9 +162,14 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                 ?>
 <div class="text-right mt-3">
     <a href='../funciones/PDF_All_direccion.php?identificador_direccion=<?php echo $identificador_direccion; ?>' class='btn btn-primary btn-export-pdf btn-sm'>Exportar Todo en PDF</a>
+</div>
 
-    <!-- Nuevo botón para exportar a Excel -->
-    <button id="btnExportExcel" class="btn btn-success btn-export-excel btn-sm">Exportar a Excel</button>
+<div class="text-right mt-3">
+<form action="../funciones/exportar_direccion.php" method="POST">
+    <input type="hidden" name="export" value="1">
+    <button type="submit" id="btnExportExcel" class="btn btn-success btn-export-excel btn-sm">Exportar a Excel</button>
+</form>
+
 </div>
                 <a href="../dashboard/dashboard.php">Volver al inicio</a>
 

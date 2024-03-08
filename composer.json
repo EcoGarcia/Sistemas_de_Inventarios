@@ -1,0 +1,17 @@
+{
+    "name": "luis/sistemas_de_inventarios",
+    "autoload": {
+        "psr-4": {
+            "Luis\\SistemasDeInventarios\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "EcoGarcia101",
+            "email": "611910454@utsalamanca.edu.mx"
+        }
+    ],
+    "require": {
+        "phpoffice/phpspreadsheet": "^2.0"
+    }
+}
