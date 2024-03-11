@@ -117,7 +117,7 @@ $conn->close();
         <input type="text" name="factura" id="" required>
 
         <label for="">Selecciona una imagen:</label>
-        <input type="file" name="imagen" id="" accept=".jpg, .jpeg, .png" required />
+        <input type="file" name="imagen" id="" accept=".jpg, .jpeg" required />
 
         <button type="submit">Registrar Usuario</button>
     </form>

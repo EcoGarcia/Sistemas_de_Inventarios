@@ -181,32 +181,33 @@ if (isset($_GET['id'])) {
         $space = '<div style="margin-bottom: 80px;"></div>';
 
         // Sección 8
-        $html7 = '<table border="1" style="border-collapse: collapse; width: 100%;">
-        <tr>
-                    <th align="center">
-                        <div style="vertical-align: text-top;">
-                            <p style="margin-bottom: 1px;">' . $Usuario['Fullname'] . '</p>
-                        </div>
-                    </th>
+// Sección 8
+$html7 = '<table border="1" style="border-collapse: collapse; width: 100%;">
+    <tr>
+        <th align="center">
+            <div style="vertical-align: text-top;">
+                <p style="margin-bottom: 1px;">' . (isset($Usuario['Fullname']) ? $Usuario['Fullname'] : '') . '</p>
+            </div>
+        </th>
 
-                    <th align="center">
-                        <div style="vertical-align: text-top;">
-                            <p style="margin-bottom: 1px;">' . $usuario['Fullname'] . '</p>
-                        </div>
-                    </th>
-                            
-                    <th align="center">
-                        <div style="vertical-align: text-top;">
-                            <p style="margin-bottom: 1px;">' . $admin['Fullname'] . '</p>
-                        </div>
-                    </th>
-                </tr>
-                <tr>
-                    <td style="text-align: center">NOMBRE Y FIRMA DIRECTOR ÁREA SOLICITANTE</td>
-                    <td style="text-align: center">NOMBRE Y FIRMA USUARIO RESPONSABLE</td>
-                    <td style="text-align: center">NOMBRE Y FIRMA COORDINACIÓN DE RECURSOS MATERIALES</td>
-                </tr>
-            </table>';
+        <th align="center">
+            <div style="vertical-align: text-top;">
+                <p style="margin-bottom: 1px;">' . (isset($usuario['Fullname']) ? $usuario['Fullname'] : '') . '</p>
+            </div>
+        </th>
+
+        <th align="center">
+            <div style="vertical-align: text-top;">
+                <p style="margin-bottom: 1px;">' . (isset($admin['Fullname']) ? $admin['Fullname'] : '') . '</p>
+            </div>
+        </th>
+    </tr>
+    <tr>
+        <td style="text-align: center">NOMBRE Y FIRMA DIRECTOR ÁREA SOLICITANTE</td>
+        <td style="text-align: center">NOMBRE Y FIRMA USUARIO RESPONSABLE</td>
+        <td style="text-align: center">NOMBRE Y FIRMA COORDINACIÓN DE RECURSOS MATERIALES</td>
+    </tr>
+</table>';
 
         // Salida del HTML al PDF
         $pdf->Ln();

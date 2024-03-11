@@ -152,7 +152,7 @@ if ($resultCategoria->num_rows > 0) {
 
 
         <label for="imagen">Selecciona una imagen:</label>
-        <input type="file" name="imagen" id="imagen" accept=".jpg, .jpeg, .png" required>
+        <input type="file" name="imagen" id="" accept=".jpg, .jpeg" required />
 
 
 
