@@ -4,79 +4,100 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['import_file'])) {
-    $identificador_direccion = $_POST['identificador_direccion'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Verifica si se ha enviado un archivo
+    if (isset($_FILES["file"]) && $_FILES["file"]["error"] == UPLOAD_ERR_OK) {
+        // Validación de tipo de archivo permitido
+        $allowedExtensions = array('xlsx', 'xls');
+        $uploadedFileExtension = strtolower(pathinfo($_FILES["file"]["name"], PATHINFO_EXTENSION));
 
-    $file = $_FILES['import_file']['tmp_name'];
-
-    try {
-        $spreadsheet = IOFactory::load($file);
-        $worksheet = $spreadsheet->getActiveSheet();
-
-        // Omitir la fila de encabezados (fila 1)
-        foreach ($worksheet->getRowIterator(2) as $row) {
-            $cellIterator = $row->getCellIterator();
-            $cellIterator->setIterateOnlyExistingCells(false);
-
-            // Obtener valores de celdas
-            $Consecutivo_No = $cellIterator->current()->getValue();
-            $cellIterator->next();
-            $Caracteristicas_Generales = $cellIterator->current()->getValue();
-            $Marca = $cellIterator->current()->getValue();
-            $Modelo = $cellIterator->current()->getValue();
-            $No_Serie = $cellIterator->current()->getValue();
-            $Color = $cellIterator->current()->getValue();
-            $Observaciones = $cellIterator->current()->getValue();
-            $usuario_responsable = $cellIterator->current()->getValue();
-            $Factura = $cellIterator->current()->getValue();
-            $EstadoCellValue = $cellIterator->current()->getValue();
-            $Estado = ($EstadoCellValue == 'Activo') ? 1 : 0;
-            // Skip the next cell since we have already processed it
-            $cellIterator->next();
-
-            // Consulta preparada para evitar inyección SQL
-            $query = "INSERT INTO resguardos_direccion 
-                      (Consecutivo_No, Caracteristicas_Generales, Marca, Modelo, No_Serie, Color, Observaciones, usuario_responsable, Factura, Estado)
-                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            
-            $stmt = mysqli_prepare($conexion, $query);
-            
-            if ($stmt) {
-                mysqli_stmt_bind_param($stmt, 'ssssssssii', 
-                    $Consecutivo_No, 
-                    $Caracteristicas_Generales, 
-                    $Marca, 
-                    $Modelo, 
-                    $No_Serie, 
-                    $Color, 
-                    $Observaciones, 
-                    $usuario_responsable, 
-                    $Factura, 
-                    $Estado);
-
-                $result = mysqli_stmt_execute($stmt);
-
-                if (!$result) {
-                    // Manejar error en la inserción
-                    echo "Error al insertar datos en la fila " . $row->getRowIndex() . ". Error de MySQL: " . mysqli_error($conexion);
-                    exit();
-                }
-
-                mysqli_stmt_close($stmt);
-            } else {
-                // Manejar error en la preparación de la consulta
-                echo "Error al preparar la consulta SQL.";
-                exit();
-            }
+        if (!in_array($uploadedFileExtension, $allowedExtensions)) {
+            echo "Solo se permiten archivos Excel.";
+            exit;
         }
 
-        // Redirige o muestra un mensaje de éxito
-        header("Location: tu_pagina.php?identificador_direccion=$identificador_direccion&notification_message=Importación exitosa");
-        exit();
-    } catch (Exception $e) {
-        echo "Error al procesar el archivo: " . $e->getMessage();
-    }
-}
+        // Validación de tamaño de archivo
+        $maxFileSize = 5 * 1024 * 1024; // 5 MB
+        if ($_FILES["file"]["size"] > $maxFileSize) {
+            echo "El tamaño del archivo es demasiado grande. Por favor, elige un archivo más pequeño.";
+            exit;
+        }
 
-mysqli_close($conexion);
+        $identificador_direccion = $_POST['identificador_direccion'];
+        $archivo_temporal = $_FILES["file"]["tmp_name"];
+
+        try {
+            // Consulta para obtener el nombre de la dirección
+            $consulta_nombre_direccion = "SELECT Fullname FROM direccion WHERE identificador = '$identificador_direccion'";
+            $resultado_nombre_direccion = mysqli_query($conexion, $consulta_nombre_direccion);
+
+            if ($resultado_nombre_direccion) {
+                $fila_nombre_direccion = mysqli_fetch_assoc($resultado_nombre_direccion);
+                $nombre_direccion = $fila_nombre_direccion['Fullname'];
+
+                $spreadsheet = IOFactory::load($archivo_temporal);
+                $sheet = $spreadsheet->getActiveSheet();
+
+                // Obtener nombres de columnas de la primera fila
+                $headerRow = $sheet->getRowIterator()->current();
+                $headers = array();
+                foreach ($headerRow->getCellIterator() as $cell) {
+                    $headers[] = $cell->getValue();
+                }
+
+                // Mapa de columnas de Excel a columnas de la base de datos
+                $column_mapping = array(
+                    'Numero Consecutivo' => 'Consecutivo_No',
+                    'Nombre de la dirección' => 'nombre_direccion',
+                    'Descripción' => 'Descripcion',
+                    'Caracteristicas Generales' => 'Caracteristicas_Generales',
+                    'Marca' => 'Marca',
+                    'Modelo' => 'Modelo',
+                    'No. De Serie' => 'No_De_Serie',
+                    'Color' => 'Color',
+                    'Observaciones' => 'Observaciones',
+                    'Usuario Responsable' => 'usuario_responsable',
+                    'Numero de Factura' => 'Factura',
+                    'Estado' => 'Estado',
+                );
+
+                // Procesa los datos del archivo Excel
+                foreach ($sheet->getRowIterator() as $row) {
+                    if ($row->getRowIndex() == 1) {
+                        continue; // Salta la primera fila (encabezados)
+                    }
+
+                    $rowData = array();
+                    foreach ($row->getCellIterator() as $index => $cell) {
+                        // Verifica si la posición de la celda existe en el array $headers
+                        if (isset($headers[$index])) {
+                            $rowData[$column_mapping[$headers[$index]]] = $cell->getValue();
+                        }
+                    }
+
+                    // Completa los datos faltantes
+                    $rowData['Fullname_direccion'] = $nombre_direccion;
+                    $rowData['Condiciones'] = ''; // Ajusta según tu lógica
+                    $rowData['fecha_creacion'] = date('Y-m-d H:i:s');
+                    $rowData['identificador_direccion'] = $identificador_direccion;
+                    $rowData['Estado'] = 1; // Valor predeterminado al importar
+
+                    // Inserta los datos en la tabla resguardos_direccion
+                    $query = "INSERT INTO resguardos_direccion (".implode(", ", array_keys($rowData)).") VALUES ('".implode("', '", $rowData)."')";
+                    mysqli_query($conexion, $query);
+                }
+
+                echo "Importación exitosa"; // Puedes ajustar este mensaje según tus necesidades
+            } else {
+                echo "Error al obtener el nombre de la dirección: " . mysqli_error($conexion);
+            }
+        } catch (Exception $e) {
+            echo "Error al importar: " . $e->getMessage();
+        }
+    } else {
+        echo "No se ha seleccionado ningún archivo.";
+    }
+} else {
+    echo "Acceso no permitido.";
+}
 ?>

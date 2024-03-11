@@ -88,8 +88,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     die("Conexión fallida: " . mysqli_connect_error());
                 }
 
-                if (isset($_GET['identificador_direccion'])) {
-                    $identificador_direccion = $_GET['identificador_direccion'];
+                $identificador_direccion = $_GET['identificador_direccion'];
 
                 $query_direccion = "SELECT Fullname FROM direccion WHERE identificador = $identificador_direccion";
                 $result_direccion = mysqli_query($conexion, $query_direccion);
@@ -158,37 +157,25 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                 } else {
                     echo "<p>No se encontraron resguardos para la dirección $nombre_direccion</p>";
                 }
-            } else {
-                echo "<p>Identificador de dirección no especificado.</p>";
-            }
 
-            mysqli_close($conn);
-            ?>
-    <div class="text-right mt-3">
+                mysqli_close($conn);
+                ?>
+<div class="text-right mt-3">
     <a href='../funciones/PDF_All_direccion.php?identificador_direccion=<?php echo $identificador_direccion; ?>' class='btn btn-primary btn-export-pdf btn-sm'>Exportar Todo en PDF</a>
 </div>
 
 <div class="text-right mt-3">
-<form action="../excel/importar_direccion.php" method="POST" enctype="multipart/form-data">
-    <input type="file" name="import_file" class="form-control" />
-    <!-- Add a hidden input for identificador_direccion -->
-    <input type="hidden" name="identificador_direccion" value="<?php echo $identificador_direccion; ?>" />
-    <button type="submit" name="save_excel_data" class="btn btn-primary mt-3">Import from Excel</button>
-</form>
-
-
-<hr>
-
 <form action="../excel/exportar_direccion.php" method="POST">
     <input type="hidden" name="export" value="1">
     <button type="submit" id="btnExportExcel" class="btn btn-success btn-export-excel btn-sm">Exportar a Excel</button>
 </form>
-
-<hr>
-    <button id="btnCrearPlantilla" class="btn btn-success btn-crear-plantilla btn-sm">Crear Plantilla</button>
-
-
+<form action="../excel/importar_direccion.php" method="POST" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".xlsx, .xls" required>
+    <input type="hidden" name="identificador_direccion" value="<?php echo $identificador_direccion; ?>">
+    <button type="submit" class="btn btn-primary btn-import-excel btn-sm">Importar desde Excel</button>
+</form>
 </div>
+
                 <a href="../dashboard/dashboard.php">Volver al inicio</a>
 
                 <div class="modal fade" id="imagenModalModal" tabindex="-1" role="dialog" aria-labelledby="imagenModalModalLabel" aria-hidden="true">
@@ -267,25 +254,6 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
       });
     });
   });
-</script>
-<script>
-    $(document).ready(function() {
-        $('#btnCrearPlantilla').click(function() {
-            // Realiza una solicitud AJAX al servidor para crear la plantilla de Excel
-            $.ajax({
-                type: 'POST',
-                url: '../excel/crear_plantilla_direccion.php', // Ajusta la ruta al archivo que maneja la creación de la plantilla
-                data: { identificador_direccion: <?php echo $identificador_direccion; ?> },
-                success: function(response) {
-                    // Maneja la respuesta del servidor (puede mostrar un mensaje de éxito o descargar la plantilla)
-                    alert(response); // Puedes cambiar esto según sea necesario
-                },
-                error: function(error) {
-                    console.error('Error al crear la plantilla:', error);
-                }
-            });
-        });
-    });
 </script>
 
 
