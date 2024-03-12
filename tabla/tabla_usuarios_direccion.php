@@ -24,7 +24,57 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../assets/css/tarjeta.css">
-</head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#searchInput').on('input', function() {
+            var searchTerm = $(this).val().toLowerCase();
+            $('.book-row').each(function() {
+                var textToSearch = $(this).text().toLowerCase();
+                $(this).toggle(textToSearch.indexOf(searchTerm) > -1);
+            });
+        });
+
+        function toggleResponsiveDisplay() {
+            var windowWidth = window.innerWidth;
+            var responsive = windowWidth < 768;
+
+            if (responsive) {
+                $('.responsive-hide').hide();
+                $('.responsive-show').show();
+            } else {
+                $('.responsive-hide, .responsive-show').show();
+            }
+        }
+
+        toggleResponsiveDisplay();
+        $(window).resize(toggleResponsiveDisplay);
+
+        // Destruir DataTables antes de volver a inicializar
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').DataTable().destroy();
+        }
+
+        // Inicializar DataTables con configuración básica
+        $('#dataTable').DataTable({
+            paging: true,
+            ordering: false,
+            info: true,
+            searching: true,
+            "language": {
+              "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json" // Carga la configuración en español
+            }
+        });
+
+    });
+</script>
+    </script>
+
 
 <body>
 <div class="form-group">
@@ -56,7 +106,10 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 
                 if ($result && mysqli_num_rows($result) > 0) {
                     echo "<div class='table-responsive'>";
-                    echo "<table class='table table-bordered'>";
+                    echo "<div class='d-flex justify-content-end' style='margin-top: 10px;'>";
+                    echo "</div>";
+
+                    echo "<table id='dataTable' class='table table-bordered'>";
                     echo "<thead>";
                     echo "<tr>";
                     echo "<th>Nombre del usuario</th>";
