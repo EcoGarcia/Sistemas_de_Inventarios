@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Retrieve data from the form
     $nombre = $_POST['nombre'];
     $email = $_POST['email'];
-    $password = $_POST['password'];
+    $password = password_hash($_POST['password'], PASSWORD_BCRYPT); // Encripta la contraseña
     
     // Obtener valores de la tabla direccion
     $query_direccion = "SELECT Fullname, identificador FROM direccion WHERE identificador";
