@@ -25,50 +25,51 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
     <script>
-    $(document).ready(function() {
-        $('#searchInput').on('input', function() {
-            var searchTerm = $(this).val().toLowerCase();
-            $('.book-row').each(function() {
-                var textToSearch = $(this).text().toLowerCase();
-                $(this).toggle(textToSearch.indexOf(searchTerm) > -1);
+        $(document).ready(function() {
+            $('#searchInput').on('input', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                $('.book-row').each(function() {
+                    var textToSearch = $(this).text().toLowerCase();
+                    $(this).toggle(textToSearch.indexOf(searchTerm) > -1);
+                });
             });
-        });
 
-        function toggleResponsiveDisplay() {
-            var windowWidth = window.innerWidth;
-            var responsive = windowWidth < 768;
+            function toggleResponsiveDisplay() {
+                var windowWidth = window.innerWidth;
+                var responsive = windowWidth < 768;
 
-            if (responsive) {
-                $('.responsive-hide').hide();
-                $('.responsive-show').show();
-            } else {
-                $('.responsive-hide, .responsive-show').show();
+                if (responsive) {
+                    $('.responsive-hide').hide();
+                    $('.responsive-show').show();
+                } else {
+                    $('.responsive-hide, .responsive-show').show();
+                }
             }
-        }
 
-        toggleResponsiveDisplay();
-        $(window).resize(toggleResponsiveDisplay);
+            toggleResponsiveDisplay();
+            $(window).resize(toggleResponsiveDisplay);
 
-        // Destruir DataTables antes de volver a inicializar
-        if ($.fn.DataTable.isDataTable('#dataTable')) {
-            $('#dataTable').DataTable().destroy();
-        }
-
-        // Inicializar DataTables con configuración básica
-        $('#dataTable').DataTable({
-            paging: true,
-            ordering: false,
-            info: true,
-            searching: true,
-            "language": {
-              "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json" // Carga la configuración en español
+            // Destruir DataTables antes de volver a inicializar
+            if ($.fn.DataTable.isDataTable('#dataTable')) {
+                $('#dataTable').DataTable().destroy();
             }
-        });
 
-    });
-</script>
+            // Inicializar DataTables con configuración básica
+            $('#dataTable').DataTable({
+                paging: true,
+                ordering: false,
+                info: true,
+                searching: true,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json" // Carga la configuración en español
+                }
+            });
+
+        });
+    </script>
     </script>
 </head>
+
 <body>
     <div class="form-group">
         <input type="text" class="form-control" id="searchInput" placeholder="Search">
@@ -95,76 +96,66 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 
                 $query = "SELECT * FROM respaldos_servicios WHERE identificador_servicio = ?";
                 $stmt = mysqli_prepare($conexion, $query);
-                
+
                 // Verificar si la preparación de la consulta fue exitosa
                 if ($stmt) {
                     // Asociar el parámetro
                     mysqli_stmt_bind_param($stmt, "i", $identificador_servicios);
-                
+
                     // Ejecutar la consulta
                     mysqli_stmt_execute($stmt);
-                
+
                     // Obtener el resultado
                     $result = mysqli_stmt_get_result($stmt);
-                                                }
-                    if ($result && mysqli_num_rows($result) > 0) {
-                        echo "<div class='table-responsive'>";
+                }
+                if ($result && mysqli_num_rows($result) > 0) {
                     echo "<div class='table-responsive'>";
-                    echo "<table class='table table-bordered'>";
+                    echo "<div class='d-flex justify-content-end' style='margin-top: 10px;'>";
+                    echo "</div>";
+
+                    echo "<table id='dataTable' class='table table-bordered'>";
                     echo "<thead>";
                     echo "<tr>";
-                    echo "<th class='responsive-hide'>Numero consecutivo</th>";
-                    echo "<th class='responsive-show'>Coordinacion</th>";
-                    echo "<th class='responsive-hide'>Coordinacion</th>";
-                    echo "<th class='responsive-show'>Servicio</th>";
-                    echo "<th class='responsive-hide'>Servicio</th>";
-                    echo "<th class='responsive-show'>Descripción</th>";
-                    echo "<th class='responsive-hide'>Descripción</th>";
-                    echo "<th class='responsive-hide'>Imagen</th>";
-                    echo "<th class='responsive-show'>Marca</th>";
-                    echo "<th class='responsive-show'>Modelo</th>";
-                    echo "<th class='responsive-hide'>Caracteristicas Generales</th>";
+                    echo "<th class='responsive-hide cell'>Numero consecutivo</th>";
+                    echo "<th class='responsive-hide cell'>Descripción</th>";
+                    echo "<th class='responsive-hide cell'>Imagen</th>";
+                    echo "<th class='responsive-hide cell'>Categoria</th>";
+                    echo "<th class='responsive-hide cell'>Marca</th>";
+                    echo "<th class='responsive-hide cell'>Modelo</th>";
+                    echo "<th class='responsive-hide cell'>Usuario Responsable</th>";
+                    echo "<th class='responsive-hide cell'>Comentarios</th>";
+                    echo "<th class='responsive-hide cell'>Numero de Factura</th>";
+                    echo "<th class='responsive-hide cell'>Estado</th>";
+                    echo "<th class='responsive-hide cell'>Acciones</th>";
 
-                    echo "<th class='responsive-hide'>Marca</th>";
-                    echo "<th class='responsive-hide'>Modelo</th>";
-                    echo "<th class='responsive-hide'>No. de serie</th>";
-                    echo "<th class='responsive-hide'>Color</th>";
-                    echo "<th class='responsive-hide'>Usuario Responsable</th>";
-                    echo "<th class='responsive-hide'>Observaciones</th>";
-                    echo "<th class='responsive-show'>Comentarios</th>";
-                    echo "<th class='responsive-hide'>Comentarios</th>";
-                    echo "<th class='responsive-hide'>Fecha de creación</th>";
-                    // echo "<th class='responsive-show'>Acciones</th>";
-                    // echo "<th class='responsive-hide'>Acciones</th>";
+
                     echo "</tr>";
+
                     echo "</thead>";
                     echo "<tbody>";
-
                     $counter = 1;
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr class='book-row'>";
-                        echo "<td class='responsive-hide'>" . $row['consecutivo'] . "</td>";
-                        echo "<td class='responsive-show'>" . $row['Fullname_coordinacion'] . "</td>";
-                        echo "<td class='responsive-hide'>" . $row['Fullname_coordinacion'] . "</td>";
-                        echo "<td class='responsive-show'>" . $row['Fullname_servicio'] . "</td>";
-                        echo "<td class='responsive-hide'>" . $row['Fullname_servicio'] . "</td>";
-                        echo "<td class='responsive-show'>" . $row['descripcion'] . "</td>";
-                        echo "<td class='responsive-hide'>" . $row['descripcion'] . "</td>";
-                        echo "<td class='responsive-hide'><img src='" . $row['imagen'] . "' alt='Imagen' class='book-image' id='imagenModal'></td>";
-                        echo "<td class='responsive-show'><button class='btn btn-primary show-image-btn' data-image='" . $row['imagen'] . "'>Ver Imagen</button></td>";
 
-                        echo "<td class='responsive-hide'>" . $row['caracteristicas'] . "</td>";
-
-                        echo "<td class='responsive-show'>" . $row['marca'] . "</td>";
-                        echo "<td class='responsive-hide'>" . $row['marca'] . "</td>";
-                        echo "<td class='responsive-show'>" . $row['modelo'] . "</td>";
-                        echo "<td class='responsive-hide'>" . $row['modelo'] . "</td>";
-                        echo "<td class='responsive-hide'>" . $row['serie'] . "</td>";
-                        echo "<td class='responsive-hide'>" . $row['color'] . "</td>";
-                        echo "<td class='responsive-hide'>" . $row['usuario_responsable'] . "</td>";
-                        echo "<td class='responsive-hide'>" . $row['observaciones'] . "</td>";
-                        echo "<td class='responsive-hide'>" . $row['comentarios'] . "</td>";
-                        echo "<td class='responsive-hide'>" . $row['fecha_creacion'] . "</td>";
+                        echo "<td data-label='Numero consecutivo' class='cell'>" . $row['consecutivo'] . "</td>";
+                        echo "<td data-label='Descripción' class='cell'>" . $row['descripcion'] . "</td>";
+                        echo "<td data-label='Imagen' class='cell'><img src='" . $row['imagen'] . "' alt='Imagen' class='book-image'></td>";
+                        echo "<td data-label='Categoria' class='cell'>" . $row['Fullname_categoria'] . "</td>";
+                        echo "<td data-label='Marca' class='cell'>" . $row['marca'] . "</td>";
+                        echo "<td data-label='Modelo' class='cell'>" . $row['modelo'] . "</td>";
+                        echo "<td data-label='Usuario Responsable' class='cell'>" . $row['usuario_responsable'] . "</td>";
+                        echo "<td data-label='Comentarios' class='cell'>" . $row['comentarios'] . "</td>";
+                        echo "<td data-label='Numero de Factura' class='cell'>" . $row['Factura'] . "</td>";
+                        echo "<td data-label='Estado' class='cell'>" . ($row['Estado'] == 1 ? 'Activo' : 'Baja') . "</td>";
+                        echo "<td data-label='Acciones' class='cell'>
+                                                        <a href='../funciones/PDF_individual_servicio.php?id=" . $row['id'] . "' class='btn btn-primary btn-export-pdf btn-sm'>Exportar en PDF</a>
+                                                        <hr>
+                                                        <button class='btn btn-primary btn-edit btn-sm' data-toggle='modal' data-target='#editModal' data-userid='" . $row['id'] . "' data-username='" . $row['comentarios'] . "' data-identificador='" . $row['identificador_direccion'] . "'>Añadir comentarios</button>
+                                                        <hr>
+                                                        <button class='btn btn-warning btn-cambiar-estado btn-sm' data-id='" . $row['id'] . "' data-estado='" . $row['Estado'] . "'>Cambiar Estado</button>
+                                                        <hr>
+                                                        <button class='btn btn-secondary btn-editar btn-sm' onclick=\"window.location.href='../editar/resguardos/resguardos_direccion.php?id=" . $row['id'] . "'\">Editar</button>
+                                                    </td>";
 
 
                         echo "</tr>";
@@ -173,12 +164,14 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 
                     echo "</tbody>";
                     echo "</table>";
+
                     echo "</div>";
                 } else {
-                    echo "<p>No se encontraron resguardos para el puesto de  $nombre_servicio</p>";
+                    echo "<p>No se encontraron resguardos para la dirección $nombre_direccion</p>";
                 }
- 
+
                 mysqli_close($conexion);
+
                 ?>
                 <a href="../dashboard/dashboard.php">Volver al inicio</a>
                 <!-- Modal para mostrar la imagen -->

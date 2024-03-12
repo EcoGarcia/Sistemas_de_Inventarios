@@ -48,8 +48,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // Obtener el último identificador de servicio para la dirección y coordinación específicas
-    $sql_max_servicio = "SELECT MAX(identificador_servicio) AS max_id FROM servicios WHERE identificador_direccion = '$direccionId' AND identificador_coordinacion = '$identificador_coordinacion'";
+    // Obtener el último identificador de servicio en toda la tabla
+    $sql_max_servicio = "SELECT MAX(identificador_servicio) AS max_id FROM servicios";
     $result_max_servicio = $conexion->query($sql_max_servicio);
 
     // Verificar si se obtuvo el último identificador de servicio
@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $row_max_servicio = $result_max_servicio->fetch_assoc();
         $last_id_servicio = $row_max_servicio["max_id"];
 
-        // Verificar si ya hay servicios para la dirección y coordinación específicas
+        // Verificar si ya hay servicios en la tabla
         if (!is_null($last_id_servicio)) {
             // Si ya hay servicios, incrementar el contador
             $identificador_servicio = $last_id_servicio + 1;
@@ -81,9 +81,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </script>";
         exit(); // Salir del script para evitar la inserción duplicada
     }
-
-    // Resto del código sin cambios
-    // ...
 
     // Procesar la imagen
     $image_name = $_FILES['image']['name'];

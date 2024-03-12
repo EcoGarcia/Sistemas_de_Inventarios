@@ -125,18 +125,18 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr class='book-row'>";
 
-                        echo "<td data-label='Numero consecutivo' class='cell'>" . $row['Consecutivo_No'] . "</td>";
-                        echo "<td data-label='Descripción' class='cell'>" . $row['Descripcion'] . "</td>";
+                        echo "<td data-label='Numero consecutivo' class='cell'>" . $row['consecutivo'] . "</td>";
+                        echo "<td data-label='Descripción' class='cell'>" . $row['descripcion'] . "</td>";
                         echo "<td data-label='Imagen' class='cell'><img src='" . $row['Image'] . "' alt='Imagen' class='book-image'></td>";
                         echo "<td data-label='Categoria' class='cell'>" . $row['Fullname_categoria'] . "</td>";
-                        echo "<td data-label='Marca' class='cell'>" . $row['Marca'] . "</td>";
-                        echo "<td data-label='Modelo' class='cell'>" . $row['Modelo'] . "</td>";
+                        echo "<td data-label='Marca' class='cell'>" . $row['marca'] . "</td>";
+                        echo "<td data-label='Modelo' class='cell'>" . $row['modelo'] . "</td>";
                         echo "<td data-label='Usuario Responsable' class='cell'>" . $row['usuario_responsable'] . "</td>";                        
                         echo "<td data-label='Comentarios' class='cell'>" . $row['comentarios'] . "</td>";                        
                         echo "<td data-label='Numero de Factura' class='cell'>" . $row['Factura'] . "</td>";
                         echo "<td data-label='Estado' class='cell'>" . ($row['Estado'] == 1 ? 'Activo' : 'Baja') . "</td>";
                         echo "<td data-label='Acciones' class='cell'>
-                        <a href='../funciones/PDF_individual_direccion.php?id=" . $row['id'] . "' class='btn btn-primary btn-export-pdf btn-sm'>Exportar en PDF</a>
+                        <a href='../funciones/PDF_individual_coordinacion.php?id=" . $row['id'] . "' class='btn btn-primary btn-export-pdf btn-sm'>Exportar en PDF</a>
                         <hr>
                         <button class='btn btn-primary btn-edit btn-sm' data-toggle='modal' data-target='#editModal' data-userid='" . $row['id'] . "' data-username='" . $row['comentarios'] . "' data-identificador='" . $row['identificador_direccion'] . "'>Añadir comentarios</button>
                         <hr>
@@ -159,7 +159,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     echo "<p>No se encontraron resguardos para la dirección $nombre_direccion</p>";
                 }
 
-                mysqli_close($conn);
+                mysqli_close($conexion);
                 ?>
                 <a href="../dashboard/dashboard.php">Volver al inicio</a>
                 <!-- Modal para mostrar la imagen -->

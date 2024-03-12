@@ -14,46 +14,59 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 <html lang="es">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DIF | Inventario</title>
     <link rel="stylesheet" href="../assets/css/tarjeta.css">
-    <link rel="stylesheet" href="../assets/css/tabla.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
     <script>
-        $(document).ready(function() {
-            // Captura el evento de cambio en el campo de búsqueda
-            $('#searchInput').on('input', function() {
-                var searchTerm = $(this).val().toLowerCase(); // Obtiene el valor del campo de búsqueda en minúsculas
-                $('.book-row').each(function() {
-                    var textToSearch = $(this).text().toLowerCase(); // Obtiene el contenido de la fila en minúsculas
-                    // Muestra u oculta la fila según si coincide con el término de búsqueda
-                    $(this).toggle(textToSearch.indexOf(searchTerm) > -1);
-                });
+    $(document).ready(function() {
+        $('#searchInput').on('input', function() {
+            var searchTerm = $(this).val().toLowerCase();
+            $('.book-row').each(function() {
+                var textToSearch = $(this).text().toLowerCase();
+                $(this).toggle(textToSearch.indexOf(searchTerm) > -1);
             });
-
-            // Verifica el ancho de la ventana y decide qué mostrar
-            function toggleResponsiveDisplay() {
-                var windowWidth = window.innerWidth;
-                var responsive = windowWidth < 768; // Decide aquí el ancho de ventana a partir del cual consideras que es un dispositivo móvil
-
-                // Si es responsive, oculta algunas columnas
-                if (responsive) {
-                    $('.responsive-hide').hide();
-                    $('.responsive-show').show();
-                } else {
-                    $('.responsive-hide').show();
-                    $('.responsive-show').hide();
-                }
-            }
-
-            // Ejecuta la función al cargar la página y al cambiar el tamaño de la ventana
-            toggleResponsiveDisplay();
-            $(window).resize(toggleResponsiveDisplay);
         });
+
+        function toggleResponsiveDisplay() {
+            var windowWidth = window.innerWidth;
+            var responsive = windowWidth < 768;
+
+            if (responsive) {
+                $('.responsive-hide').hide();
+                $('.responsive-show').show();
+            } else {
+                $('.responsive-hide, .responsive-show').show();
+            }
+        }
+
+        toggleResponsiveDisplay();
+        $(window).resize(toggleResponsiveDisplay);
+
+        // Destruir DataTables antes de volver a inicializar
+        if ($.fn.DataTable.isDataTable('#dataTable')) {
+            $('#dataTable').DataTable().destroy();
+        }
+
+        // Inicializar DataTables con configuración básica
+        $('#dataTable').DataTable({
+            paging: true,
+            ordering: false,
+            info: true,
+            searching: true,
+            "language": {
+              "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json" // Carga la configuración en español
+            }
+        });
+
+    });
+</script>
     </script>
 </head>
 
@@ -112,18 +125,18 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr class='book-row'>";
 
-                        echo "<td data-label='Numero consecutivo' class='cell'>" . $row['Consecutivo_No'] . "</td>";
-                        echo "<td data-label='Descripción' class='cell'>" . $row['Descripcion'] . "</td>";
-                        echo "<td data-label='Imagen' class='cell'><img src='" . $row['Image'] . "' alt='Imagen' class='book-image'></td>";
+                        echo "<td data-label='Numero consecutivo' class='cell'>" . $row['consecutivo'] . "</td>";
+                        echo "<td data-label='Descripción' class='cell'>" . $row['descripcion'] . "</td>";
+                        echo "<td data-label='Imagen' class='cell'><img src='" . $row['imagen'] . "' alt='Imagen' class='book-image'></td>";
                         echo "<td data-label='Categoria' class='cell'>" . $row['Fullname_categoria'] . "</td>";
-                        echo "<td data-label='Marca' class='cell'>" . $row['Marca'] . "</td>";
-                        echo "<td data-label='Modelo' class='cell'>" . $row['Modelo'] . "</td>";
+                        echo "<td data-label='Marca' class='cell'>" . $row['marca'] . "</td>";
+                        echo "<td data-label='Modelo' class='cell'>" . $row['modelo'] . "</td>";
                         echo "<td data-label='Usuario Responsable' class='cell'>" . $row['usuario_responsable'] . "</td>";
                         echo "<td data-label='Comentarios' class='cell'>" . $row['comentarios'] . "</td>";
                         echo "<td data-label='Numero de Factura' class='cell'>" . $row['Factura'] . "</td>";
                         echo "<td data-label='Estado' class='cell'>" . ($row['Estado'] == 1 ? 'Activo' : 'Baja') . "</td>";
                         echo "<td data-label='Acciones' class='cell'>
-                                                        <a href='../funciones/PDF_individual_direccion.php?id=" . $row['id'] . "' class='btn btn-primary btn-export-pdf btn-sm'>Exportar en PDF</a>
+                                                        <a href='../funciones/PDF_individual_servicio.php?id=" . $row['id'] . "' class='btn btn-primary btn-export-pdf btn-sm'>Exportar en PDF</a>
                                                         <hr>
                                                         <button class='btn btn-primary btn-edit btn-sm' data-toggle='modal' data-target='#editModal' data-userid='" . $row['id'] . "' data-username='" . $row['comentarios'] . "' data-identificador='" . $row['identificador_direccion'] . "'>Añadir comentarios</button>
                                                         <hr>
@@ -145,7 +158,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     echo "<p>No se encontraron resguardos para la dirección $nombre_direccion</p>";
                 }
 
-                mysqli_close($conn);
+                mysqli_close($conexion);
                 ?>
                 <a href="../dashboard/dashboard.php">Volver al inicio</a>
                 <!-- Modal para mostrar la imagen -->

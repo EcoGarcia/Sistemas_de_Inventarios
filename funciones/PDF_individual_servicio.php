@@ -51,7 +51,7 @@ if (isset($_GET['id'])) {
         die("Conexión fallida: " . mysqli_connect_error());
     }
 
-    $query = "SELECT * FROM respaldos_servicios WHERE id = ?";
+    $query = "SELECT * FROM respaldos_coordinacion WHERE id = ?";
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, 'i', $id);
     mysqli_stmt_execute($stmt);
@@ -61,11 +61,12 @@ if (isset($_GET['id'])) {
     }
 
     // Obtener información del usuario de la dirección
-    $queryUsuario = "SELECT Fullname FROM  director_area";
+    $queryUsuario = "SELECT usuario_responsable FROM respaldos_servicios WHERE identificador_servicio = ?";
     $stmtUsuario = mysqli_prepare($conn, $queryUsuario);
+    mysqli_stmt_bind_param($stmtUsuario, 's', $row['usuario_responsable']);
     mysqli_stmt_execute($stmtUsuario);
     $resultUsuario = mysqli_stmt_get_result($stmtUsuario);
-    $Usuario = mysqli_fetch_assoc($resultUsuario);
+    $usuario = mysqli_fetch_assoc($resultUsuario);
 
     // Obtener información del administrador
     $queryAdmin = "SELECT Fullname FROM  coordinación_de_recursos";
@@ -81,12 +82,12 @@ if (isset($_GET['id'])) {
     $pdf->SetY(15);
 
     while ($row = mysqli_fetch_assoc($result)) {
-        $queryUsuario = "SELECT Fullname FROM usuarios_servicios WHERE Fullname_servicio = ?";
-        $stmtUsuario = mysqli_prepare($conn, $queryUsuario);
-        mysqli_stmt_bind_param($stmtUsuario, 's', $row['Fullname_servicio']);
+        $queryusuario = "SELECT Fullname FROM usuarios_direccion WHERE Fullname_direccion = ?";
+        $stmtUsuario = mysqli_prepare($conn, $queryusuario);
+        mysqli_stmt_bind_param($stmtUsuario, 's', $row['Fullname_direccion']);
         mysqli_stmt_execute($stmtUsuario);
         $resultUsuario = mysqli_stmt_get_result($stmtUsuario);
-        $usuario = mysqli_fetch_assoc($resultUsuario);
+        $Usuario = mysqli_fetch_assoc($resultUsuario);
 
         $fecha_actual = date('d/m/Y');
 
@@ -116,7 +117,7 @@ if (isset($_GET['id'])) {
         $html3 = '<table border="1" style="border-collapse: collapse; width: 100%;">
         <tr>
                     <th style="text-align: center; background-color: #ccc;  font-size: 11px;">ÁREA RESGUARDANTE:</th>
-                    <td style="text-align: center;">' . $row['Fullname_servicio'] . '</td>
+                    <td style="text-align: center;">' . $row['Fullname_coordinacion'] . '</td>
                 </tr>
             </table>';
 
@@ -125,7 +126,7 @@ if (isset($_GET['id'])) {
 
         // Sección 5
         $html5 = '<div style="width: 50%; margin: 0 auto; text-align: center;">
-                <img src="' . $row['imagen'] . '" alt="Imagen" class="book-image" style="width: 130px; height: 180px;">
+                <img src="' . $row['Image'] . '" alt="Imagen" class="book-image" style="width: 130px; height: 180px;">
             </div>';
 
         // Sección 6

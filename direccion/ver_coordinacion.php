@@ -27,6 +27,11 @@ if ($identificador_direccion === null || !is_numeric($identificador_direccion)) 
 $query = "SELECT * FROM coordinacion WHERE identificador_direccion = ?";
 $stmt = mysqli_prepare($conexion, $query);
 
+// Consultar el nombre de la dirección
+$query_direccion = "SELECT Fullname FROM direccion WHERE identificador = $identificador_direccion";
+$result_direccion = mysqli_query($conexion, $query_direccion);
+$row_direccion = mysqli_fetch_assoc($result_direccion);
+$nombre_direccion = $row_direccion['Fullname'];
 // Verificar si la preparación de la consulta fue exitosa
 if ($stmt) {
     // Asociar el parámetro
@@ -55,7 +60,7 @@ if ($stmt) {
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2>Selecciona la coordinación al revisar</h2>
+                <h2>Coordinaciones de la <?php echo $nombre_direccion; ?></h2>
                     <div class="category-container">
                         <?php
                         // Mostrar las coordinaciones en tarjetas de título
