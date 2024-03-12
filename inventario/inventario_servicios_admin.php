@@ -155,9 +155,9 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                         echo "<td data-label='Numero de Factura' class='cell'>" . $row['Factura'] . "</td>";
                         echo "<td data-label='Estado' class='cell'>" . ($row['Estado'] == 1 ? 'Activo' : 'Baja') . "</td>";
                         echo "<td data-label='Acciones' class='cell'>
-                        <a href='../funciones/PDF_individual_direccion.php?id=" . $row['id'] . "' class='btn btn-primary btn-export-pdf btn-sm'>Exportar en PDF</a>
+                        <a href='../funciones/PDF_individual_servicio.php?id=" . $row['id'] . "' class='btn btn-primary btn-export-pdf btn-sm'>Exportar en PDF</a>
                         <hr>
-                        <button class='btn btn-primary btn-edit btn-sm' data-toggle='modal' data-target='#editModal' data-userid='" . $row['id'] . "' data-username='" . $row['comentarios'] . "' data-identificador='" . $row['identificador_coordinacion'] . "'>Añadir comentarios</button>                        <hr>
+                        <button class='btn btn-primary btn-edit btn-sm' data-toggle='modal' data-target='#editModal' data-userid='" . $row['id'] . "' data-username='" . $row['comentarios'] . "' data-identificador='" . $row['identificador_servicio'] . "'>Añadir comentarios</button>                        <hr>
                         <button class='btn btn-warning btn-cambiar-estado btn-sm' data-id='" . $row['id'] . "' data-estado='" . $row['Estado'] . "'>Cambiar Estado</button>
                       </td>";
                       
@@ -176,7 +176,21 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 
                 mysqli_close($conn);
                 ?>
+<div class="text-right mt-3">
+<a href='../funciones/PDF_All_servicio.php?identificador_servicio=<?php echo $identificador_servicios; ?>' class='btn btn-primary btn-export-pdf btn-sm'>Exportar Todo en PDF</a>
+</div>
 
+<div class="text-right mt-3">
+<form action="../excel/exportar_coordinacion.php" method="POST">
+    <input type="hidden" name="export" value="1">
+    <button type="submit" id="btnExportExcel" class="btn btn-success btn-export-excel btn-sm">Exportar a Excel</button>
+</form>
+<form action="../excel/importar_coordinacion.php" method="POST" enctype="multipart/form-data">
+<input type="file" name="file" accept=".xlsx, .xls, .csv" required>
+    <input type="hidden" name="identificador_servicios" value="<?php echo $identificador_servicios; ?>">
+    <button type="submit" class="btn btn-primary btn-import-excel btn-sm">Importar desde Excel</button>
+</form>
+</div>
 
                 <a href="../../tarjeta/ver_servicio.php">Volver al inicio</a>
                 <!-- Modal para mostrar la imagen -->
