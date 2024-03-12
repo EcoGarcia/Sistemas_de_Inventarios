@@ -61,11 +61,12 @@ if (isset($_GET['id'])) {
     }
 
     // Obtener información del usuario de la dirección
-    $queryUsuario = "SELECT Fullname FROM  director_area";
+    $queryUsuario = "SELECT usuario_responsable FROM respaldos_coordinacion WHERE identificador_coordinacion = ?";
     $stmtUsuario = mysqli_prepare($conn, $queryUsuario);
+    mysqli_stmt_bind_param($stmtUsuario, 's', $row['usuario_responsable']);
     mysqli_stmt_execute($stmtUsuario);
     $resultUsuario = mysqli_stmt_get_result($stmtUsuario);
-    $Usuario = mysqli_fetch_assoc($resultUsuario);
+    $usuario = mysqli_fetch_assoc($resultUsuario);
 
     // Obtener información del administrador
     $queryAdmin = "SELECT Fullname FROM  coordinación_de_recursos";
@@ -81,12 +82,12 @@ if (isset($_GET['id'])) {
     $pdf->SetY(15);
 
     while ($row = mysqli_fetch_assoc($result)) {
-        $queryUsuario = "SELECT Fullname FROM usuarios_coordinacion WHERE Fullname_coordinacion = ?";
-        $stmtUsuario = mysqli_prepare($conn, $queryUsuario);
-        mysqli_stmt_bind_param($stmtUsuario, 's', $row['Fullname_coordinacion']);
+        $queryusuario = "SELECT Fullname FROM usuarios_direccion WHERE Fullname_direccion = ?";
+        $stmtUsuario = mysqli_prepare($conn, $queryusuario);
+        mysqli_stmt_bind_param($stmtUsuario, 's', $row['Fullname_direccion']);
         mysqli_stmt_execute($stmtUsuario);
         $resultUsuario = mysqli_stmt_get_result($stmtUsuario);
-        $usuario = mysqli_fetch_assoc($resultUsuario);
+        $Usuario = mysqli_fetch_assoc($resultUsuario);
 
         $fecha_actual = date('d/m/Y');
 
@@ -192,7 +193,7 @@ $html7 = '<table border="1" style="border-collapse: collapse; width: 100%;">
 
         <th align="center">
             <div style="vertical-align: text-top;">
-                <p style="margin-bottom: 1px;">' . (isset($usuario['Fullname']) ? $usuario['Fullname'] : '') . '</p>
+                <p style="margin-bottom: 1px;">' . $row['usuario_responsable'] . '</p>
             </div>
         </th>
 

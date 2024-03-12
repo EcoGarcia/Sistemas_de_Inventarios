@@ -192,7 +192,7 @@ $html7 = '<table border="1" style="border-collapse: collapse; width: 100%;">
 
         <th align="center">
             <div style="vertical-align: text-top;">
-                <p style="margin-bottom: 1px;">' . (isset($usuario['Fullname']) ? $usuario['Fullname'] : '') . '</p>
+                <p style="margin-bottom: 1px;">' . $row['usuario_responsable'] . '</p>
             </div>
         </th>
 

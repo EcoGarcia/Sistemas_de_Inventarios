@@ -175,7 +175,7 @@ if (isset($_GET['identificador_servicio'])) {
 
                     <th align="center">
                         <div style="vertical-align: text-top;">
-                            <p style="margin-bottom: 1px;">' . $usuario['Fullname'] . '</p>
+                        <p style="margin-bottom: 1px;">' . $row['usuario_responsable'] . '</p>
                         </div>
                     </th>
                             
