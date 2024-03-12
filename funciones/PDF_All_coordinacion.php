@@ -21,8 +21,8 @@ class PDF extends TCPDF
     }
 }
 
-if (isset($_GET['identificador_direccion'])) {
-    $identificador_direccion = $_GET['identificador_direccion'];
+if (isset($_GET['identificador_coordinacion'])) {
+    $identificador_coordinacion = $_GET['identificador_coordinacion'];
 
     $servername = "localhost";
     $username = "root";
@@ -35,9 +35,9 @@ if (isset($_GET['identificador_direccion'])) {
         die("Conexión fallida: " . mysqli_connect_error());
     }
 
-    $query = "SELECT * FROM resguardos_direccion WHERE identificador_direccion = ?";
+    $query = "SELECT * FROM respaldos_coordinacion WHERE identificador_coordinacion = ?";
     $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, 'i', $identificador_direccion);
+    mysqli_stmt_bind_param($stmt, 'i', $identificador_coordinacion);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 
@@ -95,7 +95,7 @@ if (isset($_GET['identificador_direccion'])) {
         </table>';
 
         // Sección 2
-        $html2 = '<div border="1" style="text-align: center; padding: 10px;">CONSECUTIVO No: ' . $row['Consecutivo_No'] . '</div>';
+        $html2 = '<div border="1" style="text-align: center; padding: 10px;">CONSECUTIVO No: ' . $row['consecutivo'] . '</div>';
 
         // Sección 3
         $html3 = '<table border="1">
@@ -117,11 +117,11 @@ if (isset($_GET['identificador_direccion'])) {
         $html6 = '<table border="1" style="margin-top: 15px;">
             <tr>
                 <th style="background-color: #ccc; margin-left: 60px; width: 180px;">DESCRIPCIÓN: </th>
-                <td style="margin-left: 45px; width: 360px;">' . $row['Descripcion'] . '</td>
+                <td style="margin-left: 45px; width: 360px;">' . $row['descripcion'] . '</td>
             </tr>
             <tr>
                 <th style="background-color: #ccc; margin-left: 60px; width: 180px;">CARACTERISTICAS GENERALES: </th>
-                <td style="width: 360px;">' . $row['Caracteristicas_Generales'] . '</td>
+                <td style="width: 360px;">' . $row['caracteristicas'] . '</td>
             </tr>
             <tr>
                 <th style="background-color: #ccc; width: 180px;">CATEGORIA: </th>
@@ -129,23 +129,23 @@ if (isset($_GET['identificador_direccion'])) {
             </tr>
             <tr>
                 <th style="background-color: #ccc; width: 180px;">MARCA: </th>
-                <td style="width: 360px;">' . $row['Marca'] . '</td>
+                <td style="width: 360px;">' . $row['marca'] . '</td>
             </tr>
             <tr>
                 <th style="background-color: #ccc; width: 180px;">MODELO: </th>
-                <td style="width: 360px;">' . $row['Modelo'] . '</td>
+                <td style="width: 360px;">' . $row['modelo'] . '</td>
             </tr>
             <tr>
                 <th style="background-color: #ccc; width: 180px;">NO. DE SERIE: </th>
-                <td style="width: 360px;">' . $row['No_Serie'] . '</td>
+                <td style="width: 360px;">' . $row['serie'] . '</td>
             </tr>
             <tr>
                 <th style="background-color: #ccc; width: 180px;">COLOR: </th>
-                <td style="width: 360px;">' . $row['Color'] . '</td>
+                <td style="width: 360px;">' . $row['color'] . '</td>
             </tr>
             <tr>
             <th style="background-color: #ccc; width: 180px; font-size: 10px;">OBSERVACIONES: </th>
-            <td style="width: 360px;">' . $row['Observaciones'] . '</td>
+            <td style="width: 360px;">' . $row['observaciones'] . '</td>
             </tr>
             <tr>
                 <th style="background-color: #ccc; width: 180px;">USUARIO RESPONSABLE: </th>
@@ -205,7 +205,7 @@ if (isset($_GET['identificador_direccion'])) {
     }
 
     // Salida del PDF
-    $pdf->Output('resguardo_direccion_' . $identificador_direccion . '.pdf', 'I');
+    $pdf->Output('resguardo_direccion_' . $identificador_coordinacion . '.pdf', 'I');
     mysqli_close($conn);
 } else {
     echo "Faltan datos para procesar el informe.";

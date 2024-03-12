@@ -16,13 +16,27 @@ class PDF extends TCPDF
 
     function setGlobalBorder()
     {
+        // Ajusta el margen para los bordes
+        $topBottomMargin = 12; // Ajusta el margen superior e inferior según tus necesidades
+        $leftRightMargin = 6; // Ajusta el margen izquierdo y derecho según tus necesidades
+    
         $this->SetLineStyle(array('width' => 0.5, 'color' => array(0, 0, 0)));
-        $this->Rect(5, 5, 200, 287, 'D');
+    
+        // Borde superior
+        $this->Rect($leftRightMargin, $topBottomMargin, $this->getPageWidth() - 2 * $leftRightMargin, 0, 'D');
+    
+        // Borde inferior
+        $this->Rect($leftRightMargin, $this->getPageHeight() - $topBottomMargin, $this->getPageWidth() - 2 * $leftRightMargin, 0, 'D');
+    
+        // Borde izquierdo
+        $this->Rect($leftRightMargin, $topBottomMargin, 0, $this->getPageHeight() - 2 * $topBottomMargin, 'D');
+    
+        // Borde derecho
+        $this->Rect($this->getPageWidth() - $leftRightMargin, $topBottomMargin, 0, $this->getPageHeight() - 2 * $topBottomMargin, 'D');
     }
-}
-
-if (isset($_GET['consecutivo'])) {
-    $consecutivo = $_GET['consecutivo'];
+}    
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
 
  
 
@@ -37,9 +51,9 @@ if (isset($_GET['consecutivo'])) {
         die("Conexión fallida: " . mysqli_connect_error());
     }
 
-    $query = "SELECT * FROM resguardos_direccion WHERE Consecutivo_No = ?";
+    $query = "SELECT * FROM respaldos_coordinacion WHERE id = ?";
     $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, 'i', $consecutivo);
+    mysqli_stmt_bind_param($stmt, 'i', $id);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
     if (!$result) {
@@ -62,14 +76,14 @@ if (isset($_GET['consecutivo'])) {
 
 
     $pdf = new PDF();
-    $pdf->AddPage();
+    $pdf->AddPage('P', 'Letter');
     $pdf->setGlobalBorder();
     $pdf->SetY(15);
 
     while ($row = mysqli_fetch_assoc($result)) {
-        $queryUsuario = "SELECT Fullname FROM usuarios_direccion WHERE Fullname_direccion = ?";
+        $queryUsuario = "SELECT Fullname FROM usuarios_coordinacion WHERE Fullname_coordinacion = ?";
         $stmtUsuario = mysqli_prepare($conn, $queryUsuario);
-        mysqli_stmt_bind_param($stmtUsuario, 's', $row['Fullname_direccion']);
+        mysqli_stmt_bind_param($stmtUsuario, 's', $row['Fullname_coordinacion']);
         mysqli_stmt_execute($stmtUsuario);
         $resultUsuario = mysqli_stmt_get_result($stmtUsuario);
         $usuario = mysqli_fetch_assoc($resultUsuario);
@@ -86,7 +100,7 @@ if (isset($_GET['consecutivo'])) {
                 </th>
 
                 <th align="center">
-                    <div style="width: 20%; display: inline-block; text-align: center; line-height: 2px; margin-top: 0; font-size: 10px;">RESGUARDO INTERNO</div>
+                    <div style="width: 20%; display: inline-block; text-align: center; line-height: 2px; margin-top: 0; font-size: 11px;">RESGUARDO INTERNO</div>
                 </th>
 
                 <th align="center">
@@ -96,18 +110,18 @@ if (isset($_GET['consecutivo'])) {
         </table>';
 
         // Sección 2
-        $html2 = '<div border="1" style="text-align: center; padding: 10px;  font-size: 10px;">CONSECUTIVO No: ' . $row['Consecutivo_No'] . '</div>';
+        $html2 = '<div border="1" style="text-align: center; padding: 10px;  font-size: 11px;">CONSECUTIVO No: ' . $row['consecutivo'] . '</div>';
 
         // Sección 3
         $html3 = '<table border="1" style="border-collapse: collapse; width: 100%;">
         <tr>
-                    <th style="text-align: center; background-color: #ccc;  font-size: 10px;">ÁREA RESGUARDANTE:</th>
-                    <td style="text-align: center;">' . $row['Fullname_direccion'] . '</td>
+                    <th style="text-align: center; background-color: #ccc;  font-size: 11px;">ÁREA RESGUARDANTE:</th>
+                    <td style="text-align: center;">' . $row['Fullname_coordinacion'] . '</td>
                 </tr>
             </table>';
 
         // Sección 4
-        $html4 = '<div style="text-align: center; background-color: #ccc;  font-size: 10px;">DATOS DEL BIEN</div>';
+        $html4 = '<div style="text-align: center; background-color: #ccc;  font-size: 11px;">DATOS DEL BIEN</div>';
 
         // Sección 5
         $html5 = '<div style="width: 50%; margin: 0 auto; text-align: center;">
@@ -117,49 +131,49 @@ if (isset($_GET['consecutivo'])) {
         // Sección 6
         $html6 = '<table border="1" style="border-collapse: collapse; width: 100%; margin-top: 15px;">
         <tr>
-                <th style="background-color: #ccc; margin-left: 60px; width: 180px;  font-size: 10px;">DESCRIPCIÓN: </th>
-                <td style="margin-left: 45px; width: 360px;  font-size: 10px;">' . $row['Descripcion'] . '</td>
+                <th style="background-color: #ccc; margin-left: 60px; width: 180px;  font-size: 11px;">DESCRIPCIÓN: </th>
+                <td style="margin-left: 45px; width: 360px;  font-size: 11px;">' . $row['descripcion'] . '</td>
             </tr>
             <tr>
-            <th style="background-color: #ccc; padding: 5px; width: 180px; font-size: 10px; vertical-align: middle;">CARACTERISTICAS GENERALES: </th>
-            <td style="width: 360px;  font-size: 10px;">' . $row['Caracteristicas_Generales'] . '</td>
+            <th style="background-color: #ccc; padding: 5px; width: 180px; font-size: 11px; vertical-align: middle;">CARACTERISTICAS GENERALES: </th>
+            <td style="width: 360px;  font-size: 11px;">' . $row['caracteristicas'] . '</td>
         </tr>
             <tr>
-                <th style="background-color: #ccc; width: 180px;  font-size: 10px;">CATEGORIA: </th>
-                <td style="width: 360px;  font-size: 10px;">' . $row['Fullname_categoria'] . '</td>
+                <th style="background-color: #ccc; width: 180px;  font-size: 11px;">CATEGORIA: </th>
+                <td style="width: 360px;  font-size: 11px;">' . $row['Fullname_categoria'] . '</td>
             </tr>
             <tr>
-                <th style="background-color: #ccc; width: 180px;  font-size: 10px;">MARCA: </th>
-                <td style="width: 360px;  font-size: 10px;">' . $row['Marca'] . '</td>
+                <th style="background-color: #ccc; width: 180px;  font-size: 11px;">MARCA: </th>
+                <td style="width: 360px;  font-size: 11px;">' . $row['marca'] . '</td>
             </tr>
             <tr>
-                <th style="background-color: #ccc; width: 180px;  font-size: 10px;">MODELO: </th>
-                <td style="width: 360px;  font-size: 10px;">' . $row['Modelo'] . '</td>
+                <th style="background-color: #ccc; width: 180px;  font-size: 11px;">MODELO: </th>
+                <td style="width: 360px;  font-size: 11px;">' . $row['modelo'] . '</td>
             </tr>
             <tr>
-                <th style="background-color: #ccc; width: 180px;  font-size: 10px;">NO. DE SERIE: </th>
-                <td style="width: 360px;  font-size: 10px;">' . $row['No_Serie'] . '</td>
+                <th style="background-color: #ccc; width: 180px;  font-size: 11px;">NO. DE SERIE: </th>
+                <td style="width: 360px;  font-size: 11px;">' . $row['serie'] . '</td>
             </tr>
             <tr>
-                <th style="background-color: #ccc; width: 180px;  font-size: 10px;">COLOR: </th>
-                <td style="width: 360px;  font-size: 10px;">' . $row['Color'] . '</td>
+                <th style="background-color: #ccc; width: 180px;  font-size: 11px;">COLOR: </th>
+                <td style="width: 360px;  font-size: 11px;">' . $row['color'] . '</td>
             </tr>
             <tr>
-                <th style="background-color: #ccc; width: 180px;  font-size: 10px;">OBSERVACIONES: </th>
-                <td style="width: 360px;  font-size: 10px;">' . $row['Observaciones'] . '</td>
+                <th style="background-color: #ccc; width: 180px;  font-size: 11px;">OBSERVACIONES: </th>
+                <td style="width: 360px;  font-size: 11px;">' . $row['observaciones'] . '</td>
             </tr>
             <tr>
-                <th style="background-color: #ccc; width: 180px;  font-size: 10px;">USUARIO RESPONSABLE: </th>
-                <td style="width: 360px;  font-size: 10px;">' . $row['usuario_responsable'] . '</td>
+                <th style="background-color: #ccc; width: 180px;  font-size: 11px;">USUARIO RESPONSABLE: </th>
+                <td style="width: 360px;  font-size: 11px;">' . $row['usuario_responsable'] . '</td>
             </tr>
 
             <tr>
-                <th style="background-color: #ccc; width: 180px;  font-size: 10px;">CONDICIONES: </th>
-                <td style="width: 360px;  font-size: 10px;">' . $row['Condiciones'] . '</td>
+                <th style="background-color: #ccc; width: 180px;  font-size: 11px;">CONDICIONES: </th>
+                <td style="width: 360px;  font-size: 11px;">' . $row['Condiciones'] . '</td>
             </tr>
             <tr>
-            <th style="background-color: #ccc; width: 180px;  font-size: 10px;  ">NUMERO DE FACTURA: </th>
-            <td style="width: 360px;  font-size: 10px;">' . $row['Factura'] . '</td>
+            <th style="background-color: #ccc; width: 180px;  font-size: 11px;  ">NUMERO DE FACTURA: </th>
+            <td style="width: 360px;  font-size: 11px;">' . $row['Factura'] . '</td>
         </tr>
         </table>';
 
@@ -167,32 +181,33 @@ if (isset($_GET['consecutivo'])) {
         $space = '<div style="margin-bottom: 80px;"></div>';
 
         // Sección 8
-        $html7 = '<table border="1" style="border-collapse: collapse; width: 100%;">
-        <tr>
-                    <th align="center">
-                        <div style="vertical-align: text-top;">
-                            <p style="margin-bottom: 1px;">' . $Usuario['Fullname'] . '</p>
-                        </div>
-                    </th>
+// Sección 8
+$html7 = '<table border="1" style="border-collapse: collapse; width: 100%;">
+    <tr>
+        <th align="center">
+            <div style="vertical-align: text-top;">
+                <p style="margin-bottom: 1px;">' . (isset($Usuario['Fullname']) ? $Usuario['Fullname'] : '') . '</p>
+            </div>
+        </th>
 
-                    <th align="center">
-                        <div style="vertical-align: text-top;">
-                            <p style="margin-bottom: 1px;">' . $usuario['Fullname'] . '</p>
-                        </div>
-                    </th>
-                            
-                    <th align="center">
-                        <div style="vertical-align: text-top;">
-                            <p style="margin-bottom: 1px;">' . $admin['Fullname'] . '</p>
-                        </div>
-                    </th>
-                </tr>
-                <tr>
-                    <td style="text-align: center">NOMBRE Y FIRMA DIRECTOR ÁREA SOLICITANTE</td>
-                    <td style="text-align: center">NOMBRE Y FIRMA USUARIO RESPONSABLE</td>
-                    <td style="text-align: center">NOMBRE Y FIRMA COORDINACIÓN DE RECURSOS MATERIALES</td>
-                </tr>
-            </table>';
+        <th align="center">
+            <div style="vertical-align: text-top;">
+                <p style="margin-bottom: 1px;">' . (isset($usuario['Fullname']) ? $usuario['Fullname'] : '') . '</p>
+            </div>
+        </th>
+
+        <th align="center">
+            <div style="vertical-align: text-top;">
+                <p style="margin-bottom: 1px;">' . (isset($admin['Fullname']) ? $admin['Fullname'] : '') . '</p>
+            </div>
+        </th>
+    </tr>
+    <tr>
+        <td style="text-align: center">NOMBRE Y FIRMA DIRECTOR ÁREA SOLICITANTE</td>
+        <td style="text-align: center">NOMBRE Y FIRMA USUARIO RESPONSABLE</td>
+        <td style="text-align: center">NOMBRE Y FIRMA COORDINACIÓN DE RECURSOS MATERIALES</td>
+    </tr>
+</table>';
 
         // Salida del HTML al PDF
         $pdf->Ln();
@@ -207,7 +222,7 @@ if (isset($_GET['consecutivo'])) {
     }
 
     // Salida del PDF
-    $pdf->Output('resguardo_direccion_' . $consecutivo . '.pdf', 'I');
+    $pdf->Output('resguardo_direccion_' . $id . '.pdf', 'I');
     mysqli_close($conn);
 } else {
     echo "Faltan datos para procesar el informe.";
