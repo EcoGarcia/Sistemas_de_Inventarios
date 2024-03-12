@@ -7,6 +7,7 @@ if (!isset($_SESSION['tipo_usuario'])) {
 }
 
 include('../includes/conexion.php');
+include('../includes/header.php');
 
 $servername = "localhost";
 $username = "root";
@@ -69,6 +70,7 @@ if ($resultCategoria->num_rows > 0) {
     <title>DIF | Registro un nuevo usuario de dirección</title>
     <link rel="stylesheet" href="../assets/css/tarjeta.css">
 </head>
+<h2 style="text-align: center;">Añadir un nuevo resguardo de servicios</h2>
 
 <body>
 

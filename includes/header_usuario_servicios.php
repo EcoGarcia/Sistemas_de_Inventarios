@@ -16,7 +16,7 @@
     ?>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="../dashboard/dashboard_servicio.php">
+        <a class="navbar-brand" href="../dashboard/dashboard_servicios.php">
             <img src="../assets/img/DIF2.png" alt="Logo DIF2" id="logo">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,7 +27,7 @@
             <ul class="navbar-nav mr-auto">
                 <?php
                 // Barra de navegación para el tipo de usuario 1 (administrador)
-                echo '<li class="nav-item active"><a class="nav-link" href="../dashboard/dashboard_servicio.php">Inicio <span class="sr-only"></span></a></li>';
+                echo '<li class="nav-item active"><a class="nav-link" href="../dashboard/dashboard_coordinacion.php">Inicio <span class="sr-only"></span></a></li>';
                 ?>
             </ul>
 

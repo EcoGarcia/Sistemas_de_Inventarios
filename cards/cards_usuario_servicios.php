@@ -95,9 +95,7 @@ WHERE u.identificador_usuario_servicios = ?";
 
                             // Contenedor de botones
                             echo "<div class='btn-container'>";
-                            echo "<a href='ver_servicio.php?identificador_usuario_servicios=" . (isset($row['identificador_usuario_servicios']) ? $row['identificador_usuario_servicios'] : '') . "' class='btn btn-primary'>Ver el servicio</a>";
-                            echo "<input type='hidden' name='categoria_id' value='" . (isset($row['identificador_usuario_servicios']) ? $row['identificador_usuario_servicios'] : '') . "' />";
-                            echo "<a href='cards_resguardos_servicios.php?identificador_usuario_servicios=" . (isset($row['identificador_usuario_servicios']) ? $row['identificador_usuario_servicios'] : '') . "' class='btn btn-secondary'>Ver el inventario</a>";
+                            echo "<a href='../puesto/inventario.php?identificador_usuario_servicios=" . (isset($row['identificador_usuario_servicios']) ? $row['identificador_usuario_servicios'] : '') . "' class='btn btn-secondary'>Ver el inventario</a>";
                             echo "<input type='hidden' name='categoria_id' value='" . (isset($row['identificador_usuario_servicios']) ? $row['identificador_usuario_servicios'] : '') . "' />";
                             echo "</div>";
 

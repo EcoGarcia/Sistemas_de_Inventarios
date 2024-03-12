@@ -56,10 +56,10 @@
                 echo '<li class="nav-item dropdown">';
                 echo '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownServicios" role="button" data-bs-toggle="dropdown" aria-expanded="false">Nuevos resguardos</a>';
                 echo '<div class="dropdown-menu" aria-labelledby="navbarDropdownServicios">';
-                echo '<a class="dropdown-item" href="#" id="abrirModalResAdministrador">Nuevo resguardo de administrador</a>';
-                echo '<a class="dropdown-item" href="#" id="abrirModalResDireccion">Nuevo resguardo de dirección</a>';
-                echo '<a class="dropdown-item" href="#" id="abrirModalResCoordinacion">Nuevo resguardo de coordinación</a>';
-                echo '<a class="dropdown-item" href="#" id="abrirModalResServicio">Nuevo resguardo de servicio</a>';
+                echo '<a class="dropdown-item" href="../resguardos/resguardos_administrador.php">Nuevo resguardo de administrador</a>';
+                echo '<a class="dropdown-item" href="../resguardos/resguardos_direccion.php">Nuevo resguardo de direccion</a>';
+                echo '<a class="dropdown-item" href="../resguardos/resguardos_coordinacion.php">Nuevo resguardo de coordinacion</a>';
+                echo '<a class="dropdown-item" href="../resguardos/resguardos_servicios.php">Nuevo resguardo de servicios</a>';
                 echo '</div>';
                 echo '</li>';
                 
@@ -239,67 +239,6 @@
     </div>
 
 
-
-    <!-- Modal para el formulario de registro de usuario de dirección -->
-    <div class="modal fade" id="resDireccionModal" tabindex="-1" aria-labelledby="resDireccionModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="resDireccionModalLabel">Registro de un nuevo resguardo de direccion</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Contenedor para cargar el contenido de resguardos_direccion.php -->
-                    <div id="modalContenido6"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <!-- Puedes agregar más botones según tus necesidades -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para el formulario de registro de usuario de dirección -->
-    <div class="modal fade" id="resCoordinacionModal" tabindex="-1" aria-labelledby="resCoordinacionModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="resCoordinacionModalLabel">Registro de un nuevo resguardo de coordinacion</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Contenedor para cargar el contenido de resguardos_direccion.php -->
-                    <div id="modalContenido7"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <!-- Puedes agregar más botones según tus necesidades -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para el formulario de registro de usuario de dirección -->
-    <div class="modal fade" id="resServiciosModal" tabindex="-1" aria-labelledby="resServiciosModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="resServiciosModalLabel">Registro de un nuevo resguardo de servicios</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Contenedor para cargar el contenido de resguardos_direccion.php -->
-                    <div id="modalContenido8"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <!-- Puedes agregar más botones según tus necesidades -->
-                </div>
-            </div>
-        </div>
-    </div>
-
       <!-- Modal para el formulario de registro de usuario de dirección -->
       <div class="modal fade" id="categoriasModal" tabindex="-1" aria-labelledby="categoriasModalModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -393,37 +332,6 @@
                 e.preventDefault();
                 $("#modalContenido5").load("../servicios/servicios.php", function() {
                     $("#servicioModal").modal("show");
-                });
-            });
-
-            $("#abrirModalResAdministrador").on("click", function(e) {
-                e.preventDefault();
-                $("#modalContenidoResAdministrador").load("../resguardos/resguardos_administrador.php", function() {
-                    $("#resAdministradorModal").modal("show");
-                });
-            });
-
-
-
-            $("#abrirModalResDireccion").on("click", function(e) {
-                e.preventDefault();
-                $("#modalContenido6").load("../resguardos/resguardos_direccion.php", function() {
-                    $("#resDireccionModal").modal("show");
-                });
-            });
-
-
-            $("#abrirModalResCoordinacion").on("click", function(e) {
-                e.preventDefault();
-                $("#modalContenido7").load("../resguardos/resguardos_coordinacion.php", function() {
-                    $("#resCoordinacionModal").modal("show");
-                });
-            });
-
-            $("#abrirModalResServicio").on("click", function(e) {
-                e.preventDefault();
-                $("#modalContenido8").load("../resguardos/resguardos_servicios.php", function() {
-                    $("#resServiciosModal").modal("show");
                 });
             });
 
