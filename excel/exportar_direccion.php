@@ -20,22 +20,24 @@ $spreadsheet->getProperties()->setCreator("Nombre del Creador")
 // Agrega datos al objeto Spreadsheet
 $spreadsheet->setActiveSheetIndex(0);
 $spreadsheet->getActiveSheet()->setCellValue('A1', 'Consecutivo_No');
-$spreadsheet->getActiveSheet()->setCellValue('B1', 'Fullname_direccion');
-$spreadsheet->getActiveSheet()->setCellValue('C1', 'Descripcion');
-$spreadsheet->getActiveSheet()->setCellValue('D1', 'Caracteristicas_Generales');
-$spreadsheet->getActiveSheet()->setCellValue('E1', 'Modelo');
-$spreadsheet->getActiveSheet()->setCellValue('F1', 'No_Serie');
-$spreadsheet->getActiveSheet()->setCellValue('G1', 'Color');
-$spreadsheet->getActiveSheet()->setCellValue('H1', 'usuario_responsable');
-$spreadsheet->getActiveSheet()->setCellValue('I1', 'comentarios');
-$spreadsheet->getActiveSheet()->setCellValue('J1', 'Observaciones');
-$spreadsheet->getActiveSheet()->setCellValue('K1', 'Condiciones');
-$spreadsheet->getActiveSheet()->setCellValue('L1', 'Marca');
-$spreadsheet->getActiveSheet()->setCellValue('N1', 'Fullname_categoria');
-$spreadsheet->getActiveSheet()->setCellValue('M1', 'Factura');
-$spreadsheet->getActiveSheet()->setCellValue('O1', 'fecha_creacion');
-$spreadsheet->getActiveSheet()->setCellValue('P1', 'Estado');
-
+$spreadsheet->getActiveSheet()->setCellValue('B1', 'Nombre de la dirección');
+$spreadsheet->getActiveSheet()->setCellValue('C1', 'Identificador de la dirección');
+$spreadsheet->getActiveSheet()->setCellValue('D1', 'Descripcion');
+$spreadsheet->getActiveSheet()->setCellValue('E1', 'Caracteristicas Generales');
+$spreadsheet->getActiveSheet()->setCellValue('F1', 'Modelo');
+$spreadsheet->getActiveSheet()->setCellValue('G1', 'No_Serie');
+$spreadsheet->getActiveSheet()->setCellValue('H1', 'Color');
+$spreadsheet->getActiveSheet()->setCellValue('I1', 'Usuario Responsable');
+$spreadsheet->getActiveSheet()->setCellValue('J1', 'Identificador del usuario');
+$spreadsheet->getActiveSheet()->setCellValue('K1', 'comentarios');
+$spreadsheet->getActiveSheet()->setCellValue('L1', 'Observaciones');
+$spreadsheet->getActiveSheet()->setCellValue('M1', 'Condiciones');
+$spreadsheet->getActiveSheet()->setCellValue('N1', 'Marca');
+$spreadsheet->getActiveSheet()->setCellValue('O1', 'Nombre de la categoria');
+$spreadsheet->getActiveSheet()->setCellValue('P1', 'Identificador de la categoria');
+$spreadsheet->getActiveSheet()->setCellValue('Q1', 'Factura');
+$spreadsheet->getActiveSheet()->setCellValue('R1', 'fecha_creacion');
+$spreadsheet->getActiveSheet()->setCellValue('S1', 'Estado');
 
 // Obtén los datos desde la base de datos y agrega las filas correspondientes
 $query = mysqli_query($conexion, "SELECT * FROM `resguardos_direccion`") or die(mysqli_error($conexion));
@@ -43,24 +45,26 @@ $rowIndex = 2; // Comienza desde la segunda fila
 while ($fetch = mysqli_fetch_array($query)) {
     $spreadsheet->getActiveSheet()->setCellValue('A' . $rowIndex, $fetch['Consecutivo_No']);
     $spreadsheet->getActiveSheet()->setCellValue('B' . $rowIndex, $fetch['Fullname_direccion']);
-    $spreadsheet->getActiveSheet()->setCellValue('C' . $rowIndex, $fetch['Descripcion']);
-    $spreadsheet->getActiveSheet()->setCellValue('D' . $rowIndex, $fetch['Caracteristicas_Generales']);
-    $spreadsheet->getActiveSheet()->setCellValue('E' . $rowIndex, $fetch['Modelo']);
-    $spreadsheet->getActiveSheet()->setCellValue('F' . $rowIndex, $fetch['No_Serie']);
-    $spreadsheet->getActiveSheet()->setCellValue('G' . $rowIndex, $fetch['Color']);
-    $spreadsheet->getActiveSheet()->setCellValue('H' . $rowIndex, $fetch['usuario_responsable']);
-    $spreadsheet->getActiveSheet()->setCellValue('I' . $rowIndex, $fetch['comentarios']);
-    $spreadsheet->getActiveSheet()->setCellValue('J' . $rowIndex, $fetch['Observaciones']);
-    $spreadsheet->getActiveSheet()->setCellValue('K' . $rowIndex, $fetch['Condiciones']);
-    $spreadsheet->getActiveSheet()->setCellValue('L' . $rowIndex, $fetch['Marca']);
-    $spreadsheet->getActiveSheet()->setCellValue('M' . $rowIndex, $fetch['Fullname_categoria']);
-    $spreadsheet->getActiveSheet()->setCellValue('N' . $rowIndex, $fetch['Factura']);
-    $spreadsheet->getActiveSheet()->setCellValue('O' . $rowIndex, $fetch['fecha_creacion']);
-    $spreadsheet->getActiveSheet()->setCellValue('P' . $rowIndex, ($fetch['Estado'] == 1 ? 'Activo' : 'Baja'));
-
+    $spreadsheet->getActiveSheet()->setCellValue('C' . $rowIndex, $fetch['identificador_direccion']);
+    $spreadsheet->getActiveSheet()->setCellValue('D' . $rowIndex, $fetch['Descripcion']);
+    $spreadsheet->getActiveSheet()->setCellValue('E' . $rowIndex, $fetch['Caracteristicas_Generales']);
+    $spreadsheet->getActiveSheet()->setCellValue('F' . $rowIndex, $fetch['Modelo']);
+    $spreadsheet->getActiveSheet()->setCellValue('G' . $rowIndex, $fetch['No_Serie']);
+    $spreadsheet->getActiveSheet()->setCellValue('H' . $rowIndex, $fetch['Color']);
+    $spreadsheet->getActiveSheet()->setCellValue('I' . $rowIndex, $fetch['usuario_responsable']);
+    $spreadsheet->getActiveSheet()->setCellValue('J' . $rowIndex, $fetch['Identificador_usuario_direccion']);
+    $spreadsheet->getActiveSheet()->setCellValue('K' . $rowIndex, $fetch['comentarios']);
+    $spreadsheet->getActiveSheet()->setCellValue('L' . $rowIndex, $fetch['Observaciones']);
+    $spreadsheet->getActiveSheet()->setCellValue('M' . $rowIndex, $fetch['Condiciones']);
+    $spreadsheet->getActiveSheet()->setCellValue('N' . $rowIndex, $fetch['Marca']);
+    $spreadsheet->getActiveSheet()->setCellValue('O' . $rowIndex, $fetch['Fullname_categoria']);
+    $spreadsheet->getActiveSheet()->setCellValue('P' . $rowIndex, $fetch['identificador_categoria']);
+    $spreadsheet->getActiveSheet()->setCellValue('Q' . $rowIndex, $fetch['Factura']);
+    $spreadsheet->getActiveSheet()->setCellValue('R' . $rowIndex, $fetch['fecha_creacion']);
+    $spreadsheet->getActiveSheet()->setCellValue('S' . $rowIndex, ($fetch['Estado'] == 1 ? 'Activo' : 'Baja'));
 
     // Ajusta automáticamente el ancho de la columna al contenido
-    foreach (range('A', 'P') as $col) {
+    foreach (range('A', 'S') as $col) {
         $spreadsheet->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
     }
 

@@ -17,107 +17,108 @@ for ($row = 2; $row <= $totalRows; $row++) {
     $data[] = [
         'Consecutivo_No' => $worksheet->getCell('A' . $row)->getValue(),
         'Fullname_direccion' => $worksheet->getCell('B' . $row)->getValue(),
-        'Descripcion' => $worksheet->getCell('C' . $row)->getValue(),
-        'Caracteristicas_Generales' => $worksheet->getCell('D' . $row)->getValue(),
-        'Modelo' => $worksheet->getCell('E' . $row)->getValue(),
-        'No_Serie' => $worksheet->getCell('F' . $row)->getValue(),
-        'Color' => $worksheet->getCell('G' . $row)->getValue(),
-        'Usuario_responsable' => $worksheet->getCell('H' . $row)->getValue(),
-        'Comentarios' => $worksheet->getCell('I' . $row)->getValue(),
-        'Observaciones' => $worksheet->getCell('J' . $row)->getValue(),
-        'Condiciones' => $worksheet->getCell('K' . $row)->getValue(),
-        'Marca' => $worksheet->getCell('L' . $row)->getValue(),
-        'Fullname_categoria' => $worksheet->getCell('M' . $row)->getValue(),
-        'Factura' => $worksheet->getCell('N' . $row)->getValue(),
-        'Estado' => ($worksheet->getCell('O' . $row)->getValue() == 'Activo' ? 1 : 0),
+        'Descripcion' => $worksheet->getCell('D' . $row)->getValue(),
+        'Caracteristicas_Generales' => $worksheet->getCell('E' . $row)->getValue(),
+        'Modelo' => $worksheet->getCell('F' . $row)->getValue(),
+        'No_Serie' => $worksheet->getCell('G' . $row)->getValue(),
+        'Color' => $worksheet->getCell('H' . $row)->getValue(),
+        'Comentarios' => $worksheet->getCell('K' . $row)->getValue(),
+        'Observaciones' => $worksheet->getCell('L' . $row)->getValue(),
+        'Condiciones' => $worksheet->getCell('M' . $row)->getValue(),
+        'Marca' => $worksheet->getCell('N' . $row)->getValue(),
+        'Factura' => $worksheet->getCell('Q' . $row)->getValue(),
+        'Estado' => ($worksheet->getCell('S' . $row)->getValue() == 'Activo' ? 1 : 0),
     ];
 }
 
-// Establishing connection to the database for the additional query
-$localhost = 'localhost'; // Replace with your actual host
-$root = 'root'; // Replace with your actual username
-$sistemas = 'sistemas'; // Replace with your actual database name
+// Estableciendo conexión con la base de datos para la consulta adicional
+$localhost = 'localhost'; // Reemplazar con tu host real
+$root = 'root'; // Reemplazar con tu nombre de usuario real
+$sistemas = 'sistemas'; // Reemplazar con el nombre real de tu base de datos
 
-// Data validation
+// Validación de datos
 if (empty($localhost) || empty($root) || empty($sistemas)) {
-    die("Error: Incomplete database connection details. Please check your configuration.");
+    die("Error: Detalles incompletos de conexión a la base de datos. Por favor, verifica tu configuración.");
 }
 
 $conn = mysqli_connect($localhost, $root, '', $sistemas);
 
-// Check connection
+// Verificar la conexión
 if (!$conn) {
     die("Conexión fallida: " . mysqli_connect_error());
 }
 
 foreach ($data as &$row) {
-    // Query to retrieve the identifier based on the Fullname_direccion
+    // Consulta para recuperar el identificador basado en Fullname_direccion
     $queryDireccion = "SELECT identificador FROM direccion WHERE Fullname = ?";
     $stmtDireccion = $conn->prepare($queryDireccion);
 
     if (!$stmtDireccion) {
-        die("Prepared statement failed: " . $conn->error);
+        die("La declaración preparada falló: " . $conn->error);
     }
 
-    // Binding parameters and executing the query
+    // Vincular parámetros y ejecutar la consulta
     $stmtDireccion->bind_param("s", $row['Fullname_direccion']);
 
     if (!$stmtDireccion->execute()) {
-        die("Error executing query: " . $stmtDireccion->error);
+        die("Error al ejecutar la consulta: " . $stmtDireccion->error);
     }
 
-    // Binding the result variable and fetching the result
+    // Vincular la variable de resultado y obtener el resultado
     $stmtDireccion->bind_result($direccionIdentificador);
 
     if ($stmtDireccion->fetch()) {
-        // Assigning the retrieved identifier to the data array
+        // Asignar el identificador recuperado al array de datos
         $row['Direccion_Identificador'] = $direccionIdentificador;
+
+        // Liberar los resultados antes de la siguiente consulta
+        $stmtDireccion->free_result();
     } else {
-        // If the name doesn't exist, insert it and get the new identifier
+        // Si el nombre no existe, insértalo y obtén el nuevo identificador
         $insertQuery = "INSERT INTO direccion (Fullname) VALUES (?)";
         $stmtInsert = $conn->prepare($insertQuery);
 
         if (!$stmtInsert) {
-            die("Prepared statement failed: " . $conn->error);
+            die("La declaración preparada falló: " . $conn->error);
         }
 
-        // Binding parameters and executing the insert query
+        // Vincular parámetros y ejecutar la consulta de inserción
         $stmtInsert->bind_param("s", $row['Fullname_direccion']);
 
         if (!$stmtInsert->execute()) {
-            die("Error inserting data: " . $stmtInsert->error);
+            die("Error al insertar datos: " . $stmtInsert->error);
         }
 
-        // Retrieving the newly inserted identifier
+        // Recuperar el nuevo identificador insertado
         $row['Direccion_Identificador'] = $stmtInsert->insert_id;
 
-        // Closing the prepared statement for the insert query
+        // Cerrar la declaración preparada para la consulta de inserción
         $stmtInsert->close();
     }
 
-    // Closing the prepared statement and database connection for the additional query
+    // Cerrar la declaración preparada y liberar los resultados
     $stmtDireccion->close();
-}
 
-// Insert the data into the resguardos_direccion table
-$query = "INSERT INTO resguardos_direccion (Consecutivo_No, Fullname_direccion, Descripcion, Caracteristicas_Generales, Modelo, No_Serie, Color, Usuario_responsable, Comentarios, Observaciones, Condiciones, Marca, Fullname_categoria, Factura, Estado, identificador_direccion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+}// Insertar los datos en la tabla resguardos_direccion
+$query = "INSERT INTO resguardos_direccion (Consecutivo_No, Fullname_direccion, Descripcion, Caracteristicas_Generales, Modelo, No_Serie, Color, Comentarios, Observaciones, Condiciones, Marca, Factura, Estado, identificador_direccion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($query);
 
 if (!$stmt) {
-    die("Prepared statement failed: " . $conn->error);
+    die("La declaración preparada falló: " . $conn->error);
 }
 
 foreach ($data as $row) {
-    $stmt->bind_param("ssssssssssssssii", $row['Consecutivo_No'], $row['Fullname_direccion'], $row['Descripcion'], $row['Caracteristicas_Generales'], $row['Modelo'], $row['No_Serie'], $row['Color'], $row['Usuario_responsable'], $row['Comentarios'], $row['Observaciones'], $row['Condiciones'], $row['Marca'], $row['Fullname_categoria'], $row['Factura'], $row['Estado'], $row['Direccion_Identificador']);
-    
+    // Asegúrate de ajustar la cadena de definición de tipo según el número de variables
+    $stmt->bind_param("sssssssssssssi", $row['Consecutivo_No'], $row['Fullname_direccion'], $row['Descripcion'], $row['Caracteristicas_Generales'], $row['Modelo'], $row['No_Serie'], $row['Color'], $row['Comentarios'], $row['Observaciones'], $row['Condiciones'], $row['Marca'], $row['Factura'], $row['Estado'], $row['Direccion_Identificador']);
+
     if (!$stmt->execute()) {
-        die("Error inserting data: " . $stmt->error);
+        die("Error al insertar datos: " . $stmt->error);
     }
 }
 
-// Close the prepared statement and database connection
+// Cerrar la declaración preparada y la conexión a la base de datos
 $stmt->close();
 $conn->close();
 
-echo "Data imported successfully.";
+echo "Datos importados exitosamente.";
 ?>
