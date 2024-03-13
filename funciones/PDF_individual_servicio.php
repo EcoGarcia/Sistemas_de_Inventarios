@@ -51,7 +51,7 @@ if (isset($_GET['id'])) {
         die("Conexión fallida: " . mysqli_connect_error());
     }
 
-    $query = "SELECT * FROM respaldos_coordinacion WHERE id = ?";
+    $query = "SELECT * FROM respaldos_servicios WHERE id = ?";
     $stmt = mysqli_prepare($conn, $query);
     mysqli_stmt_bind_param($stmt, 'i', $id);
     mysqli_stmt_execute($stmt);
@@ -126,7 +126,7 @@ if (isset($_GET['id'])) {
 
         // Sección 5
         $html5 = '<div style="width: 50%; margin: 0 auto; text-align: center;">
-                <img src="' . $row['Image'] . '" alt="Imagen" class="book-image" style="width: 130px; height: 180px;">
+                <img src="' . $row['imagen'] . '" alt="Imagen" class="book-image" style="width: 130px; height: 180px;">
             </div>';
 
         // Sección 6

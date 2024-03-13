@@ -71,9 +71,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 </head>
 
 <body>
-    <div class="form-group">
-        <input type="text" class="form-control" id="searchInput" placeholder="Search">
-    </div>
+
     <div class="panel-body">
         <div class="panel-body">
             <div class="col-md-12">

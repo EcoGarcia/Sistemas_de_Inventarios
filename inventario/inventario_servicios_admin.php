@@ -116,13 +116,13 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                 $result = mysqli_query($conn, $query);
 
                 if ($result && mysqli_num_rows($result) > 0) {
-                    
-                        echo "<div class='table-responsive'>";
-                        echo "<div class='d-flex justify-content-end' style='margin-top: 10px;'>";
-                        echo "</div>";
-    
-                        echo "<table id='dataTable' class='table table-bordered'>";
-                        echo "<thead>";
+                    echo "<div class='table-responsive'>";
+                    echo "<div class='d-flex justify-content-end' style='margin-top: 10px;'>";
+                    echo "</div>";
+
+                    echo "<table id='dataTable' class='table table-bordered'>";
+                    echo "<thead>";
+                    echo "<tr>";
                     echo "<th class='responsive-hide cell'>Numero consecutivo</th>";
                     echo "<th class='responsive-hide cell'>Descripción</th>";
                     echo "<th class='responsive-hide cell'>Imagen</th>";
