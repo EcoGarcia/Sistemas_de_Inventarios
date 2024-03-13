@@ -41,8 +41,11 @@ $spreadsheet->getActiveSheet()->setCellValue('S1', 'Factura');
 $spreadsheet->getActiveSheet()->setCellValue('T1', 'Condiciones');
 $spreadsheet->getActiveSheet()->setCellValue('U1', 'Estado');
 
-// Obtén los datos desde la base de datos y agrega las filas correspondientes
-$query = mysqli_query($conexion, "SELECT * FROM `respaldos_coordinacion`") or die(mysqli_error($conexion));
+// Obtén el identificador de dirección de la URL
+$identificador_coordinacion = $_GET['identificador_coordinacion'];
+
+// Obtén los datos desde la base de datos filtrando por el identificador de coordinación
+$query = mysqli_query($conexion, "SELECT * FROM `respaldos_coordinacion` WHERE identificador_coordinacion = '$identificador_coordinacion'") or die(mysqli_error($conexion));
 $rowIndex = 2; // Comienza desde la segunda fila
 while ($fetch = mysqli_fetch_array($query)) {
     $spreadsheet->getActiveSheet()->setCellValue('A' . $rowIndex, $fetch['consecutivo']);
@@ -51,7 +54,7 @@ while ($fetch = mysqli_fetch_array($query)) {
     $spreadsheet->getActiveSheet()->setCellValue('D' . $rowIndex, $fetch['usuario_responsable']);
     $spreadsheet->getActiveSheet()->setCellValue('E' . $rowIndex, $fetch['identificador_usuario_coordinacion']);
     $spreadsheet->getActiveSheet()->setCellValue('F' . $rowIndex, $fetch['Fullname_direccion']);
-    $spreadsheet->getActiveSheet()->setCellValue('G' . $rowIndex, $fetch['Fullname_coordinacion']);
+    $spreadsheet->getActiveSheet()->setCellValue('G' . $rowIndex, $fetch['identificador_coordinacion']);
     $spreadsheet->getActiveSheet()->setCellValue('H' . $rowIndex, $fetch['descripcion']);
     $spreadsheet->getActiveSheet()->setCellValue('I' . $rowIndex, $fetch['caracteristicas']);
     $spreadsheet->getActiveSheet()->setCellValue('J' . $rowIndex, $fetch['marca']);

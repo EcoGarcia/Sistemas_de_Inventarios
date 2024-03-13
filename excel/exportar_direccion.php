@@ -1,11 +1,11 @@
 <?php
-require_once '../vendor/autoload.php'; // Ruta al autoloader de Composer
-require_once '../includes/conexion.php'; // Incluye tu archivo de conexión
+require_once '../vendor/autoload.php';
+require_once '../includes/conexion.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-// Crea un nuevo objeto Spreadsheet (antes PHPExcel)
+// Crea un nuevo objeto Spreadsheet
 $spreadsheet = new Spreadsheet();
 
 // Establece propiedades del documento
@@ -39,10 +39,14 @@ $spreadsheet->getActiveSheet()->setCellValue('Q1', 'Factura');
 $spreadsheet->getActiveSheet()->setCellValue('R1', 'fecha_creacion');
 $spreadsheet->getActiveSheet()->setCellValue('S1', 'Estado');
 
-// Obtén los datos desde la base de datos y agrega las filas correspondientes
-$query = mysqli_query($conexion, "SELECT * FROM `resguardos_direccion`") or die(mysqli_error($conexion));
+// Obtén el identificador de dirección de la URL
+$identificador_direccion = $_GET['identificador_direccion'];
+
+// Consulta SQL modificada para seleccionar solo los datos asociados a la dirección específica
+$query = mysqli_query($conexion, "SELECT * FROM `resguardos_direccion` WHERE identificador_direccion = $identificador_direccion") or die(mysqli_error($conexion));
 $rowIndex = 2; // Comienza desde la segunda fila
 while ($fetch = mysqli_fetch_array($query)) {
+    // Inserta los datos en el archivo de Excel
     $spreadsheet->getActiveSheet()->setCellValue('A' . $rowIndex, $fetch['Consecutivo_No']);
     $spreadsheet->getActiveSheet()->setCellValue('B' . $rowIndex, $fetch['Fullname_direccion']);
     $spreadsheet->getActiveSheet()->setCellValue('C' . $rowIndex, $fetch['identificador_direccion']);
@@ -72,7 +76,7 @@ while ($fetch = mysqli_fetch_array($query)) {
 }
 
 // Establece el nombre del archivo y tipo de archivo
-$filename = "RESGUARDOS DE DIRECCIÓN" . date('Y-m-d_H:i:s') . ".xlsx";
+$filename = "RESGUARDOS_DE_DIRECCIÓN_" . date('Y-m-d_H-i-s') . ".xlsx";
 
 // Configura el Writer para guardar el archivo en formato Excel (xlsx)
 $writer = new Xlsx($spreadsheet);

@@ -76,113 +76,111 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
         <div class="panel-body">
             <div class="col-md-12">
                 <?php
-    include("../includes/conexion.php");
+                include("../includes/conexion.php");
 
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "sistemas";
+                $servername = "localhost";
+                $username = "root";
+                $password = "";
+                $dbname = "sistemas";
 
-    $conn = mysqli_connect($servername, $username, $password, $dbname);
-    if (!$conn) {
-        die("Conexión fallida: " . mysqli_connect_error());
-    }
+                $conn = mysqli_connect($servername, $username, $password, $dbname);
+                if (!$conn) {
+                    die("Conexión fallida: " . mysqli_connect_error());
+                }
 
-    if (!isset($_GET['identificador_coordinacion'])) {
-        echo "Identificador de coordinación no proporcionado.";
-        exit();
-    }
+                $identificador_coordinacion = $_GET['identificador_coordinacion'];
 
-    $identificador_coordinacion = $_GET['identificador_coordinacion'];
+                $query_direccion = "SELECT Fullname FROM direccion WHERE identificador = $identificador_coordinacion";
+                $result_direccion = mysqli_query($conexion, $query_direccion);
+                $row_direccion = mysqli_fetch_assoc($result_direccion);
+                $nombre_direccion = $row_direccion['Fullname'];
 
-    $query_coordinacion = "SELECT Fullname_coordinacion FROM coordinacion WHERE identificador_coordinacion = $identificador_coordinacion";
-    $result_coordinacion = mysqli_query($conn, $query_coordinacion);
-    $row_coordinacion = mysqli_fetch_assoc($result_coordinacion);
-    $nombre_coordinacion = $row_coordinacion['Fullname_coordinacion'];
+                $query = "SELECT * FROM respaldos_coordinacion WHERE identificador_coordinacion = $identificador_coordinacion";
+                $result = mysqli_query($conn, $query);
 
-    $query = "SELECT * FROM respaldos_coordinacion WHERE identificador_coordinacion = $identificador_coordinacion";
-    $result = mysqli_query($conn, $query);
+                if ($result && mysqli_num_rows($result) > 0) {
+                    echo "<div class='table-responsive'>";
+                    echo "<div class='d-flex justify-content-end' style='margin-top: 10px;'>";
+                    echo "</div>";
 
-    if ($result && mysqli_num_rows($result) > 0) {
-        echo "<div class='table-responsive'>";
-        echo "<div class='d-flex justify-content-end' style='margin-top: 10px;'>";
-        echo "</div>";
-
-        echo "<table id='dataTable' class='table table-bordered'>";
-        echo "<thead>";
-        echo "<tr>";
-        echo "<th class='responsive-hide cell'>Numero consecutivo</th>";
-        echo "<th class='responsive-hide cell'>Descripción</th>";
-        echo "<th class='responsive-hide cell'>Imagen</th>";
-        echo "<th class='responsive-hide cell'>Categoria</th>";
-        echo "<th class='responsive-hide cell'>Marca</th>";
-        echo "<th class='responsive-hide cell'>Modelo</th>";
-        echo "<th class='responsive-hide cell'>Usuario Responsable</th>";
-        echo "<th class='responsive-hide cell'>Comentarios</th>";
-        echo "<th class='responsive-hide cell'>Numero de Factura</th>";
-        echo "<th class='responsive-hide cell'>Estado</th>";
-        echo "<th class='responsive-hide cell'>Acciones</th>";
+                    echo "<table id='dataTable' class='table table-bordered'>";
+                    echo "<thead>";
+                    echo "<tr>";
+                    echo "<th class='responsive-hide cell'>Numero consecutivo</th>";
+                    echo "<th class='responsive-hide cell'>Descripción</th>";
+                    echo "<th class='responsive-hide cell'>Imagen</th>";
+                    echo "<th class='responsive-hide cell'>Categoria</th>";
+                    echo "<th class='responsive-hide cell'>Marca</th>";
+                    echo "<th class='responsive-hide cell'>Modelo</th>";
+                    echo "<th class='responsive-hide cell'>Usuario Responsable</th>";
+                    echo "<th class='responsive-hide cell'>Comentarios</th>";
+                    echo "<th class='responsive-hide cell'>Numero de Factura</th>";
+                    echo "<th class='responsive-hide cell'>Estado</th>";
+                    echo "<th class='responsive-hide cell'>Acciones</th>";
 
 
-        echo "</tr>";
-        
-        echo "</thead>";
-        echo "<tbody>";
-        $counter = 1;
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo "<tr class='book-row'>";
-            
-            echo "<td data-label='Numero consecutivo' class='cell'>" . $row['consecutivo'] . "</td>";
-            echo "<td data-label='Descripción' class='cell'>" . $row['descripcion'] . "</td>";
-            echo "<td data-label='Imagen' class='cell'><img src='" . $row['Image'] . "' alt='Imagen' class='book-image'></td>";
-            echo "<td data-label='Categoria' class='cell'>" . $row['Fullname_categoria'] . "</td>";
-            echo "<td data-label='Marca' class='cell'>" . $row['marca'] . "</td>";
-            echo "<td data-label='Modelo' class='cell'>" . $row['modelo'] . "</td>";
-            echo "<td data-label='Usuario Responsable' class='cell'>" . $row['usuario_responsable'] . "</td>";                        
-            echo "<td data-label='Comentarios' class='cell'>" . $row['comentarios'] . "</td>";                        
-            echo "<td data-label='Numero de Factura' class='cell'>" . $row['Factura'] . "</td>";
-            echo "<td data-label='Estado' class='cell'>" . ($row['Estado'] == 1 ? 'Activo' : 'Baja') . "</td>";
-            echo "<td data-label='Acciones' class='cell'>
-            <a href='../funciones/PDF_individual_coordinacion.php?id=" . $row['id'] . "' class='btn btn-primary btn-export-pdf btn-sm'>Exportar en PDF</a>
-            <hr>
-            <button class='btn btn-primary btn-edit btn-sm' data-toggle='modal' data-target='#editModal' data-userid='" . $row['id'] . "' data-username='" . $row['comentarios'] . "' data-identificador='" . $row['identificador_coordinacion'] . "'>Añadir comentarios</button>                        <hr>
-            <button class='btn btn-warning btn-cambiar-estado btn-sm' data-id='" . $row['id'] . "' data-estado='" . $row['Estado'] . "'>Cambiar Estado</button>
-          </td>";
-          
-                            echo "</tr>";
-            $counter++;
-                                                                    
-        }
+                    echo "</tr>";
+                    
+                    echo "</thead>";
+                    echo "<tbody>";
+                    $counter = 1;
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<tr class='book-row'>";
 
-        echo "</tbody>";
-        echo "</table>";
+                        echo "<td data-label='Numero consecutivo' class='cell'>" . $row['consecutivo'] . "</td>";
+                        echo "<td data-label='Descripción' class='cell'>" . $row['descripcion'] . "</td>";
+                        echo "<td data-label='Imagen' class='cell'><img src='" . $row['Image'] . "' alt='Imagen' class='book-image'></td>";
+                        echo "<td data-label='Categoria' class='cell'>" . $row['Fullname_categoria'] . "</td>";
+                        echo "<td data-label='Marca' class='cell'>" . $row['marca'] . "</td>";
+                        echo "<td data-label='Modelo' class='cell'>" . $row['modelo'] . "</td>";
+                        echo "<td data-label='Usuario Responsable' class='cell'>" . $row['usuario_responsable'] . "</td>";                        
+                        echo "<td data-label='Comentarios' class='cell'>" . $row['comentarios'] . "</td>";                        
+                        echo "<td data-label='Numero de Factura' class='cell'>" . $row['Factura'] . "</td>";
+                        echo "<td data-label='Estado' class='cell'>" . ($row['Estado'] == 1 ? 'Activo' : 'Baja') . "</td>";
+                        echo "<td data-label='Acciones' class='cell'>
+                        <a href='../funciones/PDF_individual_direccion.php?id=" . $row['id'] . "' class='btn btn-primary btn-export-pdf btn-sm'>Exportar en PDF</a>
+                        <hr>
+                        <button class='btn btn-primary btn-edit btn-sm' data-toggle='modal' data-target='#editModal' data-userid='" . $row['id'] . "' data-username='" . $row['comentarios'] . "' data-identificador='" . $row['identificador_coordinacion'] . "'>Añadir comentarios</button>
+                        <hr>
+                        <button class='btn btn-warning btn-cambiar-estado btn-sm' data-id='" . $row['id'] . "' data-estado='" . $row['Estado'] . "'>Cambiar Estado</button>
+                        <hr>
+                        <button class='btn btn-secondary btn-editar btn-sm' onclick=\"window.location.href='../editar/resguardos/resguardos_direccion.php?id=" . $row['id'] . "'\">Editar</button>
+                    </td>";
+                    
+                      
+                                        echo "</tr>";
+                        $counter++;
+                                                                                
+                    }
 
-        echo "</div>";
-    } else {
-        echo "<p>No se encontraron resguardos para la dirección $nombre_coordinacion</p>";
-    }
+                    echo "</tbody>";
+                    echo "</table>";
 
-    mysqli_close($conn);
-    ?>
+                    echo "</div>";
+                } else {
+                    echo "<p>No se encontraron resguardos para la dirección $nombre_direccion</p>";
+                }
+
+                mysqli_close($conn);
+                ?>
 <div class="text-right mt-3">
-<a href='../funciones/PDF_All_coordinacion.php?identificador_coordinacion=<?php echo $identificador_coordinacion; ?>' class='btn btn-primary btn-export-pdf btn-sm'>Exportar Todo en PDF</a>
+    <a href='../funciones/PDF_All_direccion.php?identificador_coordinacion=<?php echo $identificador_coordinacion; ?>' class='btn btn-primary btn-export-pdf btn-sm'>Exportar Todo en PDF</a>
 </div>
-
 <div class="text-right mt-3">
-<form action="../excel/exportar_coordinacion.php" method="POST">
-    <input type="hidden" name="export" value="1">
-    <button type="submit" id="btnExportExcel" class="btn btn-success btn-export-excel btn-sm">Exportar a Excel</button>
-</form>
-<form action="../excel/importar_coordinacion.php" method="POST" enctype="multipart/form-data">
-<input type="file" name="file" accept=".xlsx, .xls, .csv" required>
-    <input type="hidden" name="identificador_coordinacion" value="<?php echo $identificador_coordinacion; ?>">
-    <button type="submit" class="btn btn-primary btn-import-excel btn-sm">Importar desde Excel</button>
-</form>
+    <form action="../excel/exportar_coordinacion.php" method="GET">
+        <input type="hidden" name="export" value="1">
+        <input type="hidden" name="identificador_coordinacion" value="<?php echo $identificador_coordinacion; ?>">
+        <button type="submit" id="btnExportExcel" class="btn btn-success btn-export-excel btn-sm">Exportar a Excel</button>
+    </form>
+    <form action="../excel/importar_direccion.php" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".xlsx, .xls, .csv" required>
+        <input type="hidden" name="identificador_coordinacion" value="<?php echo $identificador_coordinacion; ?>">
+        <button type="submit" class="btn btn-primary btn-import-excel btn-sm">Importar desde Excel</button>
+    </form>
 </div>
-
 
                 <a href="../dashboard/dashboard.php">Volver al inicio</a>
-                <!-- Modal para mostrar la imagen -->
+
                 <div class="modal fade" id="imagenModalModal" tabindex="-1" role="dialog" aria-labelledby="imagenModalModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-sm">
                         <div class="modal-content">
@@ -206,7 +204,6 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
     </div>
     <br>
 
-    <script src="../assets/js/jquery-1.10.2.js"></script>
     <script src="../assets/js/bootstrap.js"></script>
     <script src="../assets/js/custom.js"></script>
     <script>
@@ -228,13 +225,12 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
             $('.btn-edit').click(function() {
                 var userId = $(this).data('userid');
                 var currentUsername = $(this).data('username');
-                var identificadorCoordinacion = $(this).data('identificador');
+                var identificadorDireccion = $(this).data('identificador');
 
                 $('#editUserId').val(userId);
-                $('#identificadorCoordinacion').val(identificadorCoordinacion);
+                $('#identificadorDireccion').val(identificadorDireccion);
                 $('#currentUsername').text(currentUsername);
 
-                // Abrir el modal de edición
                 $('#editModal').modal('show');
             });
         });
@@ -248,7 +244,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
       // Realiza una solicitud AJAX para cambiar el estado en el servidor
       $.ajax({
         type: 'POST',
-        url: '../editar/cambiar_estado_coordinacion.php', // Ajusta la ruta al archivo que maneja la actualización del estado
+        url: '../editar/cambiar_estado_direccion.php', // Ajusta la ruta al archivo que maneja la actualización del estado
         data: { id: id, estado: estado },
         success: function(response) {
           // Maneja la respuesta del servidor (puede mostrar un mensaje de éxito o actualizar la interfaz de usuario)
@@ -274,9 +270,9 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
             </div>
             <div class="modal-body">
                 <p>Nombre actual: <span id="currentUsername"></span></p>
-                <form action="../editar/comentarios_coordinacion.php" method="post">
+                <form action="../editar/comentarios.php" method="post">
                     <input type="hidden" id="editUserId" name="userId">
-                    <input type="hidden" id="identificadorCoordinacion" name="identificadorCoordinacion">
+                    <input type="hidden" id="identificadorDireccion" name="identificadorDireccion">
                     <label for="newUsername">Tienes comentarios:</label>
                     <input type="text" id="newUsername" name="newUsername" class="form-control" required>
                     <br>
