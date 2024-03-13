@@ -45,13 +45,6 @@ if (isset($_GET['identificador_coordinacion'])) {
         die("Error en la consulta: " . mysqli_error($conn));
     }
 
-    // Obtener información del usuario de la dirección
-    $queryUsuario = "SELECT Fullname FROM  director_area";
-    $stmtUsuario = mysqli_prepare($conn, $queryUsuario);
-    mysqli_stmt_execute($stmtUsuario);
-    $resultUsuario = mysqli_stmt_get_result($stmtUsuario);
-    $Usuario = mysqli_fetch_assoc($resultUsuario);
-
     // Obtener información del administrador
     $queryAdmin = "SELECT Fullname FROM  coordinación_de_recursos";
     $stmtAdmin = mysqli_prepare($conn, $queryAdmin);
@@ -71,7 +64,7 @@ if (isset($_GET['identificador_coordinacion'])) {
         mysqli_stmt_bind_param($stmtUsuario, 's', $row['Fullname_direccion']);
         mysqli_stmt_execute($stmtUsuario);
         $resultUsuario = mysqli_stmt_get_result($stmtUsuario);
-        $usuario = mysqli_fetch_assoc($resultUsuario);
+        $Usuario = mysqli_fetch_assoc($resultUsuario);
 
         $fecha_actual = date('d/m/Y');
 
@@ -169,7 +162,7 @@ if (isset($_GET['identificador_coordinacion'])) {
                 <tr>
                     <th align="center">
                         <div style="vertical-align: text-top;">
-                            <p style="margin-bottom: 1px;">' . $Usuario['Fullname'] . '</p>
+                        <p style="margin-bottom: 1px;">' . (isset($Usuario['Fullname']) ? $Usuario['Fullname'] : '') . '</p>
                         </div>
                     </th>
 
