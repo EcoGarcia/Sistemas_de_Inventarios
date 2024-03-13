@@ -136,10 +136,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result_guardar_usuario_servicio) {
         $notification_message = "Usuario registrado correctamente.";
         echo "<script>
-            alert('$notification_message');
-            window.location.href = '../dashboard/dashboard.php';
-        </script>";
-    } else {
+        if (confirm('$notification_message ¿Quieres añadir un nuevo usuario?')) {
+            window.location.href = '../usuarios/usuario_servicio.php';
+        } else {
+            window.location.href = '../dashboard/dashboard.php'; 
+        }
+    </script>";       } else {
         echo "Error al registrar el usuario: " . $conn->error;
     }
 }

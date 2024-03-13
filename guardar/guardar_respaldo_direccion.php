@@ -111,12 +111,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($conn->query($sql) === TRUE) {
         // Notifica al usuario sobre el registro exitoso y redirige a la página correspondiente
         $notification_message = "Registro exitoso";
+
+        // Agregar pregunta en la notificación
         echo "<script>
-            alert('$notification_message');
-            window.location.href = '../dashboard/dashboard.php';
+            if (confirm('$notification_message ¿Quieres hacer un nuevo resguardo?')) {
+                window.location.href = '../resguardos/resguardos_direccion.php';
+            } else {
+                window.location.href = '../dashboard/dashboard.php'; 
+            }
         </script>";
     } else {
-        // Muestra un mensaje de error si falla el registro del usuario
+        // Mostrar un mensaje de error si falla el registro del resguardo
         echo "Error al registrar el resguardo: " . $conn->error;
     }
 

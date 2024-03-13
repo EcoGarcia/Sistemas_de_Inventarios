@@ -13,6 +13,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 
 // Incluir el archivo de conexión a la base de datos
 include('../includes/conexion.php');
+include('../includes/header.php');
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +25,7 @@ include('../includes/conexion.php');
     <link rel="stylesheet" href="../assets/css/tarjeta.css">
     <title>DIF | Registro de Usuario</title>
 </head>
-
+<h2 style="text-align: center;">Añadir un nuevo director</h2>
 <body>
 
     <!-- Encabezado para el formulario de registro de usuario -->

@@ -34,10 +34,10 @@
                 echo '<li class="nav-item dropdown">';
                 echo '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUsuarios" role="button" data-bs-toggle="dropdown" aria-expanded="false">Nuevos usuarios</a>';
                 echo '<div class="dropdown-menu" aria-labelledby="navbarDropdownUsuarios">';
-                echo '<a class="dropdown-item" href="#" id="abrirModalAdminCoordinacion">Nuevo administrador</a>';
-                echo '<a class="dropdown-item" href="#" id="abrirModalUsuarioDireccion">Nuevo usuario dirección</a>';
-                echo '<a class="dropdown-item" href="#" id="abrirModalUsuarioCoordinacion">Nuevo usuario coordinación</a>';
-                echo '<a class="dropdown-item" href="#" id="abrirModalUsuarioServicio">Nuevo usuario servicio</a>';
+                echo '<a class="dropdown-item" href="../usuarios/administrador_coordinacion.php">Nuevo usuario de administrador</a>';
+                echo '<a class="dropdown-item" href="../usuarios/usuario_direccion.php">Nuevo usuario de direccion</a>';
+                echo '<a class="dropdown-item" href="../usuarios/usuario_coordinación.php">Nuevo usuario de coordinación</a>';
+                echo '<a class="dropdown-item" href="../usuarios/usuario_servicio.php">Nuevo usuario de servicio</a>';
                 echo '</div>';
                 echo '</li>';
 
@@ -79,106 +79,6 @@
             </form>
         </div>
     </nav>
-
-    <!-- Modal para el formulario de registro de usuario de dirección -->
-    <div class="modal fade" id="usuarioDireccionModal" tabindex="-1" aria-labelledby="usuarioDireccionModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="usuarioDireccionModalLabel">Registro de Usuario de Dirección</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-
-                    <!-- Contenedor para cargar el contenido de usuario_direccion.php -->
-                    <div id="modalContenido"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <!-- Puedes agregar más botones según tus necesidades -->
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal para el formulario de registro de administrador -->
-    <div class="modal fade" id="adminCoordinacionModal" tabindex="-1" aria-labelledby="adminCoordinacionModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="adminCoordinacionModalLabel">Registro de Administrador de Coordinación</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Contenedor para cargar el contenido de modal_administrador.php -->
-                    <div id="modalContenidoAdmin"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <!-- Puedes agregar más botones según tus necesidades -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal para el formulario de registro de usuario de dirección -->
-    <div class="modal fade" id="usuarioCoordinacionModal" tabindex="-1" aria-labelledby="usuarioCoordinacionModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="usuarioCoordinacionModalLabel">Registro de Usuario de Coordinación</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Contenedor para cargar el contenido de usuario_direccion.php -->
-                    <div id="modalContenido1"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <!-- Puedes agregar más botones según tus necesidades -->
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal para el formulario de resguardo de administrador -->
-    <div class="modal fade" id="resAdministradorModal" tabindex="-1" aria-labelledby="resAdministradorModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="resAdministradorModalLabel">Registro de un nuevo resguardo de administrador</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Contenedor para cargar el contenido del formulario de resguardo de administrador -->
-                    <div id="modalContenidoResAdministrador"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <!-- Puedes agregar más botones según tus necesidades -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Modal para el formulario de registro de usuario de dirección -->
-    <div class="modal fade" id="usuarioServicioModal" tabindex="-1" aria-labelledby="usuarioServicioModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="usuarioServicioModalLabel">Registro de Usuario de Servicio</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Contenedor para cargar el contenido de usuario_direccion.php -->
-                    <div id="modalContenido2"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <!-- Puedes agregar más botones según tus necesidades -->
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Modal para el formulario de registro de usuario de dirección -->
     <div class="modal fade" id="DireccionModal" tabindex="-1" aria-labelledby="DireccionModalLabel" aria-hidden="true">
@@ -285,34 +185,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $("#abrirModalUsuarioDireccion").on("click", function(e) {
-                e.preventDefault();
-                $("#modalContenido").load("../usuarios/usuario_direccion.php", function() {
-                    $("#usuarioDireccionModal").modal("show");
-                });
-            });
-            $("#abrirModalAdminCoordinacion").on("click", function(e) {
-                e.preventDefault();
-                $("#modalContenidoAdmin").load("../usuarios/administrador_coordinacion.php", function() {
-                    $("#adminCoordinacionModal").modal("show");
-                });
-            });
-
-
-            $("#abrirModalUsuarioCoordinacion").on("click", function(e) {
-                e.preventDefault();
-                $("#modalContenido1").load("../usuarios/usuario_coordinación.php", function() {
-                    $("#usuarioCoordinacionModal").modal("show");
-                });
-            });
-
-            $("#abrirModalUsuarioServicio").on("click", function(e) {
-                e.preventDefault();
-                $("#modalContenido2").load("../usuarios/usuario_servicio.php", function() {
-                    $("#usuarioServicioModal").modal("show");
-                });
-            });
 
             $("#abrirModalDireccion").on("click", function(e) {
                 e.preventDefault();
@@ -350,7 +222,6 @@
             });
 
 
-        });
     </script>
 </body>
 

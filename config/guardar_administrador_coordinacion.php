@@ -56,10 +56,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($conexion->query($sql) === TRUE) {
             $notification_message = "Usuario registrado correctamente.";
             echo "<script>
-                alert('$notification_message');
-                window.location.href = '../dashboard/dashboard.php';
-            </script>";
+            if (confirm('$notification_message ¿Quieres añadir un nuevo usuario?')) {
+                window.location.href = '../usuarios/administrador_coordinacion.php';
             } else {
+                window.location.href = '../dashboard/dashboard.php'; 
+            }
+        </script>";               } else {
             echo "Error al registrar usuario: " . $conexion->error;
         }
     } else {

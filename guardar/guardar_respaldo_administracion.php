@@ -121,9 +121,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Notifica al usuario sobre el registro exitoso y redirige a la página correspondiente
         $notification_message = "Registro exitoso";
         echo "<script>
-            alert('$notification_message');
-            window.location.href = '../dashboard/dashboard.php';
+            if (confirm('$notification_message ¿Quieres hacer un nuevo resguardo?')) {
+                window.location.href = '../resguardos/resguardos_administracion.php';
+            } else {
+                window.location.href = '../dashboard/dashboard.php'; 
+            }
         </script>";
+
     } else {
         echo "Error al guardar el respaldo de administración: " . $conn->error;
     }

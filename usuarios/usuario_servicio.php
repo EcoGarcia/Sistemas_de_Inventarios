@@ -7,6 +7,7 @@ if (!isset($_SESSION['tipo_usuario'])) {
 }
 
 include('../includes/conexion.php');
+include('../includes/header.php');
 
 $servername = "localhost";
 $username = "root";
@@ -53,8 +54,9 @@ if ($result->num_rows > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DIF | Registro un nuevo usuario de dirección</title>
-    <link rel="stylesheet" href="assets/css/tarjeta.css">
+    <link rel="stylesheet" href="../assets/css/tarjeta.css">
 </head>
+<h2 style="text-align: center;">Añadir un nuevo usuario de puesto</h2>
 <body>
 
 <form method="post" action="../config/guardar_usuario_servicio.php" class="tarjeta contenido" onsubmit="return validarFormulario()">

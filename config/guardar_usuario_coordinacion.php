@@ -106,10 +106,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Notifica al usuario sobre el registro exitoso y redirige a la página correspondiente
         $notification_message = "Usuario registrado correctamente.";
         echo "<script>
-            alert('$notification_message');
-            window.location.href = '../dashboard/dashboard.php';
-        </script>";
-    } else {
+        if (confirm('$notification_message ¿Quieres añadir un nuevo usuario?')) {
+            window.location.href = '../usuarios/usuario_coordinación.php';
+        } else {
+            window.location.href = '../dashboard/dashboard.php'; 
+        }
+    </script>";       } else {
         // Muestra un mensaje de error si falla el registro del usuario
         echo "Error al registrar el usuario: " . $conexion->error;
     }

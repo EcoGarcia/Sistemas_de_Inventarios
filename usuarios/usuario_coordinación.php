@@ -13,6 +13,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 
 // Incluir el archivo de conexión a la base de datos
 include('../includes/conexion.php');
+include('../includes/header.php');
 
 // Configuración de la conexión a la base de datos
 $servername = "localhost";
@@ -72,9 +73,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $direccionId = $_POST["fullname_direccion"];
     $coordinacion = $_POST["coordinacion_existente"];
 
-    // Resto del código para guardar el usuario, utilizando los datos obtenidos
-    // ...
-
     // Ejemplo: Guardar el usuario en la tabla de usuarios
     $sql_guardar_usuario = "INSERT INTO usuarios (nombre, email, password, direccion_id, coordinacion) VALUES ('$nombre', '$email', '$password', '$direccionId', '$coordinacion')";
     $result_guardar_usuario = $conn->query($sql_guardar_usuario);
@@ -104,9 +102,9 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DIF | Registro de Usuario</title>
-    <link rel="stylesheet" href="assets/css/">
+    <link rel="stylesheet" href="../assets/css/tarjeta.css">
 </head>
-
+<h2 style="text-align: center;"></h2>
 <body>
 
 

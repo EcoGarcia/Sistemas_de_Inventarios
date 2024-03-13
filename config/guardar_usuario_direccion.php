@@ -52,10 +52,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Notifica al usuario sobre el registro exitoso y redirige a la página correspondiente
             $notification_message = "Usuario registrado correctamente.";
             echo "<script>
-                alert('$notification_message');
-                window.location.href = '../dashboard/dashboard.php';
-            </script>";
-            exit(); // Asegura que no se ejecute más código después de redirigir
+            if (confirm('$notification_message ¿Quieres añadir un nuevo usuario?')) {
+                window.location.href = '../usuarios/usuario_direccion.php';
+            } else {
+                window.location.href = '../dashboard/dashboard.php'; 
+            }
+        </script>";   
+        exit(); // Asegura que no se ejecute más código después de redirigir
         } else {
             $_SESSION['mensaje_error'] = "Error al registrar usuario: " . mysqli_error($conexion);
         }
