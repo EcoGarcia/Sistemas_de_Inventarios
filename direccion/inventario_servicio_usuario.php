@@ -155,8 +155,23 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 
                     echo "</div>";
                 } else {
-                    echo "<p>No se encontraron resguardos para la dirección $nombre_direccion</p>";
-                }
+                    $nombre_servicio = ''; // Inicializa la variable
+
+                    // Obtener el nombre del servicio
+                    $query_servicio = "SELECT Fullname_servicio FROM servicios WHERE identificador_servicio = $identificador_servicios";
+                    $result_servicio = mysqli_query($conexion, $query_servicio);
+                    
+                    if ($result_servicio) {
+                        $row_servicio = mysqli_fetch_assoc($result_servicio);
+                        $nombre_servicio = $row_servicio['Fullname_servicio'];
+                    }
+                    
+                    // Luego, en la sección donde se imprime el mensaje de error:
+                    if ($result && mysqli_num_rows($result) > 0) {
+                        // Tu código existente aquí
+                    } else {
+                        echo "<p>No se encontraron resguardos para el servicio $nombre_servicio</p>";
+                    }                }
 
                 mysqli_close($conexion);
                 ?>
