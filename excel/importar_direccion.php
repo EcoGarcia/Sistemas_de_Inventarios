@@ -31,7 +31,7 @@ for ($row = 2; $row <= $totalRows; $row++) {
         'Factura' => $worksheet->getCell('N' . $row)->getValue(),
         'Fecha_creacion' => $worksheet->getCell('O' . $row)->getValue(),
         'Encargada_Área' => $worksheet->getCell('P' . $row)->getValue(),
-        'Coordinación_recursos' => $worksheet->getCell('Q' . $row)->getValue(),
+        'Coordinadora_Recursos' => $worksheet->getCell('Q' . $row)->getValue(),
         'Estado' => $worksheet->getCell('R' . $row)->getValue(),
     ];
 }
@@ -59,12 +59,17 @@ $result = mysqli_query($conn, $query);
 $row = mysqli_fetch_assoc($result);
 $lastIdentifier = $row['max_identificador'];
 
+// Obtener el último identificador utilizado en identificador_categoria
+$query = "SELECT MAX(identificador_categoria) AS max_identificador_categoria FROM resguardos_direccion";
+$result = mysqli_query($conn, $query);
+$row = mysqli_fetch_assoc($result);
+$lastCategoryIdentifier = $row['max_identificador_categoria'];
+
 // Obtener el último identificador utilizado en identificador_usuario_direccion
 $query = "SELECT MAX(identificador_usuario_direccion) AS max_identificador_usuario FROM resguardos_direccion";
 $result = mysqli_query($conn, $query);
 $row = mysqli_fetch_assoc($result);
 $lastIdentifierUsuario = $row['max_identificador_usuario'];
-
 foreach ($data as &$row) {
     // Verificar si ya existe un registro con el mismo Fullname_direccion
     $query = "SELECT identificador_direccion FROM resguardos_direccion WHERE Fullname_direccion = ?";
@@ -86,12 +91,32 @@ foreach ($data as &$row) {
 
     $stmt->close();
 
+    // Verificar si ya existe una categoría con el mismo Nombre_categoria
+$query = "SELECT identificador_categoria FROM resguardos_direccion WHERE Fullname_categoria = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("s", $row['Nombre_categoria']); // Aquí debería ser Fullname_categoria
+$stmt->execute();
+$stmt->store_result();
+
+if ($stmt->num_rows > 0) {
+    // Si ya existe, obtener el identificador asociado
+    $stmt->bind_result($existingCategoryIdentifier);
+    $stmt->fetch();
+    $row['identificador_categoria'] = $existingCategoryIdentifier;
+} else {
+    // Si no existe, utilizar el siguiente identificador disponible
+    $row['identificador_categoria'] = $lastCategoryIdentifier + 1;
+    $lastCategoryIdentifier++;
+}
+
+$stmt->close();
+
     // Asignar un nuevo identificador de usuario
     $row['identificador_usuario_direccion'] = $lastIdentifierUsuario + 1;
     $lastIdentifierUsuario++;
 
     // Insertar los datos en la tabla resguardos_direccion
-    $query = "INSERT INTO resguardos_direccion (Consecutivo_No, Fullname_direccion, Descripcion, Caracteristicas_Generales, Modelo, No_Serie, Color, usuario_responsable, Comentarios, Observaciones, Condiciones, Marca, Factura, Estado, identificador_direccion, identificador_usuario_direccion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO resguardos_direccion (Consecutivo_No, Fullname_direccion, Descripcion, Caracteristicas_Generales, Modelo, No_Serie, Color, usuario_responsable, Comentarios, Observaciones, Condiciones, Marca, Fullname_categoria, Factura, Encargada_Area, Coordinadora_Recursos, Estado, identificador_direccion, identificador_usuario_direccion, identificador_categoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
 
     if (!$stmt) {
@@ -99,15 +124,15 @@ foreach ($data as &$row) {
     }
 
     // Asegúrate de ajustar la cadena de definición de tipo según el número de variables
-    $stmt->bind_param("ssssssssssssssii", $row['Consecutivo_No'], $row['Fullname_direccion'], $row['Descripcion'], $row['Caracteristicas_Generales'], $row['Modelo'], $row['No_Serie'], $row['Color'], $row['Usuario_responsable'], $row['Comentarios'], $row['Observaciones'], $row['Condiciones'], $row['Marca'], $row['Factura'], $row['Estado'], $row['identificador_direccion'], $row['identificador_usuario_direccion']);
+    $stmt->bind_param("ssssssssssssssssiiii", $row['Consecutivo_No'], $row['Fullname_direccion'], $row['Descripcion'], $row['Caracteristicas_Generales'], $row['Modelo'], $row['No_Serie'], $row['Color'], $row['Usuario_responsable'], $row['Comentarios'], $row['Observaciones'], $row['Condiciones'], $row['Marca'], $row['Nombre_categoria'], $row['Factura'], $row['Encargada_Área'], $row['Coordinación_Recursos'], $row['Estado'], $row['identificador_direccion'], $row['identificador_usuario_direccion'], $row['identificador_categoria']);
 
     if (!$stmt->execute()) {
         die("Error al insertar datos: " . $stmt->error);
     }
 
     $stmt->close();
-}
 
+}
 // Cerrar la conexión a la base de datos
 $conn->close();
 

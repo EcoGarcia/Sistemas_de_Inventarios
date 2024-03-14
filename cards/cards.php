@@ -68,13 +68,6 @@
                         while ($row = mysqli_fetch_assoc($result)) {
                             echo "<div class='category-card' style='background-image: url(" . $row['image_path'] . ");'>";
                             
-                            // Agregar el formulario para cargar la imagen
-                            echo "<form action='cambiar_imagen.php' method='post' enctype='multipart/form-data' class='image-form' style='position: absolute; top: 10px; right: 10px;'>";
-                            echo "<input type='hidden' name='categoria_id' value='" . $row['identificador'] . "' />";
-                            echo "<input type='file' name='nueva_imagen' accept='image/*' style='display: none;' onchange='previewImage(this, \"preview" . $row['identificador'] . "\");' />";
-                            echo "<label for='nueva_imagen' style='cursor: pointer;'><img src='assets/cambiar-de-camara.png' alt='Cambiar Imagen'></label>";
-                            echo "<input type='submit' style='display: none;' />";
-                            echo "</form>";
 
                             // Vista previa de la imagen seleccionada
                             echo "<div id='preview" . $row['identificador'] . "' class='image-preview'></div>";
