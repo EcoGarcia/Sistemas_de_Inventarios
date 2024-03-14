@@ -58,19 +58,37 @@ $query = "SELECT MAX(identificador_direccion) AS max_identificador FROM resguard
 $result = mysqli_query($conn, $query);
 $row = mysqli_fetch_assoc($result);
 $lastIdentifier = $row['max_identificador'];
-$newIdentifier = $lastIdentifier + 1;
 
 // Obtener el último identificador utilizado en identificador_usuario_direccion
 $query = "SELECT MAX(identificador_usuario_direccion) AS max_identificador_usuario FROM resguardos_direccion";
 $result = mysqli_query($conn, $query);
 $row = mysqli_fetch_assoc($result);
 $lastIdentifierUsuario = $row['max_identificador_usuario'];
-$newIdentifierUsuario = $lastIdentifierUsuario + 1;
 
 foreach ($data as &$row) {
-    // Asignar un nuevo identificador a cada fila de datos
-    $row['identificador_direccion'] = $newIdentifier;
-    $row['identificador_usuario_direccion'] = $newIdentifierUsuario;
+    // Verificar si ya existe un registro con el mismo Fullname_direccion
+    $query = "SELECT identificador_direccion FROM resguardos_direccion WHERE Fullname_direccion = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $row['Fullname_direccion']);
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows > 0) {
+        // Si ya existe, obtener el identificador asociado
+        $stmt->bind_result($existingIdentifier);
+        $stmt->fetch();
+        $row['identificador_direccion'] = $existingIdentifier;
+    } else {
+        // Si no existe, utilizar el siguiente identificador disponible
+        $row['identificador_direccion'] = $lastIdentifier + 1;
+        $lastIdentifier++;
+    }
+
+    $stmt->close();
+
+    // Asignar un nuevo identificador de usuario
+    $row['identificador_usuario_direccion'] = $lastIdentifierUsuario + 1;
+    $lastIdentifierUsuario++;
 
     // Insertar los datos en la tabla resguardos_direccion
     $query = "INSERT INTO resguardos_direccion (Consecutivo_No, Fullname_direccion, Descripcion, Caracteristicas_Generales, Modelo, No_Serie, Color, usuario_responsable, Comentarios, Observaciones, Condiciones, Marca, Factura, Estado, identificador_direccion, identificador_usuario_direccion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -81,22 +99,16 @@ foreach ($data as &$row) {
     }
 
     // Asegúrate de ajustar la cadena de definición de tipo según el número de variables
-    $stmt->bind_param("ssssssssssssssii", $row['Consecutivo_No'], $row['Fullname_direccion'], $row['Descripcion'], $row['Caracteristicas_Generales'], $row['Modelo'], $row['No_Serie'], $row['Color'], $row['Usuario_responsable'], $row['Comentarios'], $row['Observaciones'], $row['Condiciones'], $row['Marca'], $row['Factura'], $row['Estado'], $newIdentifier, $newIdentifierUsuario);
+    $stmt->bind_param("ssssssssssssssii", $row['Consecutivo_No'], $row['Fullname_direccion'], $row['Descripcion'], $row['Caracteristicas_Generales'], $row['Modelo'], $row['No_Serie'], $row['Color'], $row['Usuario_responsable'], $row['Comentarios'], $row['Observaciones'], $row['Condiciones'], $row['Marca'], $row['Factura'], $row['Estado'], $row['identificador_direccion'], $row['identificador_usuario_direccion']);
 
     if (!$stmt->execute()) {
         die("Error al insertar datos: " . $stmt->error);
     }
 
     $stmt->close();
-
-    // Incrementar los nuevos identificadores para la próxima inserción
-    $newIdentifier++;
-    $newIdentifierUsuario++;
 }
-
 
 // Cerrar la conexión a la base de datos
 $conn->close();
 
 echo "Datos importados exitosamente.";
-?>
