@@ -11,23 +11,28 @@ $spreadsheet = IOFactory::load($inputFileName);
 $worksheet = $spreadsheet->getActiveSheet();
 $totalRows = $worksheet->getHighestRow();
 
-// Assuming the columns A to K contain the data
+// Assuming the columns A to N contain the data
 $data = [];
 for ($row = 2; $row <= $totalRows; $row++) {
     $data[] = [
         'Consecutivo_No' => $worksheet->getCell('A' . $row)->getValue(),
         'Fullname_direccion' => $worksheet->getCell('B' . $row)->getValue(),
-        'Descripcion' => $worksheet->getCell('D' . $row)->getValue(),
-        'Caracteristicas_Generales' => $worksheet->getCell('E' . $row)->getValue(),
-        'Modelo' => $worksheet->getCell('F' . $row)->getValue(),
-        'No_Serie' => $worksheet->getCell('G' . $row)->getValue(),
-        'Color' => $worksheet->getCell('H' . $row)->getValue(),
-        'Comentarios' => $worksheet->getCell('K' . $row)->getValue(),
-        'Observaciones' => $worksheet->getCell('L' . $row)->getValue(),
-        'Condiciones' => $worksheet->getCell('M' . $row)->getValue(),
-        'Marca' => $worksheet->getCell('N' . $row)->getValue(),
-        'Factura' => $worksheet->getCell('Q' . $row)->getValue(),
-        'Estado' => ($worksheet->getCell('S' . $row)->getValue() == 'Activo' ? 1 : 0),
+        'Descripcion' => $worksheet->getCell('C' . $row)->getValue(),
+        'Caracteristicas_Generales' => $worksheet->getCell('D' . $row)->getValue(),
+        'Modelo' => $worksheet->getCell('E' . $row)->getValue(),
+        'No_Serie' => $worksheet->getCell('F' . $row)->getValue(),
+        'Color' => $worksheet->getCell('G' . $row)->getValue(),
+        'Usuario_responsable' => $worksheet->getCell('H' . $row)->getValue(),
+        'Comentarios' => $worksheet->getCell('I' . $row)->getValue(),
+        'Observaciones' => $worksheet->getCell('J' . $row)->getValue(),
+        'Condiciones' => $worksheet->getCell('K' . $row)->getValue(),
+        'Marca' => $worksheet->getCell('L' . $row)->getValue(),
+        'Nombre_categoria' => $worksheet->getCell('M' . $row)->getValue(),
+        'Factura' => $worksheet->getCell('N' . $row)->getValue(),
+        'Fecha_creacion' => $worksheet->getCell('O' . $row)->getValue(),
+        'Encargada_Área' => $worksheet->getCell('P' . $row)->getValue(),
+        'Coordinación_recursos' => $worksheet->getCell('Q' . $row)->getValue(),
+        'Estado' => $worksheet->getCell('R' . $row)->getValue(),
     ];
 }
 
@@ -48,76 +53,49 @@ if (!$conn) {
     die("Conexión fallida: " . mysqli_connect_error());
 }
 
-foreach ($data as &$row) {
-    // Consulta para recuperar el identificador basado en Fullname_direccion
-    $queryDireccion = "SELECT identificador FROM direccion WHERE Fullname = ?";
-    $stmtDireccion = $conn->prepare($queryDireccion);
+// Obtener el último identificador utilizado en identificador_direccion
+$query = "SELECT MAX(identificador_direccion) AS max_identificador FROM resguardos_direccion";
+$result = mysqli_query($conn, $query);
+$row = mysqli_fetch_assoc($result);
+$lastIdentifier = $row['max_identificador'];
+$newIdentifier = $lastIdentifier + 1;
 
-    if (!$stmtDireccion) {
+// Obtener el último identificador utilizado en identificador_usuario_direccion
+$query = "SELECT MAX(identificador_usuario_direccion) AS max_identificador_usuario FROM resguardos_direccion";
+$result = mysqli_query($conn, $query);
+$row = mysqli_fetch_assoc($result);
+$lastIdentifierUsuario = $row['max_identificador_usuario'];
+$newIdentifierUsuario = $lastIdentifierUsuario + 1;
+
+foreach ($data as &$row) {
+    // Asignar un nuevo identificador a cada fila de datos
+    $row['identificador_direccion'] = $newIdentifier;
+    $row['identificador_usuario_direccion'] = $newIdentifierUsuario;
+
+    // Insertar los datos en la tabla resguardos_direccion
+    $query = "INSERT INTO resguardos_direccion (Consecutivo_No, Fullname_direccion, Descripcion, Caracteristicas_Generales, Modelo, No_Serie, Color, usuario_responsable, Comentarios, Observaciones, Condiciones, Marca, Factura, Estado, identificador_direccion, identificador_usuario_direccion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($query);
+
+    if (!$stmt) {
         die("La declaración preparada falló: " . $conn->error);
     }
 
-    // Vincular parámetros y ejecutar la consulta
-    $stmtDireccion->bind_param("s", $row['Fullname_direccion']);
-
-    if (!$stmtDireccion->execute()) {
-        die("Error al ejecutar la consulta: " . $stmtDireccion->error);
-    }
-
-    // Vincular la variable de resultado y obtener el resultado
-    $stmtDireccion->bind_result($direccionIdentificador);
-
-    if ($stmtDireccion->fetch()) {
-        // Asignar el identificador recuperado al array de datos
-        $row['Direccion_Identificador'] = $direccionIdentificador;
-
-        // Liberar los resultados antes de la siguiente consulta
-        $stmtDireccion->free_result();
-    } else {
-        // Si el nombre no existe, insértalo y obtén el nuevo identificador
-        $insertQuery = "INSERT INTO direccion (Fullname) VALUES (?)";
-        $stmtInsert = $conn->prepare($insertQuery);
-
-        if (!$stmtInsert) {
-            die("La declaración preparada falló: " . $conn->error);
-        }
-
-        // Vincular parámetros y ejecutar la consulta de inserción
-        $stmtInsert->bind_param("s", $row['Fullname_direccion']);
-
-        if (!$stmtInsert->execute()) {
-            die("Error al insertar datos: " . $stmtInsert->error);
-        }
-
-        // Recuperar el nuevo identificador insertado
-        $row['Direccion_Identificador'] = $stmtInsert->insert_id;
-
-        // Cerrar la declaración preparada para la consulta de inserción
-        $stmtInsert->close();
-    }
-
-    // Cerrar la declaración preparada y liberar los resultados
-    $stmtDireccion->close();
-
-}// Insertar los datos en la tabla resguardos_direccion
-$query = "INSERT INTO resguardos_direccion (Consecutivo_No, Fullname_direccion, Descripcion, Caracteristicas_Generales, Modelo, No_Serie, Color, Comentarios, Observaciones, Condiciones, Marca, Factura, Estado, identificador_direccion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-$stmt = $conn->prepare($query);
-
-if (!$stmt) {
-    die("La declaración preparada falló: " . $conn->error);
-}
-
-foreach ($data as $row) {
     // Asegúrate de ajustar la cadena de definición de tipo según el número de variables
-    $stmt->bind_param("sssssssssssssi", $row['Consecutivo_No'], $row['Fullname_direccion'], $row['Descripcion'], $row['Caracteristicas_Generales'], $row['Modelo'], $row['No_Serie'], $row['Color'], $row['Comentarios'], $row['Observaciones'], $row['Condiciones'], $row['Marca'], $row['Factura'], $row['Estado'], $row['Direccion_Identificador']);
+    $stmt->bind_param("ssssssssssssssii", $row['Consecutivo_No'], $row['Fullname_direccion'], $row['Descripcion'], $row['Caracteristicas_Generales'], $row['Modelo'], $row['No_Serie'], $row['Color'], $row['Usuario_responsable'], $row['Comentarios'], $row['Observaciones'], $row['Condiciones'], $row['Marca'], $row['Factura'], $row['Estado'], $newIdentifier, $newIdentifierUsuario);
 
     if (!$stmt->execute()) {
         die("Error al insertar datos: " . $stmt->error);
     }
+
+    $stmt->close();
+
+    // Incrementar los nuevos identificadores para la próxima inserción
+    $newIdentifier++;
+    $newIdentifierUsuario++;
 }
 
-// Cerrar la declaración preparada y la conexión a la base de datos
-$stmt->close();
+
+// Cerrar la conexión a la base de datos
 $conn->close();
 
 echo "Datos importados exitosamente.";

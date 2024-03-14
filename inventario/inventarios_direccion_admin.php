@@ -165,6 +165,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                 ?>
 <div class="text-right mt-3">
     <a href='../funciones/PDF_All_direccion.php?identificador_direccion=<?php echo $identificador_direccion; ?>' class='btn btn-primary btn-export-pdf btn-sm'>Exportar Todo en PDF</a>
+</form>
 </div>
 <div class="text-right mt-3">
     <form action="../excel/exportar_direccion.php" method="GET">
@@ -172,11 +173,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
         <input type="hidden" name="identificador_direccion" value="<?php echo $identificador_direccion; ?>">
         <button type="submit" id="btnExportExcel" class="btn btn-success btn-export-excel btn-sm">Exportar a Excel</button>
     </form>
-    <form action="../excel/importar_direccion.php" method="POST" enctype="multipart/form-data">
-        <input type="file" name="file" accept=".xlsx, .xls, .csv" required>
-        <input type="hidden" name="identificador_direccion" value="<?php echo $identificador_direccion; ?>">
-        <button type="submit" class="btn btn-primary btn-import-excel btn-sm">Importar desde Excel</button>
-    </form>
+
 </div>
 
                 <a href="../dashboard/dashboard.php">Volver al inicio</a>
