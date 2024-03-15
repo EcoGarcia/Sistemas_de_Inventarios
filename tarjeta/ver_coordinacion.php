@@ -84,6 +84,12 @@ $nombre_direccion = $row_direccion['Fullname'];
             </div>
         </div>
     </div>
+    <form action="../excel/importar_coordinacion.php" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".xlsx, .xls, .csv" required>
+        <input type="hidden" name="identificador_direccion" value="<?php echo $identificador_direccion; ?>">
+        <button type="submit" class="btn btn-primary btn-import-excel btn-sm">Importar desde Excel</button>
+    </form>
+
 </body>
 
 </html>
