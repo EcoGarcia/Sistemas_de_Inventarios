@@ -33,7 +33,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 
                  <!-- Tarjeta para Usuarios de administracion -->
                  <div class='category-card'>
-                        <h5>Administradores</h5>
+                        <h5>Administrador (Coordinación de Recursos Materiales)</h5>
                         <a href='../tabla/tabla_usuarios_administracion.php' class='btn btn-second'>Ver los usuarios</a>
                     </div>
 
@@ -41,12 +41,6 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                  <div class='category-card'>
                         <h5>Director del área</h5>
                         <a href='../tabla/Tabla_director.php' class='btn btn-second'>Ver los usuarios</a>
-                    </div>
-                    
-                 <!-- Tarjeta para Usuarios de administracion -->
-                 <div class='category-card'>
-                        <h5>Coordinación de recursos materiales</h5>
-                        <a href='../tabla/tabla_coordinacion.php' class='btn btn-second'>Ver los usuarios</a>
                     </div>
 
                     <!-- Tarjeta para Usuarios de Dirección -->

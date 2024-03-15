@@ -2,18 +2,22 @@
 // Verificar si se ha enviado el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Verificar si el ID del usuario y el nuevo nombre están presentes
-    if (isset($_POST["userId"]) && isset($_POST["newUsername"])) {
+    if (isset($_POST["userId"]) && isset($_POST["newUsername"]) && isset($_POST["newPassword"])) {
         // Sanitizar y obtener los datos del formulario
         $userId = htmlspecialchars($_POST["userId"]);
         $newUsername = htmlspecialchars($_POST["newUsername"]);
+        $newPassword = htmlspecialchars($_POST["newPassword"]);
 
         // Realizar la actualización en la base de datos
         include("../includes/conexion.php");
 
-        // Consulta para actualizar el nombre del usuario
-        $updateQuery = "UPDATE director_area SET Fullname = '$newUsername' WHERE id = $userId";
+        // Consulta para actualizar el nombre y la contraseña del usuario en la tabla director_area
+        $updateQueryDirector = "UPDATE director_area SET Fullname = '$newUsername', Password = '$newPassword' WHERE id = $userId";
+        // Consulta para actualizar solo el nombre del usuario en la tabla resguardos_direccion
+        $updateQueryResguardos = "UPDATE resguardos_direccion SET Encargada_Area = '$newUsername' WHERE id = $userId";
 
-        if (mysqli_query($conexion, $updateQuery)) {
+        // Ejecutar ambas consultas de actualización
+        if (mysqli_query($conexion, $updateQueryDirector) && mysqli_query($conexion, $updateQueryResguardos)) {
             // Éxito en la actualización
             $notification_message = "Cambio exitoso";
             echo "<script>

@@ -35,6 +35,7 @@ class PDF extends TCPDF
         $this->Rect($this->getPageWidth() - $leftRightMargin, $topBottomMargin, 0, $this->getPageHeight() - 2 * $topBottomMargin, 'D');
     }
 }    
+
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
@@ -60,13 +61,6 @@ if (isset($_GET['id'])) {
         die("Error en la consulta: " . mysqli_error($conn));
     }
 
-    // Obtener información del usuario de la dirección
-    $queryUsuario = "SELECT Fullname FROM  director_area";
-    $stmtUsuario = mysqli_prepare($conn, $queryUsuario);
-    mysqli_stmt_execute($stmtUsuario);
-    $resultUsuario = mysqli_stmt_get_result($stmtUsuario);
-    $Usuario = mysqli_fetch_assoc($resultUsuario);
-
     // Obtener información del administrador
     $queryAdmin = "SELECT Fullname FROM  coordinación_de_recursos";
     $stmtAdmin = mysqli_prepare($conn, $queryAdmin);
@@ -81,6 +75,23 @@ if (isset($_GET['id'])) {
     $pdf->SetY(15);
 
     while ($row = mysqli_fetch_assoc($result)) {
+        $queryDirector = "SELECT Fullname FROM director_area WHERE Area = ?";
+        $stmtDirector = mysqli_prepare($conn, $queryDirector);
+        mysqli_stmt_bind_param($stmtDirector, 's', $row['Fullname_direccion']);
+        mysqli_stmt_execute($stmtDirector);
+        $resultDirector = mysqli_stmt_get_result($stmtDirector);
+        $director = mysqli_fetch_assoc($resultDirector);
+        
+        if ($director) {
+            // Si se encontró un director para la dirección actual
+            $directorName = $director['Fullname'];
+        } else {
+            // Si no se encontró un director, puedes manejarlo de alguna manera, como mostrar un mensaje de error o usar un valor predeterminado
+            $directorName = "Director no encontrado";
+        }
+                        
+
+
         $queryUsuario = "SELECT Fullname FROM usuarios_direccion WHERE Fullname_direccion = ?";
         $stmtUsuario = mysqli_prepare($conn, $queryUsuario);
         mysqli_stmt_bind_param($stmtUsuario, 's', $row['Fullname_direccion']);
@@ -90,8 +101,7 @@ if (isset($_GET['id'])) {
 
         $fecha_actual = date('d/m/Y');
 
-        // Sección 0
-        $html1= '<table border="0">
+        $html1 = '<table border="0">
             <tr>
                 <th align="center">
                     <div style="display: inline-block; text-align: center; line-height: 10px; margin-top: 0;">
@@ -109,106 +119,96 @@ if (isset($_GET['id'])) {
             </tr>
         </table>';
 
-        // Sección 2
         $html2 = '<div border="1" style="text-align: center; padding: 10px;  font-size: 11px;">CONSECUTIVO No: ' . $row['Consecutivo_No'] . '</div>';
 
-        // Sección 3
-        $html3 = '<table border="1" style="border-collapse: collapse; width: 100%;">
+        $html3 = '<table border="1" style="border-collapse: collapse; width: 100%; margin-left: 60px;">
         <tr>
                     <th style="text-align: center; background-color: #ccc;  font-size: 11px;">ÁREA RESGUARDANTE:</th>
                     <td style="text-align: center;">' . $row['Fullname_direccion'] . '</td>
                 </tr>
             </table>';
 
-        // Sección 4
         $html4 = '<div style="text-align: center; background-color: #ccc;  font-size: 11px;">DATOS DEL BIEN</div>';
 
-        // Sección 5
         $html5 = '<div style="width: 50%; margin: 0 auto; text-align: center;">
                 <img src="' . $row['Image'] . '" alt="Imagen" class="book-image" style="width: 130px; height: 180px;">
             </div>';
 
-        // Sección 6
-        $html6 = '<table border="1" style="border-collapse: collapse; width: 100%; margin-top: 15px;">
+        $html6 = '<table border="1" style="border-collapse: collapse; width: 100%; margin-left: 60px;">
         <tr>
-                <th style="background-color: #ccc; margin-left: 60px; width: 180px;  font-size: 11px;">DESCRIPCIÓN: </th>
-                <td style="margin-left: 45px; width: 360px;  font-size: 11px;">' . $row['Descripcion'] . '</td>
+                <th style="background-color: #ccc; margin-left: 60px; width: 180px; font-size: 11px; padding-bottom: 0;">DESCRIPCIÓN: </th>
+                <td style="margin-left: 45px; width: 360px; font-size: 11px; padding-bottom: 0;">' . $row['Descripcion'] . '</td>
             </tr>
             <tr>
-            <th style="background-color: #ccc; padding: 5px; width: 180px; font-size: 11px; vertical-align: middle;">CARACTERISTICAS GENERALES: </th>
-            <td style="width: 360px;  font-size: 11px;">' . $row['Caracteristicas_Generales'] . '</td>
+            <th style="background-color: #ccc; padding: 5px; width: 180px; font-size: 11px; vertical-align: middle; padding-bottom: 0;">CARACTERISTICAS GENERALES: </th>
+            <td style="width: 360px; font-size: 11px; padding-bottom: 0;">' . $row['Caracteristicas_Generales'] . '</td>
         </tr>
             <tr>
-                <th style="background-color: #ccc; width: 180px;  font-size: 11px;">CATEGORIA: </th>
-                <td style="width: 360px;  font-size: 11px;">' . $row['Fullname_categoria'] . '</td>
+                <th style="background-color: #ccc; width: 180px; font-size: 11px; padding-bottom: 0;">CATEGORIA: </th>
+                <td style="width: 360px; font-size: 11px; padding-bottom: 0;">' . $row['Fullname_categoria'] . '</td>
             </tr>
             <tr>
-                <th style="background-color: #ccc; width: 180px;  font-size: 11px;">MARCA: </th>
-                <td style="width: 360px;  font-size: 11px;">' . $row['Marca'] . '</td>
+                <th style="background-color: #ccc; width: 180px; font-size: 11px; padding-bottom: 0;">MARCA: </th>
+                <td style="width: 360px; font-size: 11px; padding-bottom: 0;">' . $row['Marca'] . '</td>
             </tr>
             <tr>
-                <th style="background-color: #ccc; width: 180px;  font-size: 11px;">MODELO: </th>
-                <td style="width: 360px;  font-size: 11px;">' . $row['Modelo'] . '</td>
+                <th style="background-color: #ccc; width: 180px; font-size: 11px; padding-bottom: 0;">MODELO: </th>
+                <td style="width: 360px; font-size: 11px; padding-bottom: 0;">' . $row['Modelo'] . '</td>
             </tr>
             <tr>
-                <th style="background-color: #ccc; width: 180px;  font-size: 11px;">NO. DE SERIE: </th>
-                <td style="width: 360px;  font-size: 11px;">' . $row['No_Serie'] . '</td>
+                <th style="background-color: #ccc; width: 180px; font-size: 11px; padding-bottom: 0;">NO. DE SERIE: </th>
+                <td style="width: 360px; font-size: 11px; padding-bottom: 0;">' . $row['No_Serie'] . '</td>
             </tr>
             <tr>
-                <th style="background-color: #ccc; width: 180px;  font-size: 11px;">COLOR: </th>
-                <td style="width: 360px;  font-size: 11px;">' . $row['Color'] . '</td>
+                <th style="background-color: #ccc; width: 180px; font-size: 11px; padding-bottom: 0;">COLOR: </th>
+                <td style="width: 360px; font-size: 11px; padding-bottom: 0;">' . $row['Color'] . '</td>
             </tr>
             <tr>
-                <th style="background-color: #ccc; width: 180px;  font-size: 11px;">OBSERVACIONES: </th>
-                <td style="width: 360px;  font-size: 11px;">' . $row['Observaciones'] . '</td>
+                <th style="background-color: #ccc; width: 180px; font-size: 11px; padding-bottom: 0;">OBSERVACIONES: </th>
+                <td style="width: 360px; font-size: 11px; padding-bottom: 0;">' . $row['Observaciones'] . '</td>
             </tr>
             <tr>
-                <th style="background-color: #ccc; width: 180px;  font-size: 11px;">USUARIO RESPONSABLE: </th>
-                <td style="width: 360px;  font-size: 11px;">' . $row['usuario_responsable'] . '</td>
+                <th style="background-color: #ccc; width: 180px; font-size: 11px; padding-bottom: 0;">USUARIO RESPONSABLE: </th>
+                <td style="width: 360px; font-size: 11px; padding-bottom: 0;">' . $row['usuario_responsable'] . '</td>
             </tr>
 
             <tr>
-                <th style="background-color: #ccc; width: 180px;  font-size: 11px;">CONDICIONES: </th>
-                <td style="width: 360px;  font-size: 11px;">' . $row['Condiciones'] . '</td>
+                <th style="background-color: #ccc; width: 180px; font-size: 11px; padding-bottom: 0;">CONDICIONES: </th>
+                <td style="width: 360px; font-size: 11px; padding-bottom: 0;">' . $row['Condiciones'] . '</td>
             </tr>
             <tr>
-            <th style="background-color: #ccc; width: 180px;  font-size: 11px;  ">NUMERO DE FACTURA: </th>
-            <td style="width: 360px;  font-size: 11px;">' . $row['Factura'] . '</td>
+            <th style="background-color: #ccc; width: 180px; font-size: 11px; padding-bottom: 0;">NUMERO DE FACTURA: </th>
+            <td style="width: 360px; font-size: 11px; padding-bottom: 0;">' . $row['Factura'] . '</td>
         </tr>
         </table>';
 
-        // Espacio adicional
-        $space = '<div style="margin-bottom: 80px;"></div>';
-
-        // Sección 8
-// Sección 8
-$html7 = '<table border="1" style="border-collapse: collapse; width: 100%;">
-    <tr>
-        <th align="center">
-            <div style="vertical-align: text-top;">
-                <p style="margin-bottom: 1px;">' . (isset($Usuario['Fullname']) ? $Usuario['Fullname'] : '') . '</p>
-            </div>
-        </th>
-
-        <th align="center">
-            <div style="vertical-align: text-top;">
-                <p style="margin-bottom: 1px;">' . $row['usuario_responsable'] . '</p>
-            </div>
-        </th>
-
-        <th align="center">
-            <div style="vertical-align: text-top;">
-                <p style="margin-bottom: 1px;">' . (isset($admin['Fullname']) ? $admin['Fullname'] : '') . '</p>
-            </div>
-        </th>
-    </tr>
-    <tr>
+        $html7 = '<table border="1" style="border-collapse: collapse; width: 100%; margin-left: 60px;">
+        <tr>
+            <th align="center" style="vertical-align: bottom;">
+                <div>
+                <p style="margin-bottom: 1px;">' . $directorName . '</p>
+                </div>
+            </th>
+    
+            <th align="center" style="vertical-align: bottom;">
+                <div>
+                <p style=" margin-bottom: 0.5px;">'  . $row['usuario_responsable'] . '</p>
+                </div>
+            </th>
+    
+            <th align="center" style="vertical-align: bottom;">
+                <div>
+                <p style=" margin-bottom: 0.5px;">'  . (isset($admin['Fullname']) ? $admin['Fullname'] : '') . '</p>
+                </div>
+            </th>
+        </tr>
+            <tr>
         <td style="text-align: center">NOMBRE Y FIRMA DIRECTOR ÁREA SOLICITANTE</td>
         <td style="text-align: center">NOMBRE Y FIRMA USUARIO RESPONSABLE</td>
         <td style="text-align: center">NOMBRE Y FIRMA COORDINACIÓN DE RECURSOS MATERIALES</td>
     </tr>
 </table>';
-
+    
         // Salida del HTML al PDF
         $pdf->Ln();
         $pdf->writeHTML($html1, true, false, true, false, '');
@@ -218,7 +218,6 @@ $html7 = '<table border="1" style="border-collapse: collapse; width: 100%;">
         $pdf->writeHTML($html5, true, false, true, false, '');
         $pdf->writeHTML($html6, true, false, true, false, '');
         $pdf->writeHTML($html7, true, false, true, false, '');
-        $pdf->writeHTML($space, true, false, true, false, '');
     }
 
     // Salida del PDF

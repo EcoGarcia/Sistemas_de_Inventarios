@@ -29,12 +29,27 @@ for ($row = 2; $row <= $totalRows; $row++) {
         'Marca' => $worksheet->getCell('L' . $row)->getValue(),
         'Nombre_categoria' => $worksheet->getCell('M' . $row)->getValue(),
         'Factura' => $worksheet->getCell('N' . $row)->getValue(),
-        'Fecha_creacion' => $worksheet->getCell('O' . $row)->getValue(),
-        'Encargada_Área' => $worksheet->getCell('P' . $row)->getValue(),
-        'Coordinadora_Recursos' => $worksheet->getCell('Q' . $row)->getValue(),
-        'Estado' => $worksheet->getCell('R' . $row)->getValue(),
+        'Encargada_Área' => $worksheet->getCell('O' . $row)->getValue(),
+        'Coordinadora_Recursos' => $worksheet->getCell('P' . $row)->getValue(),
     ];
+    // Obtener el valor del estado
+$estado = $worksheet->getCell('Q' . $row)->getValue();
+
+// Asignar el valor apropiado al campo 'Estado'
+if (strtolower($estado) === 'activo') {
+    $estadoValue = 1;
+} elseif (strtolower($estado) === 'inactivo') {
+    $estadoValue = 0;
+} else {
+    // Manejar otro caso si es necesario
+    $estadoValue = ''; // Asignar un valor predeterminado o dejarlo en blanco según tu necesidad
 }
+
+// Asignar el valor del estado al campo 'Estado'
+$data[$row - 2]['Estado'] = $estadoValue;
+}
+
+
 
 // Estableciendo conexión con la base de datos para la consulta adicional
 $localhost = 'localhost'; // Reemplazar con tu host real
@@ -124,7 +139,7 @@ $stmt->close();
     }
 
     // Asegúrate de ajustar la cadena de definición de tipo según el número de variables
-    $stmt->bind_param("ssssssssssssssssiiii", $row['Consecutivo_No'], $row['Fullname_direccion'], $row['Descripcion'], $row['Caracteristicas_Generales'], $row['Modelo'], $row['No_Serie'], $row['Color'], $row['Usuario_responsable'], $row['Comentarios'], $row['Observaciones'], $row['Condiciones'], $row['Marca'], $row['Nombre_categoria'], $row['Factura'], $row['Encargada_Área'], $row['Coordinación_Recursos'], $row['Estado'], $row['identificador_direccion'], $row['identificador_usuario_direccion'], $row['identificador_categoria']);
+    $stmt->bind_param("ssssssssssssssssiiii", $row['Consecutivo_No'], $row['Fullname_direccion'], $row['Descripcion'], $row['Caracteristicas_Generales'], $row['Modelo'], $row['No_Serie'], $row['Color'], $row['Usuario_responsable'], $row['Comentarios'], $row['Observaciones'], $row['Condiciones'], $row['Marca'], $row['Nombre_categoria'], $row['Factura'], $row['Encargada_Área'], $row['Coordinadora_Recursos'], $row['Estado'], $row['identificador_direccion'], $row['identificador_usuario_direccion'], $row['identificador_categoria']);
 
     if (!$stmt->execute()) {
         die("Error al insertar datos: " . $stmt->error);

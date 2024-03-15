@@ -109,7 +109,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     echo "<tr>";
                     echo "<th>Nombre del usuario</th>";
                     echo "<th>Email</th>";
-                    echo "<th>Puesto</th>";
+                    echo "<th>Área</th>";
                     echo "<th>Editar</th>";
                     echo "</tr>";
                     echo "</thead>";
@@ -120,7 +120,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                         echo "<tr class='book-row'>";
                         echo "<td>" . $row['Fullname'] . "</td>";
                         echo "<td>" . $row['EmailId'] . "</td>";
-                        echo "<td>" . $row['Puesto'] . "</td>";
+                        echo "<td>" . $row['Area'] . "</td>";
                         echo "<td><button class='btn btn-primary btn-edit' data-toggle='modal' data-target='#editModal' data-userid='" . $row['id'] . "' data-username='" . $row['Fullname'] . "'>Editar</button></td>";
 
                         echo "</div>";
@@ -194,6 +194,8 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     <input type="hidden" id="editUserId" name="userId">
                     <label for="newUsername">Nuevo Nombre:</label>
                     <input type="text" id="newUsername" name="newUsername" class="form-control" required>
+                    <label for="newPassword">Nueva contraseña:</label>
+                    <input type="password" id="newPassword" name="newPassword" class="form-control" required>
                     <br>
                     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
