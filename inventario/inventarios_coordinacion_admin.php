@@ -144,7 +144,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                         <hr>
                         <button class='btn btn-warning btn-cambiar-estado btn-sm' data-id='" . $row['id'] . "' data-estado='" . $row['Estado'] . "'>Cambiar Estado</button>
                         <hr>
-                        <button class='btn btn-secondary btn-editar btn-sm' onclick=\"window.location.href='../editar/resguardos/resguardos_direccion.php?id=" . $row['id'] . "'\">Editar</button>
+                        <button class='btn btn-secondary btn-editar btn-sm' onclick=\"window.location.href='../editar/resguardos_coordinacion.php?id=" . $row['id'] . "'\">Editar</button>
                     </td>";
                     
                       

@@ -101,26 +101,27 @@ $conn->close();
         <label for="consecutivo">Consecutivo No:</label>
         <input type="text" name="consecutivo" id="consecutivo" value="<?php echo $consecutivo; ?>" required>
 
-        <!-- Campos del formulario -->
-        <label for="fullname_direccion">Dirección Anterior:</label>
-        <input type="text" name="fullname_direccion" id="fullname_direccion" value="<?php echo $fullname_direccion; ?>" required readonly>
+        <br>
 
-        <label for="fullname_direccion">Seleccione la nueva dirección:</label>
+
+        <label for="fullname_direccion">Seleccione una dirección:</label>
         <select name="id_direccion" id="direccion" required>
-            <option value="" disabled selected>Selecciona una dirección</option>
-            <?php echo $optionsDireccion; ?>
+            <option value="<?php echo $fullname; ?>" disabled>Selecciona una dirección</option>
+            <?php
+            echo $optionsDireccion; // Imprime las opciones generadas dinámicamente
+            ?>
         </select>
         <br>
-        <!-- Campos del formulario -->
-        <label for="fullname_categoria">Categoria Anterior:</label>
-        <input type="text" name="fullname_categoria" id="fullname_categoria" value="<?php echo $fullname_categoria; ?>" required readonly>
 
         <!-- Campos del formulario -->
-        <label for="fullname_categoria">Seleccione una nueva categoria:</label>
-        <select name="id_categoria" required>
-            <option value="" disabled selected>Selecciona una categoria</option>
-            <?php echo $optionsCategoria; ?>
+        <label for="fullname_categoria">Seleccione una dirección:</label>
+        <select name="id_categoria" id="categoria" required>
+            <option value="<?php echo $fullname_categoria; ?>" disabled>Selecciona una dirección</option>
+            <?php
+            echo $optionsCategoria; // Imprime las opciones generadas dinámicamente
+            ?>
         </select>
+
 
         <br>
 
@@ -142,14 +143,14 @@ $conn->close();
         <label for="">Color:</label>
         <input type="text" name="color" id="color" value="<?php echo $color; ?>" required>
 
-        <label for="usuario_responsable">Usuario Anterior:</label>
-        <input type="text" name="usuario_responsable" id="usuario_responsable" value="<?php echo $usuario_responsable; ?>" required readonly>
 
 
 
         <label for="id_usuario">Seleccione un usuario de la dirección:</label>
         <select name="id_usuario" required>
-            <option value="" disabled selected>Selecciona un usuario</option>
+            <option value="" disabled>Selecciona un usuario</option>
+            <option value="<?php echo $usuario_responsable; ?>" selected><?php echo $usuario_responsable; ?></option>
+            <!-- Aquí se agregarán las opciones de los demás usuarios si es necesario -->
         </select>
 
         <br>
@@ -170,6 +171,7 @@ $conn->close();
         <label for="">Selecciona una imagen:</label>
         <input type="file" name="imagen" id="" accept=".jpg, .jpeg" required />
 
+        <input type="hidden" name="id" value="<?php echo $id; ?>">
         <button type="submit">Registrar Usuario</button>
     </form>
 
