@@ -151,4 +151,9 @@ $stmt->close();
 // Cerrar la conexión a la base de datos
 $conn->close();
 
-echo "Datos importados exitosamente.";
+$notification_message = "Datos importados exitosamente.";
+echo "<script>
+    alert('$notification_message');
+    window.location.href = '../dashboard/dashboard.php';
+</script>";
+?>

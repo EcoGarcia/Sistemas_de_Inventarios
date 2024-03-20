@@ -17,7 +17,6 @@ include('../includes/conexion.php');
 // Verificar si se han enviado los identificadores de dirección y coordinación
 if (!isset($_GET['identificador_coordinacion'])) {
     // Si no se proporciona el identificador de coordinación, redirige a alguna página de manejo de errores o a la página principal
-    header('Location: index.php');
     exit();
 }
 
@@ -90,6 +89,14 @@ include('../includes/header.php');
             </div>
         </div>
     </div>
+    <form action="../excel/importar_servicio.php" method="POST" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".xlsx, .xls, .csv" required>
+    <input type="hidden" name="identificador_direccion" value="<?php echo $identificador_direccion; ?>">
+    <input type="hidden" name="identificador_coordinacion" value="<?php echo $identificador_coordinacion; ?>"> <!-- Agregado: campo oculto para identificador de coordinación -->
+    <button type="submit" class="btn btn-primary btn-import-excel btn-sm">Importar desde Excel</button>
+</form>
+<a href="../tarjeta/ver_coordinacion.php?identificador_direccion=<?php echo $identificador_coordinacion; ?>" class="btn btn-primary">Regresar al Dashboard</a>
+
 </body>
 
 </html>

@@ -207,7 +207,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 </form>
 </div>
 
-                <a href="../../tarjeta/ver_servicio.php">Volver al inicio</a>
+<a href="../tarjeta/ver_servicio.php?identificador_coordinacion=<?php echo $identificador_servicios; ?>" class="btn btn-primary">Volver al inicio</a>
                 <!-- Modal para mostrar la imagen -->
                 <div class="modal fade" id="imagenModalModal" tabindex="-1" role="dialog" aria-labelledby="imagenModalModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-sm">

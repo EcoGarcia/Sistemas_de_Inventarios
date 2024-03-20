@@ -15,6 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $updateQueryDirector = "UPDATE director_area SET Fullname = '$newUsername', Password = '$newPassword' WHERE id = $userId";
         // Consulta para actualizar solo el nombre del usuario en la tabla resguardos_direccion
         $updateQueryResguardos = "UPDATE resguardos_direccion SET Encargada_Area = '$newUsername' WHERE id = $userId";
+        $updateQueryResguardos = "UPDATE respaldos_coordinacion SET Encargada_Area = '$newUsername' WHERE id = $userId";
+        $updateQueryResguardos = "UPDATE respaldos_servicios SET Encargada_Area = '$newUsername' WHERE id = $userId";
 
         // Ejecutar ambas consultas de actualización
         if (mysqli_query($conexion, $updateQueryDirector) && mysqli_query($conexion, $updateQueryResguardos)) {

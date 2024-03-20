@@ -179,7 +179,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
     </form>
 </div>
 
-                <a href="../dashboard/dashboard.php">Volver al inicio</a>
+                <a href="../tarjeta/ver_coordinacion.php?identificador_direccion=<?php echo $identificador_coordinacion; ?>" ">Volver al inicio</a>
 
                 <div class="modal fade" id="imagenModalModal" tabindex="-1" role="dialog" aria-labelledby="imagenModalModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-sm">

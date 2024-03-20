@@ -20,6 +20,14 @@ $sistemas = 'sistemas'; // Reemplazar con el nombre real de tu base de datos
 if (empty($localhost) || empty($root) || empty($sistemas)) {
     die("Error: Detalles incompletos de conexión a la base de datos. Por favor, verifica tu configuración.");
 }
+// Verificar si se ha enviado el identificador de la dirección
+if (!isset($_POST['identificador_direccion'])) {
+    // Manejar el caso en que el identificador de la dirección no se ha enviado
+    die("Identificador de dirección no proporcionado.");
+}
+
+// Obtener el identificador de la dirección enviado desde el formulario
+$identificador_direccion = $_POST['identificador_direccion'];
 
 $conn = mysqli_connect($localhost, $root, '', $sistemas);
 
@@ -62,20 +70,20 @@ for ($row = 2; $row <= $totalRows; $row++) {
         'Coordinadora_Recursos' => $worksheet->getCell('Q' . $row)->getValue(),
     ];
     // Obtener el valor del estado
-$estado = $worksheet->getCell('R' . $row)->getValue();
+    $estado = $worksheet->getCell('R' . $row)->getValue();
 
-// Asignar el valor apropiado al campo 'Estado'
-if (strtolower($estado) === 'activo') {
-    $estadoValue = 1;
-} elseif (strtolower($estado) === 'inactivo') {
-    $estadoValue = 0;
-} else {
-    // Manejar otro caso si es necesario
-    $estadoValue = ''; // Asignar un valor predeterminado o dejarlo en blanco según tu necesidad
-}
+    // Asignar el valor apropiado al campo 'Estado'
+    if (strtolower($estado) === 'activo') {
+        $estadoValue = 1;
+    } elseif (strtolower($estado) === 'inactivo') {
+        $estadoValue = 0;
+    } else {
+        // Manejar otro caso si es necesario
+        $estadoValue = ''; // Asignar un valor predeterminado o dejarlo en blanco según tu necesidad
+    }
 
-// Asignar el valor del estado al campo 'Estado'
-$data[$row - 2]['Estado'] = $estadoValue;
+    // Asignar el valor del estado al campo 'Estado'
+    $data[$row - 2]['Estado'] = $estadoValue;
 }
 
 
@@ -103,7 +111,7 @@ foreach ($data as &$row) {
     $lastIdentifierUsuario++;
 
     // Insertar los datos en la tabla respaldos_coordinacion
-    $query = "INSERT INTO respaldos_coordinacion (consecutivo, usuario_responsable, Fullname_direccion, Fullname_coordinacion, descripcion, caracteristicas, marca, comentarios, modelo, serie, color, observaciones, fecha_creacion, Fullname_categoria, Factura, condiciones, Estado, Encargada_Area, Coordinadora_Recursos, identificador_coordinacion, identificador_direccion, identificador_usuario_coordinacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO respaldos_coordinacion (consecutivo, usuario_responsable, Fullname_direccion, Fullname_coordinacion, descripcion, caracteristicas, marca, comentarios, modelo, serie, color, observaciones, fecha_creacion, Fullname_categoria, Factura, condiciones, Estado, Encargada_Area, Coordinadora_Recursos, identificador_coordinacion, identificador_usuario_coordinacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
 
     $stmt = $conn->prepare($query);
@@ -113,7 +121,7 @@ foreach ($data as &$row) {
     }
 
     // Ajustar la cadena de definición de tipo según el número de variables
-    $stmt->bind_param("ssssssssssssssssssisi", $row['Consecutivo_No'], $row['Usuario_responsable'], $row['Fullname_direccion'], $row['Fullname_coordinacion'], $row['Descripcion'], $row['Caracteristicas_Generales'], $row['Marca'], $row['Comentarios'], $row['Modelo'], $row['No_Serie'], $row['Color'], $row['Observaciones'], $row['Nombre_categoria'], $row['Factura'], $row['Condiciones'], $row['Estado'], $row['Encargada_Area'], $row['Coordinadora_Recursos'], $row['identificador_coordinacion'], $row['identificador_direccion'] , $row['identificador_usuario_coordinacion']);
+    $stmt->bind_param("ssssssssssssssssssii", $row['Consecutivo_No'], $row['Usuario_responsable'], $row['Fullname_direccion'], $row['Fullname_coordinacion'], $row['Descripcion'], $row['Caracteristicas_Generales'], $row['Marca'], $row['Comentarios'], $row['Modelo'], $row['No_Serie'], $row['Color'], $row['Observaciones'], $row['Nombre_categoria'], $row['Factura'], $row['Condiciones'], $row['Estado'], $row['Encargada_Area'], $row['Coordinadora_Recursos'], $row['identificador_coordinacion'], $row['identificador_usuario_coordinacion']);
 
     if (!$stmt->execute()) {
         die("Error al insertar datos: " . $stmt->error);
@@ -125,5 +133,9 @@ foreach ($data as &$row) {
 // Cerrar la conexión a la base de datos
 $conn->close();
 
-echo "Datos importados exitosamente.";
+$notification_message = "Datos importados exitosamente.";
+echo "<script>
+    alert('$notification_message');
+    window.location.href = '../tarjeta/ver_coordinacion.php?identificador_direccion=$identificador_direccion';
+</script>";
 ?>
