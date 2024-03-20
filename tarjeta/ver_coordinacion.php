@@ -119,7 +119,7 @@ if ($stmt_direccion) {
                 </div>
             </div>
         </div>
-        <a href="../dashboard/dashboard.php" class="btn btn-primary">Regresar al Dashboard</a>
+        <a href="../dashboard/dashboard.php" class="btn btn-primary">Regresar al Inicio</a>
 
     </div>
 </body>

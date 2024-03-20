@@ -101,25 +101,22 @@ $conn->close();
         <label for="consecutivo">Consecutivo No:</label>
         <input type="text" name="consecutivo" id="consecutivo" value="<?php echo $consecutivo; ?>" required>
 
-        <!-- Campos del formulario -->
-        <label for="fullname_direccion">Dirección Anterior:</label>
-        <input type="text" name="fullname_direccion" id="fullname_direccion" value="<?php echo $fullname_direccion; ?>" required readonly>
-
-        <label for="fullname_direccion">Seleccione la nueva dirección:</label>
+        <label for="fullname_direccion">Seleccione una dirección:</label>
         <select name="id_direccion" id="direccion" required>
-            <option value="" disabled selected>Selecciona una dirección</option>
-            <?php echo $optionsDireccion; ?>
+            <option value="<?php echo $fullname; ?>" disabled>Selecciona una dirección</option>
+            <?php
+            echo $optionsDireccion; // Imprime las opciones generadas dinámicamente
+            ?>
         </select>
         <br>
-        <!-- Campos del formulario -->
-        <label for="fullname_categoria">Categoria Anterior:</label>
-        <input type="text" name="fullname_categoria" id="fullname_categoria" value="<?php echo $fullname_categoria; ?>" required readonly>
 
         <!-- Campos del formulario -->
-        <label for="fullname_categoria">Seleccione una nueva categoria:</label>
-        <select name="id_categoria" required>
-            <option value="" disabled selected>Selecciona una categoria</option>
-            <?php echo $optionsCategoria; ?>
+        <label for="fullname_categoria">Seleccione una dirección:</label>
+        <select name="id_categoria" id="categoria" required>
+            <option value="<?php echo $fullname_categoria; ?>" disabled>Selecciona una dirección</option>
+            <?php
+            echo $optionsCategoria; // Imprime las opciones generadas dinámicamente
+            ?>
         </select>
 
         <br>
@@ -148,7 +145,7 @@ $conn->close();
 
 
         <label for="id_usuario">Seleccione un usuario de la dirección:</label>
-        <select name="id_usuario" required>
+        <select name="usuario_responsable" id="usuario_responsable" required>
             <option value="" disabled selected>Selecciona un usuario</option>
         </select>
 

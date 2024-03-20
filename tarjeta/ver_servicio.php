@@ -95,7 +95,7 @@ include('../includes/header.php');
     <input type="hidden" name="identificador_coordinacion" value="<?php echo $identificador_coordinacion; ?>"> <!-- Agregado: campo oculto para identificador de coordinación -->
     <button type="submit" class="btn btn-primary btn-import-excel btn-sm">Importar desde Excel</button>
 </form>
-<a href="../tarjeta/ver_coordinacion.php?identificador_direccion=<?php echo $identificador_coordinacion; ?>" class="btn btn-primary">Regresar al Dashboard</a>
+<a href="../tarjeta/ver_coordinacion.php?identificador_direccion=<?php echo $identificador_coordinacion; ?>" class="btn btn-primary">Regresar a las coordinaciones</a>
 
 </body>
 
