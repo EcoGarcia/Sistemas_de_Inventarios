@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener los datos del formulario
     $consecutivo = $_POST['consecutivo'];
     $id_direccion = $_POST['id_direccion'];
-    $fullname_categoria = $_POST['id_categoria'];
+    $fullname_categoria = $_POST['fullname_categoria']; // Corregir el nombre del campo
     $descripcion = $_POST['descripcion'];
     $caracteristicas = $_POST['caracteristicas'];
     $marca = $_POST['marca'];
@@ -18,30 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $select_condiciones = $_POST['select_condiciones'];
     $factura = $_POST['factura'];
     $imagen = $_FILES['imagen']['name'];
-// Obtener la categoría actual del formulario
-$categoria_actual = $_POST['categoria_actual'];
 
-// Verificar si la categoría seleccionada es diferente a la categoría actual
-
-// Obtener el identificador de la categoría seleccionada
-$id_categoria = $_POST['fullname_categoria'];
-
-// Consultar el nombre de la categoría seleccionada
-$sql_categoria = "SELECT Fullname_categoria FROM categorias WHERE Identificador_categoria = '$id_categoria'";
-$result_categoria = $conexion->query($sql_categoria);
-
-if ($result_categoria->num_rows > 0) {
-    // Obtener el nombre de la categoría
-    $row_categoria = $result_categoria->fetch_assoc();
-    $nombre_categoria = $row_categoria['Fullname_categoria'];
-
-    // Asignar el nombre de la categoría para ser guardado en la base de datos
-    $fullname_categoria = $nombre_categoria;
-} else {
-    // Manejar el caso en que no se encuentre la categoría seleccionada
-    echo "Error: No se encontró la categoría seleccionada.";
-    exit();
-}
     // Obtener el ID del registro a editar
     $id = $_POST['id'];
 
@@ -57,32 +34,63 @@ if ($result_categoria->num_rows > 0) {
     // Mover la imagen a la carpeta de destino
     $ruta_imagen_destino = $carpeta_destino . $nombre_imagen;
     if (move_uploaded_file($imagen_temporal, $ruta_imagen_destino)) {
-        // Consulta para actualizar los datos en la tabla resguardos_direccion
-        $sql = "UPDATE resguardos_direccion 
-                SET 
-                    Consecutivo_No = '$consecutivo', 
-                    Fullname_direccion = '$id_direccion',
-                    Fullname_categoria = '$id_categoria',
-                    Descripcion = '$descripcion',
-                    Caracteristicas_Generales= '$caracteristicas',
-                    Marca = '$marca',
-                    Modelo = '$modelo',
-                    No_Serie = '$serie',
-                    Color = '$color',
-                    usuario_responsable = '$id_usuario',
-                    Observaciones = '$observaciones',
-                    Factura = '$factura',
-                    Image = '$ruta_imagen_destino'  -- Guardar la URL de la imagen en la columna Image
-                WHERE id = $id";
+        // Verificar si la categoría ha cambiado
+        if ($_POST['fullname_categoria'] != $_POST['categoria_actual']) {
+            // Si la categoría ha cambiado, obtener el nombre de la nueva categoría
+            $sql_categoria = "SELECT Fullname_categoria FROM categorias WHERE Identificador_categoria = $fullname_categoria";
+            $result_categoria = $conexion->query($sql_categoria);
 
-        if ($conexion->query($sql) === TRUE) {
-            $notification_message = "Datos actualizados exitosamente.";
-            echo "<script>
-                alert('$notification_message');
-                window.location.href = '../inventario/inventarios_direccion_admin.php?identificador_direccion=$id_direccion';
-                </script>";
+            if ($result_categoria->num_rows > 0) {
+                // Obtener el nombre de la categoría
+                $row_categoria = $result_categoria->fetch_assoc();
+                $fullname_categoria = $row_categoria['Fullname_categoria'];
+            } else {
+                echo "Error: No se encontró la categoría seleccionada.";
+                exit();
+            }
         } else {
-            echo "Error al actualizar el registro: " . $conexion->error;
+            // Si la categoría no ha cambiado, conservar el valor anterior
+            $fullname_categoria = $_POST['categoria_actual'];
+        }
+
+        // Consulta para obtener el nombre de la dirección seleccionada
+        $sql_direccion = "SELECT Fullname FROM direccion WHERE Identificador = $id_direccion";
+        $result_direccion = $conexion->query($sql_direccion);
+
+        if ($result_direccion->num_rows > 0) {
+            // Obtener el nombre de la dirección
+            $row_direccion = $result_direccion->fetch_assoc();
+            $fullname_direccion = $row_direccion['Fullname'];
+
+            // Consulta para actualizar los datos en la tabla resguardos_direccion
+            $sql = "UPDATE resguardos_direccion 
+                    SET 
+                        Consecutivo_No = '$consecutivo', 
+                        Fullname_direccion = '$fullname_direccion',  
+                        Fullname_categoria = '$fullname_categoria',  -- Utilizar el nuevo nombre de la categoría
+                        Descripcion = '$descripcion',
+                        Caracteristicas_Generales= '$caracteristicas',
+                        Marca = '$marca',
+                        Modelo = '$modelo',
+                        No_Serie = '$serie',
+                        Color = '$color',
+                        usuario_responsable = '$id_usuario',
+                        Observaciones = '$observaciones',
+                        Factura = '$factura',
+                        Image = '$ruta_imagen_destino'  
+                    WHERE id = $id";
+
+            if ($conexion->query($sql) === TRUE) {
+                $notification_message = "Datos actualizados exitosamente.";
+                echo "<script>
+                    alert('$notification_message');
+                    window.location.href = '../inventario/inventarios_direccion_admin.php?identificador_direccion=$id_direccion';
+                    </script>";
+            } else {
+                echo "Error al actualizar el registro: " . $conexion->error;
+            }
+        } else {
+            echo "Error: No se encontró la dirección seleccionada.";
         }
     } else {
         echo "Error al mover la imagen a la carpeta de destino.";

@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener los datos del formulario
     $consecutivo = $_POST['consecutivo'];
     $id_servicio = $_POST['id_servicio'];
-    $id_categoria = $_POST['id_categoria'];
+    $fullname_categoria = $_POST['fullname_categoria']; // Corregir el nombre del campo
     $descripcion = $_POST['descripcion'];
     $caracteristicas = $_POST['caracteristicas'];
     $marca = $_POST['marca'];
@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id = $_POST['id'];
 
     // Ruta de la carpeta donde se guardarán las imágenes
-    $carpeta_destino = '../areas/';
+    $carpeta_destino = '../direccion/';
 
     // Obtener el nombre temporal del archivo subido
     $imagen_temporal = $_FILES['imagen']['tmp_name'];
@@ -34,38 +34,68 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Mover la imagen a la carpeta de destino
     $ruta_imagen_destino = $carpeta_destino . $nombre_imagen;
     if (move_uploaded_file($imagen_temporal, $ruta_imagen_destino)) {
-        // Consulta para actualizar los datos en la tabla respaldos_coordinacion
-        $sql = "UPDATE respaldos_servicios 
-        SET 
-            consecutivo = '$consecutivo', 
-            identificador_servicio = '$id_servicio',   
-            identificador_categoria = '$id_categoria',
-            descripcion = '$descripcion',
-            caracteristicas= '$caracteristicas',
-            marca = '$marca',
-            modelo = '$modelo',
-            serie = '$serie',
-            color = '$color',
-            identificador_usuario_servicios = '$id_usuario',
-            observaciones = '$observaciones',
-            condiciones = '$select_condiciones',
-            factura = '$factura',
-            imagen = '$ruta_imagen_destino'  
-        WHERE id = $id";
+        // Verificar si la categoría ha cambiado
+        if ($_POST['fullname_categoria'] != $_POST['categoria_actual']) {
+            // Si la categoría ha cambiado, obtener el nombre de la nueva categoría
+            $sql_categoria = "SELECT Fullname_categoria FROM categorias WHERE Identificador_categoria = $fullname_categoria";
+            $result_categoria = $conexion->query($sql_categoria);
 
-        if ($conexion->query($sql) === TRUE) {
-            $notification_message = "Datos actualizados exitosamente.";
-            echo "<script>
-                alert('$notification_message');
-                window.location.href = '../inventario/inventario_servicios_admin.php?identificador_servicio=$id';
-            </script>";
+            if ($result_categoria->num_rows > 0) {
+                // Obtener el nombre de la categoría
+                $row_categoria = $result_categoria->fetch_assoc();
+                $fullname_categoria = $row_categoria['Fullname_categoria'];
+            } else {
+                echo "Error: No se encontró la categoría seleccionada.";
+                exit();
+            }
         } else {
-            echo "Error al actualizar el registro: " . $conexion->error;
+            // Si la categoría no ha cambiado, conservar el valor anterior
+            $fullname_categoria = $_POST['categoria_actual'];
+        }
+
+        // Consulta para obtener el nombre de la coordinación seleccionada
+        $sql_coordinacion = "SELECT Fullname_servicio FROM servicios WHERE Identificador_servicio = $id_servicio";
+        $result_coordinacion = $conexion->query($sql_coordinacion);
+
+        if ($result_coordinacion->num_rows > 0) {
+            // Obtener el nombre de la coordinación
+            $row_coordinacion = $result_coordinacion->fetch_assoc();
+            $Fullname_servicio = $row_coordinacion['Fullname_servicio'];
+
+            // Consulta para actualizar los datos en la tabla resguardos_coordinacion
+            $sql = "UPDATE respaldos_servicios 
+                    SET 
+                        consecutivo = '$consecutivo', 
+                        Fullname_servicio = '$Fullname_servicio',  
+                        Fullname_categoria = '$fullname_categoria',  -- Utilizar el nuevo nombre de la categoría
+                        descripcion = '$descripcion',
+                        caracteristicas= '$caracteristicas',
+                        marca = '$marca',
+                        modelo = '$modelo',
+                        serie = '$serie',
+                        color = '$color',
+                        usuario_responsable = '$id_usuario',
+                        observaciones = '$observaciones',
+                        Factura = '$factura',
+                        imagen = '$ruta_imagen_destino'  
+                    WHERE id = $id";
+
+            if ($conexion->query($sql) === TRUE) {
+                $notification_message = "Datos actualizados exitosamente.";
+                echo "<script>
+                    alert('$notification_message');
+                    window.location.href = '../inventario/inventario_servicios_admin.php?identificador_servicio=$id_servicio';
+                    </script>";
+            } else {
+                echo "Error al actualizar el registro: " . $conexion->error;
+            }
+        } else {
+            echo "Error: No se encontró la coordinación seleccionada.";
         }
     } else {
         echo "Error al mover la imagen a la carpeta de destino.";
     }
-    
+
     // Cerrar la conexión
     $conexion->close();
     exit; // Terminar el script después de procesar la solicitud POST

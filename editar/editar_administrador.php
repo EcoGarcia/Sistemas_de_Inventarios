@@ -23,7 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Consulta para actualizar el nombre de usuario en las tablas relacionadas
         $updateRelatedTablesQuery = "UPDATE resguardos_direccion SET Coordinadora_Recursos = '$newUsername' WHERE Coordinadora_Recursos = (SELECT Fullname FROM administrador WHERE id = $userId);
                                      UPDATE respaldos_coordinacion SET Coordinadora_Recursos = '$newUsername' WHERE Coordinadora_Recursos = (SELECT Fullname FROM administrador WHERE id = $userId);
-                                     UPDATE respaldos_servicios SET Coordinadora_Recursos = '$newUsername' WHERE Coordinadora_Recursos = (SELECT Fullname FROM administrador WHERE id = $userId);";
+                                     UPDATE respaldos_servicios SET Coordinadora_Recursos = '$newUsername' WHERE Coordinadora_Recursos = (SELECT Fullname FROM administrador WHERE id = $userId);
+                                     UPDATE resguardos_admin SET Coordinadora_Recursos = '$newUsername' WHERE Coordinadora_Recursos = (SELECT Fullname FROM administrador WHERE id = $userId);"; // Nueva actualización
 
         // Ejecutar las consultas
         if (mysqli_query($conexion, $updateQuery_admin) && mysqli_query($conexion, $updateQuery_coordinacion) && mysqli_multi_query($conexion, $updateRelatedTablesQuery)) {

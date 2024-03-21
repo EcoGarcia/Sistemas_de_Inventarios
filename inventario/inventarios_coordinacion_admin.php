@@ -75,6 +75,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
     <div class="panel-body">
         <div class="panel-body">
             <div class="col-md-12">
+                
                 <?php
                 include("../includes/conexion.php");
 
@@ -89,6 +90,11 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                 }
 
                 $identificador_coordinacion = $_GET['identificador_coordinacion'];
+                ?>
+
+                <a href="../tarjeta/ver_coordinacion.php?identificador_direccion=<?php echo $identificador_coordinacion; ?>"class="btn btn-primary">Volver a la pantalla de coordinaciones</a>
+
+                <?php
 
                 $query_direccion = "SELECT Fullname FROM direccion WHERE identificador = $identificador_coordinacion";
                 $result_direccion = mysqli_query($conexion, $query_direccion);
@@ -167,20 +173,14 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                 mysqli_close($conn);
                 ?>
 <div class="text-right mt-3">
-    <a href='../funciones/PDF_All_direccion.php?identificador_coordinacion=<?php echo $identificador_coordinacion; ?>' class='btn btn-primary btn-export-pdf btn-sm'>Exportar Todo en PDF</a>
-</div>
-<div class="text-right mt-3">
-    <form action="../excel/exportar_coordinacion.php" method="GET">
+    <a href='../funciones/PDF_All_direccion.php?identificador_coordinacion=<?php echo $identificador_coordinacion; ?>' class='btn btn-primary btn-export-pdf btn-sm float-right'>Exportar Todo en PDF</a>
+    <form action="../excel/exportar_coordinacion.php" method="GET" class="float-right ml-2">
         <input type="hidden" name="export" value="1">
         <input type="hidden" name="identificador_coordinacion" value="<?php echo $identificador_coordinacion; ?>">
         <button type="submit" id="btnExportExcel" class="btn btn-success btn-export-excel btn-sm">Exportar a Excel</button>
     </form>
-    <form action="../excel/importar_direccion.php" method="POST" enctype="multipart/form-data">
-        <input type="file" name="file" accept=".xlsx, .xls, .csv" required>
-        <input type="hidden" name="identificador_coordinacion" value="<?php echo $identificador_coordinacion; ?>">
-        <button type="submit" class="btn btn-primary btn-import-excel btn-sm">Importar desde Excel</button>
-    </form>
 </div>
+
 
 <a href="../tarjeta/ver_coordinacion.php?identificador_direccion=<?php echo $identificador_coordinacion; ?>" ">Volver al inicio</a>
 

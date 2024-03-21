@@ -74,6 +74,8 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 <body>
     <div class="panel-body">
         <div class="panel-body">
+        <a href="../dashboard/dashboard.php" class="btn btn-primary">Regresar al Inicio</a>
+
             <div class="col-md-12">
                 <?php
                 include("../includes/conexion.php");
@@ -165,20 +167,15 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 
                 mysqli_close($conn);
                 ?>
-                <div class="text-right mt-3">
-                    <a href='../funciones/PDF_All_direccion.php?identificador_direccion=<?php echo $identificador_direccion; ?>' class='btn btn-primary btn-export-pdf btn-sm'>Exportar Todo en PDF</a>
-                    </form>
-                </div>
-                <div class="text-right mt-3">
-                    <form action="../excel/exportar_direccion.php" method="GET">
-                        <input type="hidden" name="export" value="1">
-                        <input type="hidden" name="identificador_direccion" value="<?php echo $identificador_direccion; ?>">
-                        <button type="submit" id="btnExportExcel" class="btn btn-success btn-export-excel btn-sm">Exportar a Excel</button>
-                    </form>
+<div class="text-right mt-3">
+    <a href='../funciones/PDF_All_direccion.php?identificador_direccion=<?php echo $identificador_direccion; ?>' class='btn btn-primary btn-export-pdf btn-sm float-right'>Exportar Todo en PDF</a>
+    <form action="../excel/exportar_direccion.php" method="GET" class="float-right ml-2">
+        <input type="hidden" name="export" value="1">
+        <input type="hidden" name="identificador_direccion" value="<?php echo $identificador_direccion; ?>">
+        <button type="submit" id="btnExportExcel" class="btn btn-success btn-export-excel btn-sm">Exportar a Excel</button>
+    </form>
+</div>
 
-                </div>
-
-                <a href="../dashboard/dashboard.php">Volver al inicio</a>
 
                 <div class="modal fade" id="imagenModalModal" tabindex="-1" role="dialog" aria-labelledby="imagenModalModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-sm">

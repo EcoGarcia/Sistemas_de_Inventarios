@@ -118,13 +118,14 @@ $conn->close();
 
 
         <!-- Campos del formulario -->
-        <label for="fullname_categoria">Seleccione una categoria:</label>
-        <select name="id_categoria" id="categoria" required>
-            <option value="<?php echo $fullname_categoria; ?>" disabled>Selecciona una coordinacion</option>
+        <label for="fullname_categoria">Seleccione una categoría:</label>
+        <select name="fullname_categoria" id="categoria" required>
+            <option value="<?php echo $fullname_categoria; ?>" disabled>Selecciona una dirección</option>
             <?php
             echo $optionsCategoria; // Imprime las opciones generadas dinámicamente
             ?>
         </select>
+        <input type="hidden" name="categoria_actual" value="<?php echo $fullname_categoria; ?>">
 
 
         <br>

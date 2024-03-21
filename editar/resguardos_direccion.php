@@ -90,7 +90,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIF | Registro un nuevo usuario de dirección</title>
+    <title>DIF | Editar resguardo</title>
     <link rel="stylesheet" href="../assets/css/tarjeta.css">
 </head>
 
@@ -173,7 +173,7 @@ $conn->close();
         <input type="file" name="imagen" id="" accept=".jpg, .jpeg" required />
 
         <input type="hidden" name="id" value="<?php echo $id; ?>">
-        <button type="submit">Registrar Usuario</button>
+        <button type="submit">Guardar cambios</button>
     </form>
 
     <br>

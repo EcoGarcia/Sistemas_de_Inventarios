@@ -26,48 +26,48 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
     <script>
-    $(document).ready(function() {
-        $('#searchInput').on('input', function() {
-            var searchTerm = $(this).val().toLowerCase();
-            $('.book-row').each(function() {
-                var textToSearch = $(this).text().toLowerCase();
-                $(this).toggle(textToSearch.indexOf(searchTerm) > -1);
+        $(document).ready(function() {
+            $('#searchInput').on('input', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                $('.book-row').each(function() {
+                    var textToSearch = $(this).text().toLowerCase();
+                    $(this).toggle(textToSearch.indexOf(searchTerm) > -1);
+                });
             });
-        });
 
-        function toggleResponsiveDisplay() {
-            var windowWidth = window.innerWidth;
-            var responsive = windowWidth < 768;
+            function toggleResponsiveDisplay() {
+                var windowWidth = window.innerWidth;
+                var responsive = windowWidth < 768;
 
-            if (responsive) {
-                $('.responsive-hide').hide();
-                $('.responsive-show').show();
-            } else {
-                $('.responsive-hide, .responsive-show').show();
+                if (responsive) {
+                    $('.responsive-hide').hide();
+                    $('.responsive-show').show();
+                } else {
+                    $('.responsive-hide, .responsive-show').show();
+                }
             }
-        }
 
-        toggleResponsiveDisplay();
-        $(window).resize(toggleResponsiveDisplay);
+            toggleResponsiveDisplay();
+            $(window).resize(toggleResponsiveDisplay);
 
-        // Destruir DataTables antes de volver a inicializar
-        if ($.fn.DataTable.isDataTable('#dataTable')) {
-            $('#dataTable').DataTable().destroy();
-        }
-
-        // Inicializar DataTables con configuración básica
-        $('#dataTable').DataTable({
-            paging: true,
-            ordering: false,
-            info: true,
-            searching: true,
-            "language": {
-              "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json" // Carga la configuración en español
+            // Destruir DataTables antes de volver a inicializar
+            if ($.fn.DataTable.isDataTable('#dataTable')) {
+                $('#dataTable').DataTable().destroy();
             }
-        });
 
-    });
-</script>
+            // Inicializar DataTables con configuración básica
+            $('#dataTable').DataTable({
+                paging: true,
+                ordering: false,
+                info: true,
+                searching: true,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json" // Carga la configuración en español
+                }
+            });
+
+        });
+    </script>
     </script>
 </head>
 
@@ -111,6 +111,11 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 
 
                 $identificador_servicio = $_GET['identificador_servicio'];
+                ?>
+
+                <a href="../tarjeta/ver_servicio.php?identificador_coordinacion=<?php echo $identificador_servicio; ?>"class="btn btn-primary">Volver a la pantalla de servicios o puestos</a>
+
+                <?php
 
                 $query = "SELECT * FROM respaldos_servicios WHERE identificador_servicio = $identificador_servicio";
                 $result = mysqli_query($conn, $query);
@@ -143,15 +148,15 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     $counter = 1;
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<tr class='book-row'>";
-                        
+
                         echo "<td data-label='Numero consecutivo' class='cell'>" . $row['consecutivo'] . "</td>";
                         echo "<td data-label='Descripción' class='cell'>" . $row['descripcion'] . "</td>";
                         echo "<td data-label='Imagen' class='cell'><img src='" . $row['imagen'] . "' alt='Imagen' class='book-image'></td>";
                         echo "<td data-label='Categoria' class='cell'>" . $row['Fullname_categoria'] . "</td>";
                         echo "<td data-label='Marca' class='cell'>" . $row['marca'] . "</td>";
                         echo "<td data-label='Modelo' class='cell'>" . $row['modelo'] . "</td>";
-                        echo "<td data-label='Usuario Responsable' class='cell'>" . $row['usuario_responsable'] . "</td>";                        
-                        echo "<td data-label='Comentarios' class='cell'>" . $row['comentarios'] . "</td>";                        
+                        echo "<td data-label='Usuario Responsable' class='cell'>" . $row['usuario_responsable'] . "</td>";
+                        echo "<td data-label='Comentarios' class='cell'>" . $row['comentarios'] . "</td>";
                         echo "<td data-label='Numero de Factura' class='cell'>" . $row['Factura'] . "</td>";
                         $backgroundColor = ($row['Estado'] == 1) ? 'lightgreen' : 'lightcoral';
                         echo "<td data-label='Estado' class='cell' style='background-color: $backgroundColor;'>";
@@ -166,10 +171,9 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                         <button class='btn btn-secondary btn-editar btn-sm' onclick=\"window.location.href='../editar/resguardos_servicios.php?id=" . $row['id'] . "'\">Editar</button>
             
                       </td>";
-                      
-                                        echo "</tr>";
+
+                        echo "</tr>";
                         $counter++;
-                                                                                
                     }
 
                     echo "</tbody>";
@@ -182,38 +186,31 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     // Obtener el nombre del servicio
                     $query_servicio = "SELECT Fullname_servicio FROM servicios WHERE identificador_servicio = $identificador_servicio";
                     $result_servicio = mysqli_query($conn, $query_servicio);
-                    
+
                     if ($result_servicio) {
                         $row_servicio = mysqli_fetch_assoc($result_servicio);
                         $nombre_servicio = $row_servicio['Fullname_servicio'];
                     }
-                    
+
                     // Luego, en la sección donde se imprime el mensaje de error:
                     if ($result && mysqli_num_rows($result) > 0) {
                         // Tu código existente aquí
                     } else {
                         echo "<p>No se encontraron resguardos para el servicio $nombre_servicio</p>";
-                    }                }
+                    }
+                }
 
                 mysqli_close($conn);
                 ?>
-<div class="text-right mt-3">
-<a href='../funciones/PDF_All_servicio.php?identificador_servicio=<?php echo $identificador_servicio; ?>' class='btn btn-primary btn-export-pdf btn-sm'>Exportar Todo en PDF</a>
-</div>
+                <div class="text-right mt-5">
+                    <a href='../funciones/PDF_All_servicio.php?identificador_servicio=<?php echo $identificador_servicio; ?>' class='btn btn-primary btn-export-pdf btn-sm float-right'>Exportar Todo en PDF</a>
+                    <form action="../excel/exportar_servicios.php" method="POST" class="float-right ml-4 ">
+                        <input type="hidden" name="export" value="1">
+                        <button type="submit" id="btnExportExcel" class="btn btn-success btn-export-excel btn-sm">Exportar a Excel</button>
+                    </form>
+                </div>
 
-<div class="text-right mt-3">
-<form action="../excel/exportar_servicios.php" method="POST">
-    <input type="hidden" name="export" value="1">
-    <button type="submit" id="btnExportExcel" class="btn btn-success btn-export-excel btn-sm">Exportar a Excel</button>
-</form>
-<form action="../excel/importar_coordinacion.php" method="POST" enctype="multipart/form-data">
-<input type="file" name="file" accept=".xlsx, .xls, .csv" required>
-    <input type="hidden" name="identificador_servicio" value="<?php echo $identificador_servicio; ?>">
-    <button type="submit" class="btn btn-primary btn-import-excel btn-sm">Importar desde Excel</button>
-</form>
-</div>
 
-<a href="../tarjeta/ver_servicio.php?identificador_coordinacion=<?php echo $identificador_servicio; ?>">Volver a la pantalla de puestos</a>
                 <!-- Modal para mostrar la imagen -->
                 <div class="modal fade" id="imagenModalModal" tabindex="-1" role="dialog" aria-labelledby="imagenModalModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-sm">
@@ -246,10 +243,10 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
     <script src="../assets/js/custom.js"></script>
     <script>
         $('.show-image-btn').click(function() {
-  var imageUrl = $(this).data('image');
-  $('#imagenModalEnModal').attr('src', imageUrl);
-  $('#imagenModalModal').modal('show');
-});
+            var imageUrl = $(this).data('image');
+            $('#imagenModalEnModal').attr('src', imageUrl);
+            $('#imagenModalModal').modal('show');
+        });
         $('.book-image').click(function() {
             var imageUrl = $(this).attr('src');
             $('#imagenModalEnModal').attr('src', imageUrl);
@@ -257,7 +254,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
         });
     </script>
 
-<script>
+    <script>
         $(document).ready(function() {
             $('.btn-edit').click(function() {
                 var userId = $(this).data('userid');
@@ -273,52 +270,55 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
             });
         });
     </script>
-        <script>
-  $(document).ready(function() {
-    $('.btn-cambiar-estado').click(function() {
-      var id = $(this).data('id');
-      var estado = $(this).data('estado');
-      
-      // Realiza una solicitud AJAX para cambiar el estado en el servidor
-      $.ajax({
-        type: 'POST',
-        url: '../editar/cambiar_estado_servicio.php', // Ajusta la ruta al archivo que maneja la actualización del estado
-        data: { id: id, estado: estado },
-        success: function(response) {
-          // Maneja la respuesta del servidor (puede mostrar un mensaje de éxito o actualizar la interfaz de usuario)
-          alert(response);
-          location.reload(); // Recarga la página después de cambiar el estado (puedes implementar una actualización más sofisticada)
-        },
-        error: function(error) {
-          console.error('Error al cambiar el estado:', error);
-        }
-      });
-    });
-  });
-</script>
+    <script>
+        $(document).ready(function() {
+            $('.btn-cambiar-estado').click(function() {
+                var id = $(this).data('id');
+                var estado = $(this).data('estado');
+
+                // Realiza una solicitud AJAX para cambiar el estado en el servidor
+                $.ajax({
+                    type: 'POST',
+                    url: '../editar/cambiar_estado_servicio.php', // Ajusta la ruta al archivo que maneja la actualización del estado
+                    data: {
+                        id: id,
+                        estado: estado
+                    },
+                    success: function(response) {
+                        // Maneja la respuesta del servidor (puede mostrar un mensaje de éxito o actualizar la interfaz de usuario)
+                        alert(response);
+                        location.reload(); // Recarga la página después de cambiar el estado (puedes implementar una actualización más sofisticada)
+                    },
+                    error: function(error) {
+                        console.error('Error al cambiar el estado:', error);
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
 <div id="editModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Añadir comentarios</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Nombre actual: <span id="currentUsername"></span></p>
-                    <form action="../editar/comentarios_servicios.php" method="post">
-                        <input type="hidden" id="editUserId" name="userId">
-                        <input type="hidden" id="identificadorServicio" name="identificadorServicio">
-                        <label for="newUsername">Tienes comentarios:</label>
-                        <input type="text" id="newUsername" name="newUsername" class="form-control" required>
-                        <br>
-                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    </form>
-                </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Añadir comentarios</h4>
+            </div>
+            <div class="modal-body">
+                <p>Nombre actual: <span id="currentUsername"></span></p>
+                <form action="../editar/comentarios_servicios.php" method="post">
+                    <input type="hidden" id="editUserId" name="userId">
+                    <input type="hidden" id="identificadorServicio" name="identificadorServicio">
+                    <label for="newUsername">Tienes comentarios:</label>
+                    <input type="text" id="newUsername" name="newUsername" class="form-control" required>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
 
 </html>
