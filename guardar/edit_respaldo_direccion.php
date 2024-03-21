@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Obtener los datos del formulario
     $consecutivo = $_POST['consecutivo'];
     $id_direccion = $_POST['id_direccion'];
-    $id_categoria = $_POST['id_categoria'];
+    $fullname_categoria = $_POST['id_categoria'];
     $descripcion = $_POST['descripcion'];
     $caracteristicas = $_POST['caracteristicas'];
     $marca = $_POST['marca'];
@@ -18,7 +18,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $select_condiciones = $_POST['select_condiciones'];
     $factura = $_POST['factura'];
     $imagen = $_FILES['imagen']['name'];
+// Obtener la categoría actual del formulario
+$categoria_actual = $_POST['categoria_actual'];
 
+// Verificar si la categoría seleccionada es diferente a la categoría actual
+
+// Obtener el identificador de la categoría seleccionada
+$id_categoria = $_POST['fullname_categoria'];
+
+// Consultar el nombre de la categoría seleccionada
+$sql_categoria = "SELECT Fullname_categoria FROM categorias WHERE Identificador_categoria = '$id_categoria'";
+$result_categoria = $conexion->query($sql_categoria);
+
+if ($result_categoria->num_rows > 0) {
+    // Obtener el nombre de la categoría
+    $row_categoria = $result_categoria->fetch_assoc();
+    $nombre_categoria = $row_categoria['Fullname_categoria'];
+
+    // Asignar el nombre de la categoría para ser guardado en la base de datos
+    $fullname_categoria = $nombre_categoria;
+} else {
+    // Manejar el caso en que no se encuentre la categoría seleccionada
+    echo "Error: No se encontró la categoría seleccionada.";
+    exit();
+}
     // Obtener el ID del registro a editar
     $id = $_POST['id'];
 
@@ -56,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $notification_message = "Datos actualizados exitosamente.";
             echo "<script>
                 alert('$notification_message');
-                window.location.href = '../inventario/inventarios_direccion_admin.php?identificador_direccion=$id';
+                window.location.href = '../inventario/inventarios_direccion_admin.php?identificador_direccion=$id_direccion';
                 </script>";
         } else {
             echo "Error al actualizar el registro: " . $conexion->error;

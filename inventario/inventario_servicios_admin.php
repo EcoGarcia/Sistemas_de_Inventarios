@@ -202,7 +202,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 </div>
 
 <div class="text-right mt-3">
-<form action="../excel/exportar_coordinacion.php" method="POST">
+<form action="../excel/exportar_servicios.php" method="POST">
     <input type="hidden" name="export" value="1">
     <button type="submit" id="btnExportExcel" class="btn btn-success btn-export-excel btn-sm">Exportar a Excel</button>
 </form>

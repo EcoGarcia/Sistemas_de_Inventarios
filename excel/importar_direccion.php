@@ -80,11 +80,6 @@ $result = mysqli_query($conn, $query);
 $row = mysqli_fetch_assoc($result);
 $lastCategoryIdentifier = $row['max_identificador_categoria'];
 
-// Obtener el último identificador utilizado en identificador_usuario_direccion
-$query = "SELECT MAX(identificador_usuario_direccion) AS max_identificador_usuario FROM resguardos_direccion";
-$result = mysqli_query($conn, $query);
-$row = mysqli_fetch_assoc($result);
-$lastIdentifierUsuario = $row['max_identificador_usuario'];
 foreach ($data as &$row) {
     // Verificar si ya existe un registro con el mismo Fullname_direccion
     $query = "SELECT identificador_direccion FROM resguardos_direccion WHERE Fullname_direccion = ?";
@@ -126,12 +121,9 @@ if ($stmt->num_rows > 0) {
 
 $stmt->close();
 
-    // Asignar un nuevo identificador de usuario
-    $row['identificador_usuario_direccion'] = $lastIdentifierUsuario + 1;
-    $lastIdentifierUsuario++;
 
     // Insertar los datos en la tabla resguardos_direccion
-    $query = "INSERT INTO resguardos_direccion (Consecutivo_No, Fullname_direccion, Descripcion, Caracteristicas_Generales, Modelo, No_Serie, Color, usuario_responsable, Comentarios, Observaciones, Condiciones, Marca, Fullname_categoria, Factura, Encargada_Area, Coordinadora_Recursos, Estado, identificador_direccion, identificador_usuario_direccion, identificador_categoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO resguardos_direccion (Consecutivo_No, Fullname_direccion, Descripcion, Caracteristicas_Generales, Modelo, No_Serie, Color, usuario_responsable, Comentarios, Observaciones, Condiciones, Marca, Fullname_categoria, Factura, Encargada_Area, Coordinadora_Recursos, Estado, identificador_direccion, identificador_categoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
 
     if (!$stmt) {
@@ -139,7 +131,7 @@ $stmt->close();
     }
 
     // Asegúrate de ajustar la cadena de definición de tipo según el número de variables
-    $stmt->bind_param("ssssssssssssssssiiii", $row['Consecutivo_No'], $row['Fullname_direccion'], $row['Descripcion'], $row['Caracteristicas_Generales'], $row['Modelo'], $row['No_Serie'], $row['Color'], $row['Usuario_responsable'], $row['Comentarios'], $row['Observaciones'], $row['Condiciones'], $row['Marca'], $row['Nombre_categoria'], $row['Factura'], $row['Encargada_Área'], $row['Coordinadora_Recursos'], $row['Estado'], $row['identificador_direccion'], $row['identificador_usuario_direccion'], $row['identificador_categoria']);
+    $stmt->bind_param("ssssssssssssssssiii", $row['Consecutivo_No'], $row['Fullname_direccion'], $row['Descripcion'], $row['Caracteristicas_Generales'], $row['Modelo'], $row['No_Serie'], $row['Color'], $row['Usuario_responsable'], $row['Comentarios'], $row['Observaciones'], $row['Condiciones'], $row['Marca'], $row['Nombre_categoria'], $row['Factura'], $row['Encargada_Área'], $row['Coordinadora_Recursos'], $row['Estado'], $row['identificador_direccion'], $row['identificador_categoria']);
 
     if (!$stmt->execute()) {
         die("Error al insertar datos: " . $stmt->error);

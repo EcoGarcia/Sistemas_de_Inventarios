@@ -77,10 +77,6 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 
 
 <body>
-<div class="form-group">
-    <input type="text" class="form-control" id="searchInput" placeholder="Search">
-  </div>
-
     <div class="panel-body">
         <div class="panel-body">
             <div class="col-md-12">
@@ -101,7 +97,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                 }
 
                 // Obtener todos los usuarios de la dirección
-                $query = "SELECT * FROM usuarios_direccion";
+                $query = "SELECT DISTINCT * FROM usuarios_direccion";
                 $result = mysqli_query($conn, $query);
 
                 if ($result && mysqli_num_rows($result) > 0) {
@@ -203,6 +199,8 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     <input type="hidden" id="editUserId" name="userId">
                     <label for="newUsername">Nuevo Nombre:</label>
                     <input type="text" id="newUsername" name="newUsername" class="form-control" required>
+                    <label for="newPassword">Nueva contraseña:</label>
+                    <input type="password" id="newpassword" name="newPassword" class="form-control" required>
                     <br>
                     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
