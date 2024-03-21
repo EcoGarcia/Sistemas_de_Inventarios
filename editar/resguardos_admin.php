@@ -26,32 +26,35 @@ if ($conn->connect_error) {
 }
 
 // Consulta para obtener los datos correspondientes al ID proporcionado
-$sql = "SELECT Consecutivo_No, Fullname_direccion, Descripcion, Caracteristicas_Generales, Marca, Modelo, No_Serie, Color, Observaciones, Factura, Fullname_categoria, usuario_responsable FROM resguardos_direccion WHERE id = $id";
+$sql = "SELECT consecutivo, Fullname_direccion, descripcion, caracteristicas, marca, modelo, serie, color, observaciones, Factura, Fullname_categoria, usuario_responsable FROM resguardos_admin WHERE id = $id";
 
 $result = $conn->query($sql);
 
 // Verificar si se encontraron resultados
-if ($result->num_rows > 0) {
-    // Obtener la fila de resultados como un arreglo asociativo
-    $row = $result->fetch_assoc();
-
-    // Obtener el valor de la columna Consecutivo_No
-    $consecutivo = $row['Consecutivo_No'];
-    $fullname_categoria = $row['Fullname_categoria'];
-    $descripcion = $row['Descripcion'];
-    $usuario_responsable = $row['usuario_responsable'];
-    $caracteristicas = $row['Caracteristicas_Generales'];
-    $marca = $row['Marca'];
-    $modelo = $row['Modelo'];
-    $serie = $row['No_Serie'];
-    $color = $row['Color'];
-    $observaciones = $row['Observaciones'];
-    $factura = $row['Factura'];
+if ($result === false) {
+    echo "Error al ejecutar la consulta: " . $conn->error;
 } else {
-    // Manejar el caso en que no se encuentren resultados
-    echo "No se encontraron resultados para el ID proporcionado";
-}
+    if ($result->num_rows > 0) {
+        // Obtener la fila de resultados como un arreglo asociativo
+        $row = $result->fetch_assoc();
 
+        // Obtener el valor de la columna Consecutivo_No
+        $consecutivo = $row['consecutivo'];
+        $fullname_categoria = $row['Fullname_categoria'];
+        $descripcion = $row['descripcion'];
+        $usuario_responsable = $row['usuario_responsable'];
+        $caracteristicas = $row['caracteristicas'];
+        $marca = $row['marca'];
+        $modelo = $row['modelo'];
+        $serie = $row['serie'];
+        $color = $row['color'];
+        $observaciones = $row['observaciones'];
+        $factura = $row['Factura'];
+    } else {
+        // Manejar el caso en que no se encuentren resultados
+        echo "No se encontraron resultados para el ID proporcionado";
+    }
+}
 
 // Obtener las opciones para el tercer menú desplegable (select) de coordinaciones
 $optionsCoordinacion = "";
@@ -75,19 +78,20 @@ $optionsCategoria = "";
 $sqlCategoria = "SELECT Identificador_categoria, Fullname_categoria FROM categorias";
 $resultCategoria = $conn->query($sqlCategoria);
 
-if ($resultCategoria) {
+if ($resultCategoria === false) {
+    echo "Error al ejecutar la consulta: " . $conn->error;
+} else {
     if ($resultCategoria->num_rows > 0) {
         while ($rowCategoria = $resultCategoria->fetch_assoc()) {
             $optionsCategoria .= "<option value='" . $rowCategoria["Identificador_categoria"] . "'>" . $rowCategoria["Fullname_categoria"] . "</option>";
         }
     }
-} else {
-    echo "Error executing query: " . $conn->error;
 }
 
 // Cerrar la conexión
 $conn->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -101,7 +105,7 @@ $conn->close();
 
 <body>
 
-    <form method="post" action="../guardar/edit_respaldo_coordinacion.php" class="tarjeta contenido" onsubmit="return validarFormulario()" enctype="multipart/form-data">
+    <form method="post" action="../guardar/edit_respaldo_admin.php" class="tarjeta contenido" onsubmit="return validarFormulario()" enctype="multipart/form-data">
 
         <label for="consecutivo">Consecutivo No:</label>
         <input type="text" name="consecutivo" id="consecutivo" value="<?php echo $consecutivo; ?>" required>

@@ -148,6 +148,9 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
             <hr>
             <button class='btn btn-primary btn-edit btn-sm' data-toggle='modal' data-target='#editModal' data-userid='" . $row['id'] . "' data-username='" . $row['comentarios'] . "' data-identificador='" . $row['identificador_coordinacion'] . "'>Añadir comentarios</button>                        <hr>
             <button class='btn btn-warning btn-cambiar-estado btn-sm' data-id='" . $row['id'] . "' data-estado='" . $row['Estado'] . "'>Cambiar Estado</button>
+            <hr>
+            <button class='btn btn-secondary btn-editar btn-sm' onclick=\"window.location.href='../editar/resguardos_admin.php?id=" . $row['id'] . "'\">Editar</button>
+
           </td>";
           
                             echo "</tr>";

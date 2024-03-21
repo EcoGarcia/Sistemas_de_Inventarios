@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $ruta_imagen_destino = $carpeta_destino . $nombre_imagen;
     if (move_uploaded_file($imagen_temporal, $ruta_imagen_destino)) {
         // Consulta para actualizar los datos en la tabla respaldos_coordinacion
-        $sql = "UPDATE respaldos_coordinacion 
+        $sql = "UPDATE resguardos_admin 
                 SET 
                     consecutivo = '$consecutivo', 
                     identificador_coordinacion = '$id_coordinacion',
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     modelo = '$modelo',
                     serie = '$serie',
                     color = '$color',
-                    identificador_usuario_coordinacion = '$id_usuario',
+                    identificador_usuario_admin = '$id_usuario',
                     observaciones = '$observaciones',
                     condiciones = '$select_condiciones',
                     factura = '$factura',
@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $notification_message = "Datos actualizados exitosamente.";
             echo "<script>
                 alert('$notification_message');
-                window.location.href = '../inventario/inventarios_coordinacion_admin.php?identificador_coordinacion=$id';
+                window.location.href = '../inventario/inventarios_admin.php?identificador_coordinacion=$id';
             </script>";
         } else {
             echo "Error al actualizar el registro: " . $conexion->error;

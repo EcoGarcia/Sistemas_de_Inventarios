@@ -180,33 +180,44 @@ $conn->close();
     <script src="assets/js/validacion_resguardos_direccion.js"></script>
 
     <script>
-        $(document).ready(function() {
-            const direccionSelect = $('select[name="id_direccion"]');
-            const usuarioSelect = $('select[name="id_usuario"]');
-            const usuariosContainer = $('#usuariosContainer');
+$(document).ready(function() {
+    const direccionSelect = $('select[name="id_direccion"]');
+    const usuarioSelect = $('select[name="id_usuario"]');
+    
+    // Función para cargar usuarios según la dirección seleccionada
+    function cargarUsuarios(selectedDireccion) {
+        // Llamar a un script PHP que devuelva los usuarios según la dirección seleccionada
+        fetch(`get_usuarios_por_direccion.php?direccion=${selectedDireccion}`)
+            .then(response => response.json())
+            .then(data => {
+                // Limpiar opciones actuales
+                usuarioSelect.html('<option value="" disabled selected>Selecciona un usuario</option>');
 
-            direccionSelect.on('change', function() {
-                const selectedDireccion = this.value;
+                // Agregar nuevas opciones
+                data.forEach(usuario => {
+                    usuarioSelect.append(`<option value="${usuario.Identificador_usuario_direccion}">${usuario.Nombre_usuario}</option>`);
+                });
 
-                // Llamar a un script PHP que devuelva los usuarios según la dirección seleccionada
-                fetch(`../total/get_usuarios_por_direccion.php?direccion=${selectedDireccion}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        // Limpiar opciones actuales
-                        usuarioSelect.html('<option value="" disabled selected>Selecciona un usuario</option>');
+                // Habilitar el select de usuarios
+                usuarioSelect.prop('disabled', false);
+            })
+            .catch(error => console.error('Error al obtener usuarios:', error));
+    }
 
-                        // Agregar nuevas opciones
-                        data.forEach(usuario => {
-                            usuarioSelect.append(`<option value="${usuario.Identificador_usuario_direccion}">${usuario.Nombre_usuario}</option>`);
-                        });
+    // Verificar si hay una dirección seleccionada al cargar la página
+    const selectedDireccion = direccionSelect.val();
+    if (selectedDireccion) {
+        cargarUsuarios(selectedDireccion);
+    }
 
-                        // Habilitar el select de usuarios
-                        usuarioSelect.prop('disabled', false);
-                    })
-                    .catch(error => console.error('Error al obtener usuarios:', error));
-            });
-        });
-    </script>
+    // Escuchar el evento de cambio en el menú desplegable de direcciones
+    direccionSelect.on('change', function() {
+        const selectedDireccion = this.value;
+        cargarUsuarios(selectedDireccion);
+    });
+});
+</script>
+
 </body>
 
 </html>
