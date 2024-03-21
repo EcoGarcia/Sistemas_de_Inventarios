@@ -81,7 +81,7 @@ include('../includes/header.php');
                         echo "<h3 style='margin-top: 28%;'>Resguardos de " . $row['Fullname_servicio'] . "</h3>";
                         echo "<div class='btn-container'>";
                         // Enlace para ver el inventario asociado al servicio
-                        echo "<a href='../inventario/inventario_servicios_admin.php?identificador_servicios=" . $row['identificador_servicio'] . "' class='btn btn-secondary'>Ver el inventario</a>";
+                        echo "<a href='../inventario/inventario_servicios_admin.php?identificador_servicio=" . $row['identificador_servicio'] . "' class='btn btn-secondary'>Ver el inventario</a>";
                         echo "</div>";
                         echo "</div>";
                     }
@@ -95,6 +95,7 @@ include('../includes/header.php');
     <input type="file" name="file" accept=".xlsx, .xls, .csv" required>
     <input type="hidden" name="identificador_direccion" value="<?php echo $identificador_direccion; ?>">
     <input type="hidden" name="identificador_coordinacion" value="<?php echo $identificador_coordinacion; ?>"> <!-- Agregado: campo oculto para identificador de coordinación -->
+    <input type="hidden" name="identificador_servicios" value="<?php echo $identificador_servicios; ?>"> <!-- Agregado: campo oculto para identificador de coordinación -->
     <button type="submit" class="btn btn-primary btn-import-excel btn-sm">Importar desde Excel</button>
 </form>
 

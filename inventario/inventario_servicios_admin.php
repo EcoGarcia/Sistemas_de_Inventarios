@@ -89,14 +89,14 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                 }
 
                 // Verificar si el parámetro identificador_servicio está presente en la URL
-                if (!isset($_GET['identificador_servicios'])) {
+                if (!isset($_GET['identificador_servicio'])) {
                     // Manejar el caso en el que el parámetro no está presente
                     echo "Identificador de servicio no proporcionado.";
                     exit();
                 }
                 // Obtener el nombre de la coordinación
-                $identificador_servicios = $_GET['identificador_servicios'];
-                $query_servicio = "SELECT Fullname_servicio FROM servicios WHERE identificador_servicio = $identificador_servicios";
+                $identificador_servicio = $_GET['identificador_servicio'];
+                $query_servicio = "SELECT Fullname_servicio FROM servicios WHERE identificador_servicio = $identificador_servicio";
                 $result_servicio = mysqli_query($conn, $query_servicio);
 
                 if (!$result_servicio) {
@@ -106,13 +106,13 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                 $row_servicio = mysqli_fetch_assoc($result_servicio);
                 $nombre_servicio = $row_servicio['Fullname_servicio'];
 
-                $query = "SELECT * FROM respaldos_servicios WHERE identificador_servicio = $identificador_servicios";
+                $query = "SELECT * FROM respaldos_servicios WHERE identificador_servicio = $identificador_servicio";
                 $result = mysqli_query($conn, $query);
 
 
-                $identificador_servicios = $_GET['identificador_servicios'];
+                $identificador_servicio = $_GET['identificador_servicio'];
 
-                $query = "SELECT * FROM respaldos_servicios WHERE identificador_servicio = $identificador_servicios";
+                $query = "SELECT * FROM respaldos_servicios WHERE identificador_servicio = $identificador_servicio";
                 $result = mysqli_query($conn, $query);
 
                 if ($result && mysqli_num_rows($result) > 0) {
@@ -163,7 +163,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                         <button class='btn btn-primary btn-edit btn-sm' data-toggle='modal' data-target='#editModal' data-userid='" . $row['id'] . "' data-username='" . $row['comentarios'] . "' data-identificador='" . $row['identificador_servicio'] . "'>Añadir comentarios</button>                        <hr>
                         <button class='btn btn-warning btn-cambiar-estado btn-sm' data-id='" . $row['id'] . "' data-estado='" . $row['Estado'] . "'>Cambiar Estado</button>
                         <hr>
-                        <button class='btn btn-secondary btn-editar btn-sm' onclick=\"window.location.href='../editar/resguardos_admin.php?id=" . $row['id'] . "'\">Editar</button>
+                        <button class='btn btn-secondary btn-editar btn-sm' onclick=\"window.location.href='../editar/resguardos_servicios.php?id=" . $row['id'] . "'\">Editar</button>
             
                       </td>";
                       
@@ -180,7 +180,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                     $nombre_servicio = ''; // Inicializa la variable
 
                     // Obtener el nombre del servicio
-                    $query_servicio = "SELECT Fullname_servicio FROM servicios WHERE identificador_servicio = $identificador_servicios";
+                    $query_servicio = "SELECT Fullname_servicio FROM servicios WHERE identificador_servicio = $identificador_servicio";
                     $result_servicio = mysqli_query($conn, $query_servicio);
                     
                     if ($result_servicio) {
@@ -198,7 +198,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                 mysqli_close($conn);
                 ?>
 <div class="text-right mt-3">
-<a href='../funciones/PDF_All_servicio.php?identificador_servicio=<?php echo $identificador_servicios; ?>' class='btn btn-primary btn-export-pdf btn-sm'>Exportar Todo en PDF</a>
+<a href='../funciones/PDF_All_servicio.php?identificador_servicio=<?php echo $identificador_servicio; ?>' class='btn btn-primary btn-export-pdf btn-sm'>Exportar Todo en PDF</a>
 </div>
 
 <div class="text-right mt-3">
@@ -208,12 +208,12 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
 </form>
 <form action="../excel/importar_coordinacion.php" method="POST" enctype="multipart/form-data">
 <input type="file" name="file" accept=".xlsx, .xls, .csv" required>
-    <input type="hidden" name="identificador_servicios" value="<?php echo $identificador_servicios; ?>">
+    <input type="hidden" name="identificador_servicio" value="<?php echo $identificador_servicio; ?>">
     <button type="submit" class="btn btn-primary btn-import-excel btn-sm">Importar desde Excel</button>
 </form>
 </div>
 
-<a href="../tarjeta/ver_servicio.php?identificador_coordinacion=<?php echo $identificador_servicios; ?>">Volver a la pantalla de puestos</a>
+<a href="../tarjeta/ver_servicio.php?identificador_coordinacion=<?php echo $identificador_servicio; ?>">Volver a la pantalla de puestos</a>
                 <!-- Modal para mostrar la imagen -->
                 <div class="modal fade" id="imagenModalModal" tabindex="-1" role="dialog" aria-labelledby="imagenModalModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-sm">

@@ -26,7 +26,7 @@ if ($conn->connect_error) {
 }
 
 // Consulta para obtener los datos correspondientes al ID proporcionado
-$sql = "SELECT consecutivo, Fullname_direccion, descripcion, caracteristicas, marca, modelo, serie, color, observaciones, Factura, Fullname_categoria, usuario_responsable FROM resguardos_admin WHERE id = $id";
+$sql = "SELECT consecutivo, Fullname_direccion, descripcion, caracteristicas, marca, modelo, serie, color, observaciones, Factura, Fullname_categoria, usuario_responsable FROM respaldos_servicios WHERE id = $id";
 
 $result = $conn->query($sql);
 
@@ -58,9 +58,9 @@ if ($result === false) {
 
 // Obtener las opciones para el tercer menú desplegable (select) de coordinaciones
 $optionsCoordinacion = "";
-$sqlCoordinacion = "SELECT c.identificador_coordinacion, c.Fullname_coordinacion 
-                    FROM coordinacion c 
-                    WHERE c.identificador_direccion = $id"; // Usar la columna correcta para la relación
+$sqlCoordinacion = "SELECT c.identificador_servicio, c.Fullname_servicio 
+                    FROM servicios c 
+                    WHERE c.identificador_servicio = $id"; // Usar la columna correcta para la relación
 $resultCoordinacion = $conn->query($sqlCoordinacion);
 
 if ($resultCoordinacion === false) {
@@ -68,7 +68,7 @@ if ($resultCoordinacion === false) {
 } else {
     if ($resultCoordinacion->num_rows > 0) {
         while ($rowCoordinacion = $resultCoordinacion->fetch_assoc()) {
-            $optionsCoordinacion .= "<option value='" . $rowCoordinacion["identificador_coordinacion"] . "'>" . $rowCoordinacion["Fullname_coordinacion"] . "</option>";
+            $optionsCoordinacion .= "<option value='" . $rowCoordinacion["identificador_servicio"] . "'>" . $rowCoordinacion["Fullname_servicio"] . "</option>";
         }
     }
 }
@@ -105,20 +105,20 @@ $conn->close();
 
 <body>
 
-    <form method="post" action="../guardar/edit_respaldo_admin.php" class="tarjeta contenido" onsubmit="return validarFormulario()" enctype="multipart/form-data">
+    <form method="post" action="../guardar/edit_respaldo_servicio.php" class="tarjeta contenido" onsubmit="return validarFormulario()" enctype="multipart/form-data">
 
         <label for="consecutivo">Consecutivo No:</label>
         <input type="text" name="consecutivo" id="consecutivo" value="<?php echo $consecutivo; ?>" required>
 
 
         <br><!-- Campos del formulario -->
-        <label for="fullname_coordinacion">Seleccione una coordinación:</label>
-        <select name="id_coordinacion" id="coordinacion" required>
-            <option value="" disabled>Selecciona una coordinación</option>
-            <?php
-            echo $optionsCoordinacion; // Imprime las opciones generadas dinámicamente
-            ?>
-        </select>
+<label for="fullname_servicio">Seleccione una coordinación:</label>
+<select name="id_servicio" id="id_servicio" required>
+    <option value="" disabled>Selecciona una coordinación</option>
+    <?php
+    echo $optionsCoordinacion; // Imprime las opciones generadas dinámicamente
+    ?>
+</select>
 
 
         <!-- Campos del formulario -->
@@ -145,7 +145,9 @@ $conn->close();
         <label for="">Modelo:</label>
         <input type="text" name="modelo" id="modelo" value="<?php echo $modelo; ?>" required>
         <input type="hidden" name="nombre_direccion" value="<?php echo $fullname_direccion; ?>">
-        <input type="hidden" name="identificador_direccion" value="<?php echo $identificador_direccion; ?>">
+        <input type="hidden" name="identificador_direccion" value="<?php echo $identificador_coodinacion; ?>">
+        <input type="hidden" name="nombre_coodinacion" value="<?php echo $fullname_direccion; ?>">
+        <input type="hidden" name="identificado_coodinacion" value="<?php echo $identificador_coodinacion; ?>">
 
         <label for="">NO. De Serie:</label>
         <input type="text" name="serie" id="serie" value="<?php echo $serie; ?>" required>

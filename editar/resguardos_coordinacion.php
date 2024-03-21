@@ -26,7 +26,7 @@ if ($conn->connect_error) {
 }
 
 // Consulta para obtener los datos correspondientes al ID proporcionado
-$sql = "SELECT Consecutivo_No, Fullname_direccion, Descripcion, Caracteristicas_Generales, Marca, Modelo, No_Serie, Color, Observaciones, Factura, Fullname_categoria, usuario_responsable FROM resguardos_direccion WHERE id = $id";
+$sql = "SELECT consecutivo, Fullname_direccion, descripcion, caracteristicas, marca, modelo, serie, color, observaciones, Factura, Fullname_categoria, usuario_responsable FROM respaldos_coordinacion WHERE id = $id";
 
 $result = $conn->query($sql);
 
@@ -36,16 +36,16 @@ if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
 
     // Obtener el valor de la columna Consecutivo_No
-    $consecutivo = $row['Consecutivo_No'];
+    $consecutivo = $row['consecutivo'];
     $fullname_categoria = $row['Fullname_categoria'];
-    $descripcion = $row['Descripcion'];
+    $descripcion = $row['descripcion'];
     $usuario_responsable = $row['usuario_responsable'];
-    $caracteristicas = $row['Caracteristicas_Generales'];
-    $marca = $row['Marca'];
-    $modelo = $row['Modelo'];
-    $serie = $row['No_Serie'];
-    $color = $row['Color'];
-    $observaciones = $row['Observaciones'];
+    $caracteristicas = $row['caracteristicas'];
+    $marca = $row['marca'];
+    $modelo = $row['modelo'];
+    $serie = $row['serie'];
+    $color = $row['color'];
+    $observaciones = $row['observaciones'];
     $factura = $row['Factura'];
 } else {
     // Manejar el caso en que no se encuentren resultados
@@ -118,9 +118,9 @@ $conn->close();
 
 
         <!-- Campos del formulario -->
-        <label for="fullname_categoria">Seleccione una dirección:</label>
+        <label for="fullname_categoria">Seleccione una categoria:</label>
         <select name="id_categoria" id="categoria" required>
-            <option value="<?php echo $fullname_categoria; ?>" disabled>Selecciona una dirección</option>
+            <option value="<?php echo $fullname_categoria; ?>" disabled>Selecciona una coordinacion</option>
             <?php
             echo $optionsCategoria; // Imprime las opciones generadas dinámicamente
             ?>
