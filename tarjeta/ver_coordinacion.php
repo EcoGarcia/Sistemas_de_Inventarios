@@ -86,14 +86,12 @@ if ($stmt_direccion) {
 <body>
     <div class="container">
         <div class="row">
+            <div style="text-align: left;">
+                <a href="../dashboard/dashboard.php" class="btn btn-primary">Regresar al Inicio</a>
+            </div>
+
             <div class="col-md-12">
                 <h2>Coordinaciones de la <?php echo $nombre_direccion; ?></h2>
-                <form action="../excel/importar_coordinacion.php" method="POST" enctype="multipart/form-data">
-                    <input type="file" name="file" accept=".xlsx, .xls, .csv" required>
-                    <input type="hidden" name="identificador_direccion" value="<?php echo $identificador_direccion; ?>">
-                    <button type="submit" class="btn btn-primary btn-import-excel btn-sm">Importar desde Excel</button>
-                </form>
-
                 <div class="category-container">
                     <?php
                     // Mostrar las coordinaciones en tarjetas de título
@@ -119,8 +117,11 @@ if ($stmt_direccion) {
                 </div>
             </div>
         </div>
-        <a href="../dashboard/dashboard.php" class="btn btn-primary">Regresar al Inicio</a>
-
+        <form action="../excel/importar_coordinacion.php" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".xlsx, .xls, .csv" required>
+            <input type="hidden" name="identificador_direccion" value="<?php echo $identificador_direccion; ?>">
+            <button type="submit" class="btn btn-primary btn-import-excel btn-sm">Importar desde Excel</button>
+        </form>
     </div>
 </body>
 

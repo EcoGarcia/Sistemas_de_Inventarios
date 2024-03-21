@@ -157,3 +157,31 @@ echo "<script>
     window.location.href = '../dashboard/dashboard.php';
 </script>";
 ?>
+
+    // Insertar los datos en la tabla resguardos_direccion
+    $query = "INSERT INTO resguardos_direccion (Consecutivo_No, Fullname_direccion, Descripcion, Caracteristicas_Generales, Modelo, No_Serie, Color, usuario_responsable, Comentarios, Observaciones, Condiciones, Marca, Fullname_categoria, Factura, Encargada_Area, Coordinadora_Recursos, Estado, identificador_direccion, identificador_usuario_direccion, identificador_categoria) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($query);
+
+    if (!$stmt) {
+        die("La declaración preparada falló: " . $conn->error);
+    }
+
+    // Asegúrate de ajustar la cadena de definición de tipo según el número de variables
+    $stmt->bind_param("ssssssssssssssssiiii", $row['Consecutivo_No'], $row['Fullname_direccion'], $row['Descripcion'], $row['Caracteristicas_Generales'], $row['Modelo'], $row['No_Serie'], $row['Color'], $row['Usuario_responsable'], $row['Comentarios'], $row['Observaciones'], $row['Condiciones'], $row['Marca'], $row['Nombre_categoria'], $row['Factura'], $row['Encargada_Área'], $row['Coordinadora_Recursos'], $row['Estado'], $row['identificador_direccion'], $row['identificador_usuario_direccion'], $row['identificador_categoria']);
+
+    if (!$stmt->execute()) {
+        die("Error al insertar datos: " . $stmt->error);
+    }
+
+    $stmt->close();
+
+}
+// Cerrar la conexión a la base de datos
+$conn->close();
+
+$notification_message = "Datos importados exitosamente.";
+echo "<script>
+    alert('$notification_message');
+    window.location.href = '../dashboard/dashboard.php';
+</script>";
+?>

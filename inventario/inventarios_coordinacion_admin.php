@@ -136,7 +136,10 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                         echo "<td data-label='Usuario Responsable' class='cell'>" . $row['usuario_responsable'] . "</td>";                        
                         echo "<td data-label='Comentarios' class='cell'>" . $row['comentarios'] . "</td>";                        
                         echo "<td data-label='Numero de Factura' class='cell'>" . $row['Factura'] . "</td>";
-                        echo "<td data-label='Estado' class='cell'>" . ($row['Estado'] == 1 ? 'Activo' : 'Baja') . "</td>";
+                        $backgroundColor = ($row['Estado'] == 1) ? 'lightgreen' : 'lightcoral';
+                        echo "<td data-label='Estado' class='cell' style='background-color: $backgroundColor;'>";
+                        // Texto del estado
+                        echo ($row['Estado'] == 1 ? 'Activo' : 'Baja') . "</td>";
                         echo "<td data-label='Acciones' class='cell'>
                         <a href='../funciones/PDF_individual_direccion.php?id=" . $row['id'] . "' class='btn btn-primary btn-export-pdf btn-sm'>Exportar en PDF</a>
                         <hr>
@@ -179,7 +182,7 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
     </form>
 </div>
 
-                <a href="../tarjeta/ver_coordinacion.php?identificador_direccion=<?php echo $identificador_coordinacion; ?>" ">Volver al inicio</a>
+<a href="../tarjeta/ver_coordinacion.php?identificador_direccion=<?php echo $identificador_coordinacion; ?>" ">Volver al inicio</a>
 
                 <div class="modal fade" id="imagenModalModal" tabindex="-1" role="dialog" aria-labelledby="imagenModalModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-sm">

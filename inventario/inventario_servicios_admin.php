@@ -153,12 +153,18 @@ $tipo_usuario = $_SESSION['tipo_usuario'];
                         echo "<td data-label='Usuario Responsable' class='cell'>" . $row['usuario_responsable'] . "</td>";                        
                         echo "<td data-label='Comentarios' class='cell'>" . $row['comentarios'] . "</td>";                        
                         echo "<td data-label='Numero de Factura' class='cell'>" . $row['Factura'] . "</td>";
-                        echo "<td data-label='Estado' class='cell'>" . ($row['Estado'] == 1 ? 'Activo' : 'Baja') . "</td>";
+                        $backgroundColor = ($row['Estado'] == 1) ? 'lightgreen' : 'lightcoral';
+                        echo "<td data-label='Estado' class='cell' style='background-color: $backgroundColor;'>";
+                        // Texto del estado
+                        echo ($row['Estado'] == 1 ? 'Activo' : 'Baja') . "</td>";
                         echo "<td data-label='Acciones' class='cell'>
                         <a href='../funciones/PDF_individual_servicio.php?id=" . $row['id'] . "' class='btn btn-primary btn-export-pdf btn-sm'>Exportar en PDF</a>
                         <hr>
                         <button class='btn btn-primary btn-edit btn-sm' data-toggle='modal' data-target='#editModal' data-userid='" . $row['id'] . "' data-username='" . $row['comentarios'] . "' data-identificador='" . $row['identificador_servicio'] . "'>Añadir comentarios</button>                        <hr>
                         <button class='btn btn-warning btn-cambiar-estado btn-sm' data-id='" . $row['id'] . "' data-estado='" . $row['Estado'] . "'>Cambiar Estado</button>
+                        <hr>
+                        <button class='btn btn-secondary btn-editar btn-sm' onclick=\"window.location.href='../editar/resguardos_admin.php?id=" . $row['id'] . "'\">Editar</button>
+            
                       </td>";
                       
                                         echo "</tr>";

@@ -10,11 +10,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Realizar la actualización en la base de datos
         include("../includes/conexion.php");
 
-        // Consulta para actualizar el nombre del usuario
-        $updateQuery = "UPDATE usuarios_servicios SET Fullname = '$newUsername' WHERE id = $userId";
 
-        if (mysqli_query($conexion, $updateQuery)) {
+        // Consulta para actualizar el nombre del usuario en respaldos_coordinacion
+        $updateQuery1 = "UPDATE respaldos_servicios SET usuario_responsable = '$newUsername' WHERE usuario_responsable = (
+                            SELECT Fullname FROM usuarios_servicios WHERE id = $userId
+                          ) AND identificador_usuario_servicios = (
+                            SELECT identificador_usuario_servicios FROM usuarios_servicios WHERE id = $userId
+                          )";
+        // Consulta para actualizar el nombre del usuario en usuarios_servicios
+        $updateQuery2 = "UPDATE usuarios_servicios SET Fullname = '$newUsername' WHERE id = $userId";
+
+        // Ejecutar ambas consultas dentro de una transacción para mantener la consistencia de los datos
+        mysqli_begin_transaction($conexion);
+
+        if (mysqli_query($conexion, $updateQuery1) && mysqli_query($conexion, $updateQuery2)) {
             // Éxito en la actualización
+            // Éxito en la actualización
+            mysqli_commit($conexion);
             $notification_message = "Cambio exitoso";
             echo "<script>
                 alert('$notification_message');
@@ -22,6 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </script>";
         } else {
             // Error en la actualización
+            mysqli_rollback($conexion);
             echo "Error al actualizar el nombre de usuario: " . mysqli_error($conexion);
         }
 
